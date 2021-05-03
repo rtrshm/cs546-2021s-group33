@@ -1,0 +1,28 @@
+{{!-- users
+“_id”: ObjectID(60690731a54720327839a830),
+“perms”: “user”,
+“username”: “JohnDoe”,
+“dateJoined”:”4/1/2021”,
+“hashPassword”: “$2a$08$XdvNkfdNIL8F8xsuIUeSbNOFgK0M0iV5HOskfVn7.PWncShU.O”,
+“usersFollowing”: [“mapple”, “lempie”, “randomname”],
+“email”:”JDoe@gmail.com”,
+“favoriteGames” : [ObjectId(6069054da54720327839a82e), ObjectId(6069056ca54720327839a82f)],
+“reviewsLeft”: [ObjectID(60690a32a54720327839a835), ObjectId(606908bfa54720327839a834)] --}}
+
+<h1>Profile</h1>
+<p>Permission group: {{object.perms}} </p>
+<p>Username: {{object.username}}</p>
+<p>Date joined: {{object.dateJoined}}</p>
+<p>Users following: {{object.usersFollowing}}</p>
+<p>Email: {{object.email}}</p>
+<p>Favorite Games: {{object.favoriteGames}}</p>
+<p>Reviews:{{object.reviewsLeft}}</p>
+
+{{!-- {{#if object.usersFollowing}}
+    <ul>
+        {{#each object.usersFollowing}}
+        <li><a href="/shows/{{this.show.id}}">{{this}}</a></li>
+        {{/each}}
+    </ul>
+{{/if}} --}}
+
