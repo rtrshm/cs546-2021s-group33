@@ -1,0 +1,45 @@
+<main>
+    <header>
+    <h1>Welcome, Admin. Add a game to the database by filling out the fields.</h1>
+	</header>
+        <p>{{errormsg}}</p>
+        <form action = "/admin" method ="post" id="login-form">
+            <label for="title">Game Title:</label>
+            <input type="text" name="title" id="title">
+            <label for="dateReleased">Date Released:</label>
+            <input type="date" name="dateReleased" id="dateReleased">
+            <label for="genres">Genres, separated by commas:</label>
+            <input type="text" name="genres" id="genres">
+            <label for="developers">Developers, separated by commas:</label>
+            <input type="text" name="developers" id="developers">
+            <label for="publishers">Publishers, separated by commas:</label>
+            <input type="text" name="publishers" id="publishers">
+            <label for="averageRating">Average Rating:</label>
+            <input type="number" name="averageRating" id="averageRating">
+            <label for="numberOfReviews">Number of reviews:</label>
+            <input type="number" name="numberOfReviews" id="numberOfReviews">
+            <label for="gameReviews">Game Reviews:</label>
+            <input type="text" name="gameReviews" id="gameReviews">
+            <label for="ageRating">Age Rating:</label>
+            <input type="text" name="ageRating" id="ageRating">
+            <label for="platforms">Platforms, separated by commas</label>
+            <input type="text" name="platforms" id="platforms">
+            <label for="purchaseLinks">Purchase Links, separated by commas:</label>
+            <input type="text" name="purchaseLinks" id="purchaseLinks">
+            <button type="submit">Enter</button>
+        </form>
+        <a href="/signup">Sign up</a>
+        
+</main>
+
+<h1>{{object.title}}</h1>
+<p>Date Released: {{object.dateReleased}}</p>
+<p>Genres: {{object.genres}}</p>
+<p>Developers: {{object.developers}}</p>
+<p>Publishers: {{object.publishers}}</p>
+<p>Average rating:{{object.averageRating}}</p>
+<p>Number of reviews: {{object.numberOfReviews}}</p>
+<p>Game reviews: {{object.gameReviews}}</p>
+<p>Age rating: {{object.ageRating}}</p>
+<p>Platforms: {{object.platforms}}</p>
+<p>Purchase links:{{object.purchaseLinks}}</p>
