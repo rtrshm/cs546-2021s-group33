@@ -1,13 +1,18 @@
-const profile = require('./profile');
-const main = require('./main');
-const game = require('./game');
-const constructorMethod = (app) => {
-  app.use('/profile', profile);
-  app.use('/game', game);
-  app.use('/', main);
-  app.use('*', (req, res) => {
-    res.status(404).json({ error: 'Not found' });
-  });
-};
+const express = require('express');
+const router = express.Router();
+// const data = require("../data");
+// const mongoCollections = require('../config/mongoCollections');
+// const booksData = mongoCollections.books;
+// let { ObjectId } = require('mongodb')
 
-module.exports = constructorMethod;
+    router.get('/', async (req,res) => { 
+        res.render("login.handlebars", {title: "Login"})
+    });
+
+    router.get('/signup', async (req,res) => { 
+        res.render("signup.handlebars", {title: "Sign up"})
+    });
+
+    
+    
+module.exports = router;
