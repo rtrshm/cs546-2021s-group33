@@ -5,7 +5,7 @@ const users = mongoCollections.users;
 
 //TODO: Handle errors in code.
 
-let createUser = async (perms, username, password, email) => {
+let createUser = async (perms = "user", username, password, email) => {
   const userCollection = await users();
 
   const hashPassword = await bcrypt.hash(password, 16);
@@ -68,7 +68,7 @@ let removeUser = async (id) => {
   const deletionInfo = await userCollection.deleteOne({ _id: parsedId });
   if (deletionInfo.deletedCount === 0) throw `Could not delete user.`;
 
-  return { bookId: parsedId.toString(), deleted: true };
+  return { userId: parsedId.toString(), deleted: true };
 };
 
 module.exports = {
