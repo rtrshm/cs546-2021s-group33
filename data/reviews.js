@@ -3,6 +3,7 @@ const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
 const gameUtil = require("./games");
 const userUtil = require("./users");
+const errorz = require("./errorChecker");
 
 let createReview = async (
   gameId,
@@ -13,6 +14,17 @@ let createReview = async (
   recommended,
   username
 ) => {
+
+  errorz.stringChecker(gameId, "gameId");
+  errorz.existenceChecker(spoiler);
+  errorz.typeChecker(spoiler, "bool");
+  errorz.existenceChecker(recommended);
+  errorz.typeChecker(recommended, "bool");
+  errorz.stringChecker(reviewTitle, "reviewTitle");
+  errorz.stringChecker(reviewContent, "reviewContent");
+  errorz.ratingChecker(rating);
+  errorz.stringChecker(username, "username");
+
   let parsedId = ObjectID(gameId);
   const user = await userUtil.findByUsername(username);
 
@@ -41,6 +53,9 @@ let createReview = async (
 };
 
 let readAllReviews = async (id) => {
+
+  errorz.stringChecker(id, "id");
+
   const parsedId = ObjectID(id);
   const gameCollection = await games();
 
@@ -50,6 +65,9 @@ let readAllReviews = async (id) => {
 };
 
 let readReview = async (id) => {
+
+  errorz.stringChecker(id, "id");
+
   const parsedId = ObjectID(id);
 
   const gameCollection = await games();
@@ -67,6 +85,10 @@ let readReview = async (id) => {
 };
 
 let updateReview = async (id, username, newData) => {
+
+  errorz.stringChecker(id, "id");
+  errorz.stringChecker(username, "username");
+
   const parsedId = ObjectID(id);
 
   const gameCollection = await games();
@@ -87,6 +109,9 @@ let updateReview = async (id, username, newData) => {
 };
 
 let removeReview = async (id) => {
+
+  errorz.stringChecker(id, "id");
+  
   const parsedId = ObjectID(id);
 
   const gameCollection = await games();

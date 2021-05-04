@@ -2,11 +2,17 @@ const { ObjectID } = require("mongodb");
 const bcrypt = require("bcrypt");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
-
+const errorz = require("./errorChecker");
 //TODO: Handle errors in code.
 
 let createUser = async (perms = "user", username, password, email) => {
   const userCollection = await users();
+
+  //error checking I'm gonna add in -Gavin check if its good later
+  errorz.stringChecker(username, "username");
+  errorz.stringChecker(password, "password");
+  errorz.stringChecker(email, "email");
+  errorz.ValidateEmail(email);
 
   const hashPassword = await bcrypt.hash(password, 16);
 
@@ -36,6 +42,9 @@ let createUser = async (perms = "user", username, password, email) => {
 };
 
 let readUser = async (id) => {
+
+  errorz.stringChecker(id, "id");
+
   let parsedId = ObjectID(id);
 
   const userCollection = await users();
@@ -46,6 +55,9 @@ let readUser = async (id) => {
 };
 
 let findByUsername = async (username) => {
+
+  errorz.stringChecker(username, "username");
+
   const userCollection = await users();
   const user = await userCollection.findOne({ username: username });
   if (user === null) throw `User not found.`;
@@ -54,6 +66,9 @@ let findByUsername = async (username) => {
 };
 
 let updateUser = async (id, newData) => {
+
+  errorz.stringChecker(id, "id");
+
   let parsedId = ObjectID(id);
 
   const userCollection = await users();
@@ -70,6 +85,9 @@ let updateUser = async (id, newData) => {
 };
 
 let removeUser = async (id) => {
+
+  errorz.stringChecker(id, "id");
+  
   let parsedId = ObjectID(id);
 
   const userCollection = await users();

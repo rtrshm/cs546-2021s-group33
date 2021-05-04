@@ -1,6 +1,7 @@
 const { ObjectID } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
+const errorz = require("./errorChecker");
 
 //TODO: Handle errors in code.
 
@@ -47,6 +48,8 @@ let createGame = async (
 };
 
 let readGame = async (id) => {
+  errorz.stringChecker(id, "id");
+
   let parsedId = ObjectID(id);
 
   const gameCollection = await games();
@@ -67,6 +70,9 @@ let getAllGames = async () => {
 };
 
 let getGameByTitle = async (title) => {
+
+  errorz.stringChecker(title, "title");
+
   const gameCollection = await games();
   const game = await gameCollection.findOne({ title: title });
   if (game === null) throw `Game not found.`;
@@ -75,6 +81,9 @@ let getGameByTitle = async (title) => {
 };
 
 let getGamesByGenre = async (genre) => {
+
+  errorz.checkErrorArray(array, "string");
+
   const gameCollection = await games();
   const gameList = await gameCollection
     .find({ genres: genre }, { title: 1, genres: 1, averageRating: 1 })
@@ -86,6 +95,9 @@ let getGamesByGenre = async (genre) => {
 };
 
 let updateGame = async (id, newData) => {
+
+  errorz.stringChecker(id, "id");
+
   let parsedId = ObjectID(id);
 
   const gameCollection = await games();
@@ -102,6 +114,9 @@ let updateGame = async (id, newData) => {
 };
 
 let removeGame = async (id) => {
+
+  errorz.stringChecker(id, "id");
+  
   let parsedId = ObjectID(id);
 
   const gameCollection = await games();
