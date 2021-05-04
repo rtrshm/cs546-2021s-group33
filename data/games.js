@@ -56,6 +56,35 @@ let readGame = async (id) => {
   return game;
 };
 
+let getAllGames = async () => {
+  const gameCollection = await games();
+  const gameList = await gameCollection
+    .find({}, { title: 1, genres: 1, averageRating: 1 })
+    .toArray();
+  if (gameList === null) throw `No games found.`;
+
+  return gameList;
+};
+
+let getGameByTitle = async (title) => {
+  const gameCollection = await games();
+  const game = await gameCollection.findOne({ title: title });
+  if (game === null) throw `Game not found.`;
+
+  return game;
+};
+
+let getGamesByGenre = async (genre) => {
+  const gameCollection = await games();
+  const gameList = await gameCollection
+    .find({ genres: genre }, { title: 1, genres: 1, averageRating: 1 })
+    .sort({ averageRating: 1 })
+    .toArray();
+  if (gameList === null) throw `No games with that genre found.`;
+
+  return gameList;
+};
+
 let updateGame = async (id, newData) => {
   let parsedId = ObjectID(id);
 
