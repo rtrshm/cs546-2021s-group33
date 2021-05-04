@@ -45,6 +45,14 @@ let readUser = async (id) => {
   return user;
 };
 
+let findByUsername = async (username) => {
+  const userCollection = await users();
+  const user = await userCollection.findOne({ username: username });
+  if (user === null) throw `User not found.`;
+
+  return user;
+};
+
 let updateUser = async (id, newData) => {
   let parsedId = ObjectID(id);
 
@@ -74,6 +82,7 @@ let removeUser = async (id) => {
 module.exports = {
   createUser,
   readUser,
+  findByUsername,
   updateUser,
   removeUser,
 };
