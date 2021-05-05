@@ -14,7 +14,6 @@ let createReview = async (
   recommended,
   username
 ) => {
-
   errorz.stringChecker(gameId, "gameId");
   errorz.existenceChecker(spoiler);
   errorz.typeChecker(spoiler, "bool");
@@ -24,6 +23,9 @@ let createReview = async (
   errorz.stringChecker(reviewContent, "reviewContent");
   errorz.ratingChecker(rating);
   errorz.stringChecker(username, "username");
+
+  if (didUserReviewGame(username, gameId))
+    throw `Error: User already reviewed this game.`;
 
   let parsedId = ObjectID(gameId);
   const user = await userUtil.findByUsername(username);
@@ -48,12 +50,11 @@ let createReview = async (
   if (updatedInfo.modifiedCount === 0)
     throw `Could not update game with review.`;
 
-  const newGame = await gameUtil.readGame(book._id.toString());
+  const newGame = await gameUtil.updateReviewStats(game._id.toString(), rating);
   return newGame;
 };
 
 let readAllReviews = async (id) => {
-
   errorz.stringChecker(id, "id");
 
   const parsedId = ObjectID(id);
@@ -65,7 +66,6 @@ let readAllReviews = async (id) => {
 };
 
 let readReview = async (id) => {
-
   errorz.stringChecker(id, "id");
 
   const parsedId = ObjectID(id);
@@ -84,8 +84,17 @@ let readReview = async (id) => {
   return review;
 };
 
-let updateReview = async (id, username, newData) => {
+let didUserReviewGame = async (username, gameId) => {
+  const parsedId = ObjectID(gameId);
 
+  const gameCollection = await games();
+
+  const game = await gameCollection.findOne({ "reviews.$.username": username });
+  if (game) return true;
+  else return false;
+};
+
+let updateReview = async (id, username, newData) => {
   errorz.stringChecker(id, "id");
   errorz.stringChecker(username, "username");
 
@@ -99,7 +108,7 @@ let updateReview = async (id, username, newData) => {
 
   const updatedInfo = await gameCollection.updateOne(
     { "reviews._id": parsedId },
-    { $set: newData }
+    { $set: { "reviews.$": newData } }
   );
 
   if (updatedInfo.modifiedCount === 0)
@@ -109,9 +118,8 @@ let updateReview = async (id, username, newData) => {
 };
 
 let removeReview = async (id) => {
-
   errorz.stringChecker(id, "id");
-  
+
   const parsedId = ObjectID(id);
 
   const gameCollection = await games();

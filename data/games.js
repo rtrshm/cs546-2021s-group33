@@ -27,7 +27,7 @@ let createGame = async (
     publishers: publishers,
     averageRating: 0.0,
     numberOfReviews: 0,
-    gameReviews: [],
+    reviews: [],
     ageRating: ageRating,
     platforms: platforms,
     purchaseLinks: purchaseLinks,
@@ -70,7 +70,6 @@ let getAllGames = async () => {
 };
 
 let getGameByTitle = async (title) => {
-
   errorz.stringChecker(title, "title");
 
   const gameCollection = await games();
@@ -81,7 +80,6 @@ let getGameByTitle = async (title) => {
 };
 
 let getGamesByGenre = async (genre) => {
-
   errorz.checkErrorArray(array, "string");
 
   const gameCollection = await games();
@@ -95,7 +93,6 @@ let getGamesByGenre = async (genre) => {
 };
 
 let updateGame = async (id, newData) => {
-
   errorz.stringChecker(id, "id");
 
   let parsedId = ObjectID(id);
@@ -113,10 +110,30 @@ let updateGame = async (id, newData) => {
   return await read(id);
 };
 
-let removeGame = async (id) => {
-
+let updateReviewStats = async (id, rating) => {
   errorz.stringChecker(id, "id");
-  
+
+  let parsedId = ObjectID(id);
+
+  const gameCollection = await games();
+
+  const updatedInfo = await gameCollection.updateOne(
+    { _id: parsedId },
+    {
+      $inc: { numberOfReviews: 1 },
+      averageRating: (averageRating + rating) / numberOfReviews,
+    }
+  );
+
+  if (updatedInfo.modifiedCount === 0)
+    throw `Could not update game information.`;
+
+  return await read(id);
+};
+
+let removeGame = async (id) => {
+  errorz.stringChecker(id, "id");
+
   let parsedId = ObjectID(id);
 
   const gameCollection = await games();
@@ -129,6 +146,10 @@ let removeGame = async (id) => {
 module.exports = {
   createGame,
   readGame,
+  getAllGames,
+  getGameByTitle,
+  getGamesByGenre,
   updateGame,
+  updateReviewStats,
   removeGame,
 };

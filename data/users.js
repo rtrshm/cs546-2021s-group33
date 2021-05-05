@@ -1,20 +1,17 @@
 const { ObjectID } = require("mongodb");
-const bcrypt = require("bcrypt");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const errorz = require("./errorChecker");
 //TODO: Handle errors in code.
 
-let createUser = async (perms = "user", username, password, email) => {
+let createUser = async (perms = "user", username, hashPassword, email) => {
   const userCollection = await users();
 
   //error checking I'm gonna add in -Gavin check if its good later
   errorz.stringChecker(username, "username");
-  errorz.stringChecker(password, "password");
+  errorz.stringChecker(hashPassword, "password");
   errorz.stringChecker(email, "email");
   errorz.ValidateEmail(email);
-
-  const hashPassword = await bcrypt.hash(password, 16);
 
   const newUser = {
     perms: perms,
@@ -27,10 +24,14 @@ let createUser = async (perms = "user", username, password, email) => {
     reviewsLeft: [],
   };
 
-  const checkUser = new RegExp(`^${username}$`, "i");
+  const userChecker = new RegExp(`^${username}$`, "i");
+  const emailChecker = new RegExp(`^${email}$`, "i");
 
-  const check = await userCollection.findOne({ username: checkUser });
-  if (check) throw `Error: Username already registered.`;
+  const checkName = await userCollection.findOne({ username: userChecker });
+  if (checkName) throw `Error: Username already registered.`;
+
+  const checkEmail = await userCollection.findOne({ email: emailChecker });
+  if (checkEmail) throw `Error: Email already registered.`;
 
   const insertInfo = await userCollection.insertOne(newUser);
   if (insertInfo.insertedCount === 0) throw `Could not create user.`;
@@ -42,7 +43,6 @@ let createUser = async (perms = "user", username, password, email) => {
 };
 
 let readUser = async (id) => {
-
   errorz.stringChecker(id, "id");
 
   let parsedId = ObjectID(id);
@@ -55,7 +55,6 @@ let readUser = async (id) => {
 };
 
 let findByUsername = async (username) => {
-
   errorz.stringChecker(username, "username");
 
   const userCollection = await users();
@@ -66,7 +65,6 @@ let findByUsername = async (username) => {
 };
 
 let updateUser = async (id, newData) => {
-
   errorz.stringChecker(id, "id");
 
   let parsedId = ObjectID(id);
@@ -85,9 +83,8 @@ let updateUser = async (id, newData) => {
 };
 
 let removeUser = async (id) => {
-
   errorz.stringChecker(id, "id");
-  
+
   let parsedId = ObjectID(id);
 
   const userCollection = await users();
