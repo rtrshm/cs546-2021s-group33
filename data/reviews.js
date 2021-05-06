@@ -89,9 +89,13 @@ let didUserReviewGame = async (username, gameId) => {
 
   const gameCollection = await games();
 
-  const game = await gameCollection.findOne({ "reviews.$.username": username });
-  if (game) return true;
-  else return false;
+  const game = await gameCollection.findOne({ _id: parsedId });
+  if (!game) throw `Error: Game not found`;
+
+  game.reviews.forEach((elem) => {
+    if (elem.username === username) return true;
+  });
+  return false;
 };
 
 let updateReview = async (id, username, newData) => {
