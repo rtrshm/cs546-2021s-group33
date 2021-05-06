@@ -18,6 +18,17 @@ let createGame = async (
 ) => {
   const gameCollection = await games();
 
+  errorz.stringChecker(title, "title");
+  errorz.stringChecker(img, "img");
+  errorz.isValidDate(dateReleased);
+  errorz.checkErrorArray(genre, "string");
+  errorz.checkErrorArray(developers, "string");
+  errorz.checkErrorArray(publishers, "string");
+  errorz.stringChecker(ageRating, "ageRating");
+  errorz.checkErrorArray(platforms, "string");
+  errorz.checkErrorArray(purchaseLinks, "string");
+
+
   const newGame = {
     title: title,
     img: img,
@@ -80,7 +91,7 @@ let getGameByTitle = async (title) => {
 };
 
 let getGamesByGenre = async (genre) => {
-  errorz.checkErrorArray(array, "string");
+  errorz.checkErrorArray(genre, "string");
 
   const gameCollection = await games();
   const gameList = await gameCollection
@@ -94,6 +105,53 @@ let getGamesByGenre = async (genre) => {
 
 let updateGame = async (id, newData) => {
   errorz.stringChecker(id, "id");
+  errorz.existenceChecker(newData);
+  errorz.typeChecker(newData, "Object");
+  let x = Object.keys;
+
+  for(let i = 0; i < x.length; i++)
+  {
+    if(x[i] === title)
+    {
+      errorz.stringChecker(newData.title, "title");
+    }
+    else if(x[i] === img)
+    {
+      errorz.stringChecker(newData.img, "img");
+    }
+    else if(x[i] === dateReleased)
+    {
+      errorz.isValidDate(newData.dateReleased);
+    }
+    else if(x[i] === genres)
+    {
+      errorz.checkErrorArray(newData.genre, "string");
+    }
+    else if(x[i] === developers)
+    {
+      errorz.checkErrorArray(newData.developers, "string");
+    }
+    else if(x[i] === publishers)
+    {
+      errorz.checkErrorArray(newData.publishers, "string");
+    }
+    else if(x[i] === ageRating)
+    {
+      errorz.stringChecker(newData.ageRating, "ageRating");
+    }
+    else if(x[i] === platforms)
+    {
+      errorz.checkErrorArray(newData.platforms, "string");
+    }
+    else if(x[i] === purchaseLinks)
+    {
+      errorz.checkErrorArray(newData.purchaseLinks, "string");
+    }
+    else
+    {
+      throw "Error: Key not valid";
+    }
+  }
 
   let parsedId = ObjectID(id);
 
@@ -112,6 +170,7 @@ let updateGame = async (id, newData) => {
 
 let updateReviewStats = async (id, rating) => {
   errorz.stringChecker(id, "id");
+  errorz.ratingChecker(rating);
 
   let parsedId = ObjectID(id);
 
@@ -137,7 +196,7 @@ let removeGame = async (id) => {
   let parsedId = ObjectID(id);
 
   const gameCollection = await games();
-  const deletionInfo = await userCollection.deleteOne({ _id: parsedId });
+  const deletionInfo = await gameCollection.deleteOne({ _id: parsedId });
   if (deletionInfo.deletedCount === 0) throw `Could not delete game.`;
 
   return { gameId: parsedId.toString(), deleted: true };

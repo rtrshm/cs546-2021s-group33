@@ -85,6 +85,10 @@ let readReview = async (id) => {
 };
 
 let didUserReviewGame = async (username, gameId) => {
+
+  errorz.stringChecker(username, "username");
+  errorz.stringChecker(gameId, "gameId");
+  
   const parsedId = ObjectID(gameId);
 
   const gameCollection = await games();
