@@ -25,6 +25,7 @@ const router = express.Router();
             reviewsLeft: ["Showdown is awesome! Just kidding it sucks I just got lucked!!! Crit ceit crit crit"]
         };
         res.render("profile.handlebars", {title: "Profile", object: obj})
+        
     });
 
     
