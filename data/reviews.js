@@ -24,8 +24,8 @@ let createReview = async (
   errorz.ratingChecker(rating);
   errorz.stringChecker(username, "username");
 
-   //if (didUserReviewGame(username, gameId))
-     //throw `Error: User already reviewed this game.`;
+  if (await didUserReviewGame(username, gameId))
+    throw `Error: User already reviewed this game.`;
 
   let parsedId = ObjectID(gameId);
   const user = await userUtil.findByUsername(username);
@@ -99,7 +99,11 @@ let didUserReviewGame = async (username, gameId) => {
   if (!game) throw `Error: Game not found`;
 
   game.reviews.forEach((elem) => {
-    if (elem.username === username) return true;
+    if (elem.username === username) {
+      console.log(elem.username);
+      console.log(username);
+      return true;
+    }
   });
   return false;
 };
@@ -112,25 +116,25 @@ let updateReview = async (id, username, newData) => {
   let x = Object.keys(newData);
 
   for (let i = 0; i < x.length; i++) {
-   if (x[i] === "gameId") {
+    if (x[i] === "gameId") {
       errorz.stringChecker(newData.gameId, "gameId");
-     } else if (x[i] === "spoiler") {
-       errorz.existenceChecker(newData.spoiler);
-       errorz.typeChecker(newData.spoiler, "boolean");
-     } else if (x[i] === "recommended") {
-       errorz.existenceChecker(newData.recommended);
-       errorz.typeChecker(newData.recommended, "boolean");
-     } else if (x[i] === "reviewTitle") {
-       errorz.stringChecker(newData.reviewTitle, "reviewTitle");
-     } else if (x[i] === "reviewContent") {
-       errorz.stringChecker(newData.reviewContent, "reviewContent");
-     } else if (x[i] === "rating") {
-       errorz.ratingChecker(newData.rating);
-     } else if (x[i] === "username") {
-       errorz.stringChecker(newData.username, "username");
-     } else {
-       throw "Error: " +x[i] + " Key not valid";
-     }
+    } else if (x[i] === "spoiler") {
+      errorz.existenceChecker(newData.spoiler);
+      errorz.typeChecker(newData.spoiler, "boolean");
+    } else if (x[i] === "recommended") {
+      errorz.existenceChecker(newData.recommended);
+      errorz.typeChecker(newData.recommended, "boolean");
+    } else if (x[i] === "reviewTitle") {
+      errorz.stringChecker(newData.reviewTitle, "reviewTitle");
+    } else if (x[i] === "reviewContent") {
+      errorz.stringChecker(newData.reviewContent, "reviewContent");
+    } else if (x[i] === "rating") {
+      errorz.ratingChecker(newData.rating);
+    } else if (x[i] === "username") {
+      errorz.stringChecker(newData.username, "username");
+    } else {
+      throw "Error: " + x[i] + " Key not valid";
+    }
   }
 
   const parsedId = ObjectID(id);
