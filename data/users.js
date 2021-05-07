@@ -67,28 +67,20 @@ let findByUsername = async (username) => {
 let updateUser = async (id, newData) => {
   errorz.stringChecker(id, "id");
   errorz.existenceChecker(newData);
-  errorz.typeChecker(newData, "object");
-  let x = Object.keys;
-  for(let i = 0; i < x.length; i++)
-  {
-    if(x[i] === "username")
-    {
-      errorz.stringChecker(newData.username, "username");
-    }
-    else if(x[i] === "hashPassword")
-    {
-      errorz.stringChecker(newData.hashPassword, "password");
-    }
-    else if(x[i] === "email")
-    {
-      errorz.stringChecker(newData.email, "email");
-      errorz.ValidateEmail(newData.email);
-    }
-    else
-    {
-      throw "Error: Key not valid";
-    }
-  }
+  // errorz.typeChecker(newData, "object");
+  // let x = Object.keys;
+  // for (let i = 0; i < x.length; i++) {
+  //   if (x[i] === "username") {
+  //     errorz.stringChecker(newData.username, "username");
+  //   } else if (x[i] === "hashPassword") {
+  //     errorz.stringChecker(newData.hashPassword, "password");
+  //   } else if (x[i] === "email") {
+  //     errorz.stringChecker(newData.email, "email");
+  //     errorz.ValidateEmail(newData.email);
+  //   } else {
+  //     throw "Error: Key not valid";
+  //   }
+  // }
   let parsedId = ObjectID(id);
 
   const userCollection = await users();
@@ -101,7 +93,7 @@ let updateUser = async (id, newData) => {
   if (updatedInfo.modifiedCount === 0)
     throw `Could not update user information.`;
 
-  return await read(id);
+  return await readUser(id);
 };
 
 let removeUser = async (id) => {

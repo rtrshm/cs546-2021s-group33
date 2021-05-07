@@ -14,21 +14,23 @@ let createReview = async (
   recommended,
   username
 ) => {
-  errorz.stringChecker(gameId, "gameId");
-  errorz.existenceChecker(spoiler);
-  errorz.typeChecker(spoiler, "bool");
-  errorz.existenceChecker(recommended);
-  errorz.typeChecker(recommended, "bool");
-  errorz.stringChecker(reviewTitle, "reviewTitle");
-  errorz.stringChecker(reviewContent, "reviewContent");
-  errorz.ratingChecker(rating);
-  errorz.stringChecker(username, "username");
+  // errorz.stringChecker(gameId, "gameId");
+  // errorz.existenceChecker(spoiler);
+  // errorz.typeChecker(spoiler, "bool");
+  // errorz.existenceChecker(recommended);
+  // errorz.typeChecker(recommended, "bool");
+  // errorz.stringChecker(reviewTitle, "reviewTitle");
+  // errorz.stringChecker(reviewContent, "reviewContent");
+  // errorz.ratingChecker(rating);
+  // errorz.stringChecker(username, "username");
 
-  if (didUserReviewGame(username, gameId))
-    throw `Error: User already reviewed this game.`;
+  // if (didUserReviewGame(username, gameId))
+  //   throw `Error: User already reviewed this game.`;
 
   let parsedId = ObjectID(gameId);
   const user = await userUtil.findByUsername(username);
+
+  const gameCollection = await games();
 
   const newReview = {
     _id: ObjectID(),
@@ -55,7 +57,7 @@ let createReview = async (
 };
 
 let readAllReviews = async (id) => {
-  errorz.stringChecker(id, "id");
+  // errorz.stringChecker(id, "id");
 
   const parsedId = ObjectID(id);
   const gameCollection = await games();
@@ -66,13 +68,14 @@ let readAllReviews = async (id) => {
 };
 
 let readReview = async (id) => {
-  errorz.stringChecker(id, "id");
+  // errorz.stringChecker(id, "id");
 
   const parsedId = ObjectID(id);
 
   const gameCollection = await games();
 
   const game = await gameCollection.findOne({ "reviews._id": parsedId });
+  if (!game) throw `Error: Review ID does not correspond with game.`;
 
   let review;
   game.reviews.forEach((element) => {
@@ -85,10 +88,9 @@ let readReview = async (id) => {
 };
 
 let didUserReviewGame = async (username, gameId) => {
+  // errorz.stringChecker(username, "username");
+  // errorz.stringChecker(gameId, "gameId");
 
-  errorz.stringChecker(username, "username");
-  errorz.stringChecker(gameId, "gameId");
-  
   const parsedId = ObjectID(gameId);
 
   const gameCollection = await games();
@@ -103,71 +105,61 @@ let didUserReviewGame = async (username, gameId) => {
 };
 
 let updateReview = async (id, username, newData) => {
-  errorz.stringChecker(id, "id");
-  errorz.stringChecker(username, "username");
-  errorz.existenceChecker(newData);
-  errorz.typeChecker(newData, "object");
-  let x = Object.keys;
+  // errorz.stringChecker(id, "id");
+  // errorz.stringChecker(username, "username");
+  // errorz.existenceChecker(newData);
+  // errorz.typeChecker(newData, "object");
+  // let x = Object.keys;
 
-  for(let i = 0; i < x.length; i++)
-  {
-    if(x[i] === "gameId")
-    {
-      errorz.stringChecker(newData.gameId, "gameId");
-    }
-    else if(x[i] === "spoiler")
-    {
-      errorz.existenceChecker(newData.spoiler);
-      errorz.typeChecker(newData.spoiler, "bool");
-    }
-    else if(x[i] === "recommended")
-    {
-      errorz.existenceChecker(newData.recommended);
-      errorz.typeChecker(newData.recommended, "bool");
-    }
-    else if(x[i] === "reviewTitle")
-    {
-      errorz.stringChecker(newData.reviewTitle, "reviewTitle");
-    }
-    else if(x[i] === "reviewContent")
-    {
-      errorz.stringChecker(newData.reviewContent, "reviewContent");
-    }
-    else if(x[i] === "rating")
-    {
-      errorz.ratingChecker(newData.rating);
-    }
-    else if(x[i] === "username")
-    {
-      errorz.stringChecker(newData.username, "username");
-    }
-    else
-    {
-      throw "Error: Key not valid";
-    }
-  }
+  // for (let i = 0; i < x.length; i++) {
+  //   if (x[i] === "gameId") {
+  //     errorz.stringChecker(newData.gameId, "gameId");
+  //   } else if (x[i] === "spoiler") {
+  //     errorz.existenceChecker(newData.spoiler);
+  //     errorz.typeChecker(newData.spoiler, "bool");
+  //   } else if (x[i] === "recommended") {
+  //     errorz.existenceChecker(newData.recommended);
+  //     errorz.typeChecker(newData.recommended, "bool");
+  //   } else if (x[i] === "reviewTitle") {
+  //     errorz.stringChecker(newData.reviewTitle, "reviewTitle");
+  //   } else if (x[i] === "reviewContent") {
+  //     errorz.stringChecker(newData.reviewContent, "reviewContent");
+  //   } else if (x[i] === "rating") {
+  //     errorz.ratingChecker(newData.rating);
+  //   } else if (x[i] === "username") {
+  //     errorz.stringChecker(newData.username, "username");
+  //   } else {
+  //     throw "Error: Key not valid";
+  //   }
+  // }
 
   const parsedId = ObjectID(id);
 
   const gameCollection = await games();
 
-  const review = await read(id);
+  const review = await readReview(id);
 
   if (username !== review.username) throw `Error: User cannot edit review.`;
 
+  Object.keys(review).forEach((elem) => {
+    if (Object.keys(newData).includes(elem)) {
+      review[elem] = newData[elem];
+    }
+  });
+
   const updatedInfo = await gameCollection.updateOne(
     { "reviews._id": parsedId },
-    { $set: { "reviews.$": newData } }
+    { $set: { "reviews.$": review } }
   );
 
   if (updatedInfo.modifiedCount === 0)
     throw `Could not update review information.`;
 
-  return await read(id);
+  return await readReview(id);
 };
 
 let removeReview = async (id) => {
-  errorz.stringChecker(id, "id");
+  // errorz.stringChecker(id, "id");
 
   const parsedId = ObjectID(id);
 
@@ -175,7 +167,7 @@ let removeReview = async (id) => {
 
   const game = await gameCollection.findOne({ "reviews._id": parsedId });
 
-  const review = await read(id);
+  const review = await readReview(id);
 
   let deletionInfo = await gameCollection.updateOne(
     { _id: game._id },
