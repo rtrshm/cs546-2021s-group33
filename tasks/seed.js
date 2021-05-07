@@ -207,7 +207,7 @@ let main = async () => {
 
 main().catch((error) => {
   console.error(error);
-  return dbConnection().then((db) => {
-    return db.serverConfig.close();
-  });
+  //return dbConnection().then((db) => {
+  //  return db.serverConfig.close();
+ // });
 });

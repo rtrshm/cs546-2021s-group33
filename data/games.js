@@ -21,7 +21,7 @@ let createGame = async (
   errorz.stringChecker(title, "title");
   errorz.stringChecker(img, "img");
   errorz.isValidDate(dateReleased);
-  errorz.checkErrorArray(genre, "string");
+  errorz.checkErrorArray(genres, "string");
   errorz.checkErrorArray(developers, "string");
   errorz.checkErrorArray(publishers, "string");
   errorz.stringChecker(ageRating, "ageRating");
@@ -125,7 +125,7 @@ let updateGame = async (id, newData) => {
     }
     else if(x[i] === "genres")
     {
-      errorz.checkErrorArray(newData.genre, "string");
+      errorz.checkErrorArray(newData.genres, "string");
     }
     else if(x[i] === "developers")
     {
