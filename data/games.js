@@ -106,7 +106,7 @@ let getGamesByGenre = async (genre) => {
 let updateGame = async (id, newData) => {
   errorz.stringChecker(id, "id");
   errorz.existenceChecker(newData);
-  errorz.typeChecker(newData, "Object");
+  errorz.typeChecker(newData, "object");
   let x = Object.keys;
 
   for(let i = 0; i < x.length; i++)

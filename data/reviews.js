@@ -106,7 +106,7 @@ let updateReview = async (id, username, newData) => {
   errorz.stringChecker(id, "id");
   errorz.stringChecker(username, "username");
   errorz.existenceChecker(newData);
-  errorz.typeChecker(newData, "Object");
+  errorz.typeChecker(newData, "object");
   let x = Object.keys;
 
   for(let i = 0; i < x.length; i++)
