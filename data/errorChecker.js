@@ -32,7 +32,7 @@ function checkErrorArray(array, string)//array is array input, string is type. F
 
 function existenceChecker(input)
 {
-    if(input === undefined || !input)
+    if(input === undefined)
     {
         throw "Error: input does not exist";
     }

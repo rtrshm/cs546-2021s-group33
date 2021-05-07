@@ -104,33 +104,33 @@ let getGamesByGenre = async (genre) => {
 
 let updateGame = async (id, newData) => {
   // errorz.stringChecker(id, "id");
-  // errorz.existenceChecker(newData);
-  // errorz.typeChecker(newData, "object");
-  // let x = Object.keys;
+  errorz.existenceChecker(newData);
+  errorz.typeChecker(newData, "object");
+  let x = Object.keys(newData);
 
-  // for (let i = 0; i < x.length; i++) {
-  //   if (x[i] === "title") {
-  //     errorz.stringChecker(newData.title, "title");
-  //   } else if (x[i] === "img") {
-  //     errorz.stringChecker(newData.img, "img");
-  //   } else if (x[i] === "dateReleased") {
-  //     errorz.isValidDate(newData.dateReleased);
-  //   } else if (x[i] === "genres") {
-  //     errorz.checkErrorArray(newData.genre, "string");
-  //   } else if (x[i] === "developers") {
-  //     errorz.checkErrorArray(newData.developers, "string");
-  //   } else if (x[i] === "publishers") {
-  //     errorz.checkErrorArray(newData.publishers, "string");
-  //   } else if (x[i] === "ageRating") {
-  //     errorz.stringChecker(newData.ageRating, "ageRating");
-  //   } else if (x[i] === "platforms") {
-  //     errorz.checkErrorArray(newData.platforms, "string");
-  //   } else if (x[i] === "purchaseLinks") {
-  //     errorz.checkErrorArray(newData.purchaseLinks, "string");
-  //   } else {
-  //     throw "Error: Key not valid";
-  //   }
-  // }
+  for (let i = 0; i < x.length; i++) {
+    if (x[i] === "title") {
+       errorz.stringChecker(newData.title, "title");
+     } else if (x[i] === "img") {
+       errorz.stringChecker(newData.img, "img");
+     } else if (x[i] === "dateReleased") {
+       errorz.isValidDate(newData.dateReleased);
+     } else if (x[i] === "genres") {
+       errorz.checkErrorArray(newData.genre, "string");
+     } else if (x[i] === "developers") {
+       errorz.checkErrorArray(newData.developers, "string");
+     } else if (x[i] === "publishers") {
+       errorz.checkErrorArray(newData.publishers, "string");
+     } else if (x[i] === "ageRating") {
+       errorz.stringChecker(newData.ageRating, "ageRating");
+     } else if (x[i] === "platforms") {
+        errorz.checkErrorArray(newData.platforms, "string");
+  } else if (x[i] === "purchaseLinks") {
+    errorz.checkErrorArray(newData.purchaseLinks, "string");
+     } else {
+      throw "Error: " +x[i] + " Key not valid";
+     }
+   }
 
   let parsedId = ObjectID(id);
 

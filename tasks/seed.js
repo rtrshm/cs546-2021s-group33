@@ -27,15 +27,19 @@ let main = async () => {
   try {
     const test1 = await users.readUser(randomname._id.toString());
     console.log(`Test 1 (readUser): ${JSON.stringify(test1)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   try {
     const test2 = await users.findByUsername(randomname.username);
     console.log(`Test 2 (findByUsername): ${JSON.stringify(test2)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   try {
@@ -44,14 +48,18 @@ let main = async () => {
       perms: "admin",
     });
     console.log(`Test 3 (updateUser): ${JSON.stringify(test3)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
   try {
     const test4 = await users.removeUser(randomname._id.toString());
     console.log(`Test 4 (removeUser): ${JSON.stringify(test4)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   // Initializing a user with the same information as the first user. Since the user was deleted, there's no issue.
@@ -104,22 +112,28 @@ let main = async () => {
   try {
     const test5 = await games.readGame(game._id.toString());
     console.log(`Test 5 (readGame): ${JSON.stringify(test5)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   try {
     const test6 = await games.getAllGames();
     console.log(`Test 6 (getAllGames): ${JSON.stringify(test6)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   try {
     const test7 = await games.getGameByTitle(game.title);
     console.log(`Test 7 (getGameByTitle): ${JSON.stringify(test7)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   try {
@@ -135,8 +149,10 @@ let main = async () => {
 
     const test8b = await games.getGamesByGenre(elems[1]);
     console.log(`Test 8b (getGamesByGenre): ${JSON.stringify(test8b)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   try {
@@ -144,15 +160,19 @@ let main = async () => {
       title: "Dark Souls Remastered",
     });
     console.log(`Test 9 (updateGame): ${JSON.stringify(test9)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   try {
     const test10 = await games.removeGame(game._id.toString());
     console.log(`Test 10 (removeGame): ${JSON.stringify(test10)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   // Initializing a game with the same information as the first game. Since the game was deleted, there's no issue.
@@ -206,15 +226,19 @@ let main = async () => {
   try {
     test11 = await reviews.readAllReviews(dsr._id.toString());
     console.log(`Test 11 (readAllReviews): ${JSON.stringify(test11)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   try {
     const test12 = await reviews.readReview(test11[0]._id.toString());
     console.log(`Test 12 (readReview): ${JSON.stringify(test12)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   try {
@@ -226,29 +250,46 @@ let main = async () => {
       }
     );
     console.log(`Test 13 (updateReview): ${JSON.stringify(test13)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   try {
     const test14 = await reviews.removeReview(test11[0]._id.toString());
     console.log(`Test 14 (removeReview): ${JSON.stringify(test14)}`);
+    console.log("******************************************************************************************************");
   } catch (e) {
     console.log(e);
+    console.log("******************************************************************************************************");
   }
 
   // Initializing a review with the same information as the first review. Since the review was deleted, there's no issue.
   // If there's an issue, that means the review wasn't removed properly.
-  //   await reviews.createReview(
-  //     dsr._id,
-  //     "false",
-  //     "Good Game",
-  //     "This a good game",
-  //     5,
-  //     true,
-  //     morerandomname.username
-  //   );
-
+     await reviews.createReview(
+       dsr._id.toString(),
+      false,
+       "Good Game",
+       "This a good game",
+       5,
+       true,
+       morerandomname.username
+     );
+  console.log("Test 15 works!!!!");
+  console.log("************************************************************************************");
+  try{
+    const bean = await users.createUser(
+      "user",
+      "randomname",
+      "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
+      "jimmy johsn"
+    );
+  }catch (e) {
+    console.log(e);
+    console.log("Failure success! Error: Not a Valid Email");
+    console.log("******************************************************************************************************");
+  }
   // Testing complete with some basic information seeded.
   console.log("Done seeding database");
   await db.serverConfig.close();
@@ -256,7 +297,7 @@ let main = async () => {
 
 main().catch((error) => {
   console.error(error);
-  return dbConnection().then((db) => {
+  /*return dbConnection().then((db) => {
     return db.serverConfig.close();
-  });
+  });*/
 });

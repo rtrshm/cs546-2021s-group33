@@ -14,18 +14,18 @@ let createReview = async (
   recommended,
   username
 ) => {
-  // errorz.stringChecker(gameId, "gameId");
-  // errorz.existenceChecker(spoiler);
-  // errorz.typeChecker(spoiler, "bool");
-  // errorz.existenceChecker(recommended);
-  // errorz.typeChecker(recommended, "bool");
-  // errorz.stringChecker(reviewTitle, "reviewTitle");
-  // errorz.stringChecker(reviewContent, "reviewContent");
-  // errorz.ratingChecker(rating);
-  // errorz.stringChecker(username, "username");
+  errorz.stringChecker(gameId, "gameId");
+  errorz.existenceChecker(spoiler);
+  errorz.typeChecker(spoiler, "boolean");
+  errorz.existenceChecker(recommended);
+  errorz.typeChecker(recommended, "boolean");
+  errorz.stringChecker(reviewTitle, "reviewTitle");
+  errorz.stringChecker(reviewContent, "reviewContent");
+  errorz.ratingChecker(rating);
+  errorz.stringChecker(username, "username");
 
-  // if (didUserReviewGame(username, gameId))
-  //   throw `Error: User already reviewed this game.`;
+   //if (didUserReviewGame(username, gameId))
+     //throw `Error: User already reviewed this game.`;
 
   let parsedId = ObjectID(gameId);
   const user = await userUtil.findByUsername(username);
@@ -57,7 +57,7 @@ let createReview = async (
 };
 
 let readAllReviews = async (id) => {
-  // errorz.stringChecker(id, "id");
+  errorz.stringChecker(id, "id");
 
   const parsedId = ObjectID(id);
   const gameCollection = await games();
@@ -68,7 +68,7 @@ let readAllReviews = async (id) => {
 };
 
 let readReview = async (id) => {
-  // errorz.stringChecker(id, "id");
+  errorz.stringChecker(id, "id");
 
   const parsedId = ObjectID(id);
 
@@ -88,8 +88,8 @@ let readReview = async (id) => {
 };
 
 let didUserReviewGame = async (username, gameId) => {
-  // errorz.stringChecker(username, "username");
-  // errorz.stringChecker(gameId, "gameId");
+  errorz.stringChecker(username, "username");
+  errorz.stringChecker(gameId, "gameId");
 
   const parsedId = ObjectID(gameId);
 
@@ -105,33 +105,33 @@ let didUserReviewGame = async (username, gameId) => {
 };
 
 let updateReview = async (id, username, newData) => {
-  // errorz.stringChecker(id, "id");
-  // errorz.stringChecker(username, "username");
-  // errorz.existenceChecker(newData);
-  // errorz.typeChecker(newData, "object");
-  // let x = Object.keys;
+  errorz.stringChecker(id, "id");
+  errorz.stringChecker(username, "username");
+  errorz.existenceChecker(newData);
+  errorz.typeChecker(newData, "object");
+  let x = Object.keys(newData);
 
-  // for (let i = 0; i < x.length; i++) {
-  //   if (x[i] === "gameId") {
-  //     errorz.stringChecker(newData.gameId, "gameId");
-  //   } else if (x[i] === "spoiler") {
-  //     errorz.existenceChecker(newData.spoiler);
-  //     errorz.typeChecker(newData.spoiler, "bool");
-  //   } else if (x[i] === "recommended") {
-  //     errorz.existenceChecker(newData.recommended);
-  //     errorz.typeChecker(newData.recommended, "bool");
-  //   } else if (x[i] === "reviewTitle") {
-  //     errorz.stringChecker(newData.reviewTitle, "reviewTitle");
-  //   } else if (x[i] === "reviewContent") {
-  //     errorz.stringChecker(newData.reviewContent, "reviewContent");
-  //   } else if (x[i] === "rating") {
-  //     errorz.ratingChecker(newData.rating);
-  //   } else if (x[i] === "username") {
-  //     errorz.stringChecker(newData.username, "username");
-  //   } else {
-  //     throw "Error: Key not valid";
-  //   }
-  // }
+  for (let i = 0; i < x.length; i++) {
+   if (x[i] === "gameId") {
+      errorz.stringChecker(newData.gameId, "gameId");
+     } else if (x[i] === "spoiler") {
+       errorz.existenceChecker(newData.spoiler);
+       errorz.typeChecker(newData.spoiler, "boolean");
+     } else if (x[i] === "recommended") {
+       errorz.existenceChecker(newData.recommended);
+       errorz.typeChecker(newData.recommended, "boolean");
+     } else if (x[i] === "reviewTitle") {
+       errorz.stringChecker(newData.reviewTitle, "reviewTitle");
+     } else if (x[i] === "reviewContent") {
+       errorz.stringChecker(newData.reviewContent, "reviewContent");
+     } else if (x[i] === "rating") {
+       errorz.ratingChecker(newData.rating);
+     } else if (x[i] === "username") {
+       errorz.stringChecker(newData.username, "username");
+     } else {
+       throw "Error: " +x[i] + " Key not valid";
+     }
+  }
 
   const parsedId = ObjectID(id);
 
@@ -159,7 +159,7 @@ let updateReview = async (id, username, newData) => {
 };
 
 let removeReview = async (id) => {
-  // errorz.stringChecker(id, "id");
+  errorz.stringChecker(id, "id");
 
   const parsedId = ObjectID(id);
 
