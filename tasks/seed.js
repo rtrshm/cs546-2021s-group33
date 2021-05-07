@@ -23,19 +23,38 @@ let main = async () => {
   // Some functions for testing the functionality of user database functions.
   // This is not checking if errors are properly handled. This should be done separately.
   // TODO: Once we've confirmed that the functions work, remove these functions.
-  const test1 = await users.readUser(randomname._id);
-  console.log(`Test 1 (readUser): ${test1}`);
+  try{
+    const test1 = await users.readUser(randomname._id);
+    console.log(`Test 1 (readUser): ${test1}`);
+  }catch(e)
+  {
+    console.log(e);
+  }
 
-  const test2 = await users.findByUsername(randomname.username);
-  console.log(`Test 2 (findByUsername): ${test2}`);
+  try{
+    const test2 = await users.findByUsername(randomname.username);
+    console.log(`Test 2 (findByUsername): ${test2}`);
+  }catch(e)
+  {
+    console.log(e);
+  }
 
-  const test3 = await users.updateUser(randomname._id, {
+  try{
+    const test3 = await users.updateUser(randomname._id, {
     username: "morerandomname",
   });
   console.log(`Test 3 (updateUser): ${test3}`);
-
+  }catch(e)
+  {
+    console.log(e);
+  }
+  try{
   const test4 = await users.removeUser(randomname._id);
   console.log(`Test 4 (removeUser): ${test4}`);
+}catch(e)
+{
+  console.log(e);
+}
 
   // Initializing a user with the same information as the first user. Since the user was deleted, there's no issue.
   // If there's an issue, that means the user wasn't removed properly.

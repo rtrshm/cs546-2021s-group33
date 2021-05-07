@@ -42,27 +42,27 @@ function stringChecker(string, name)
 {
     if(!string)
     {
-        throw "Error: " + name + "does not exist";
+        throw "Error: " + name + " does not exist";
     }
     if(typeof string !== 'string')
     {
-        throw "Error: " + name + "is not a string";
+        throw "Error: " + name + " is not a string";
     }
     string = string.trim();
     if(string === "" || string.length === 0)
     {
-        throw "Error: " + name + "cannot be \"\" or contain only whitespace";
+        throw "Error: " + name + " cannot be \"\" or contain only whitespace";
     }
 }
 
-function ValidateEmail(inputText)
+function ValidateEmail(email)
 {
-    var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if(!inputText.value.match(mailformat))
+    var re = /\S+@\S+\.\S+/;
+    if(!re.test(email))
     {
-        throw "Error: Invalid email address!";
-    }// modified from https://www.w3resource.com/javascript/form/email-validation.php
-}
+        throw "Error: Not a Valid Email";
+    }
+}//stolen from https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
 
 function isValidDate(dateString)
 {
