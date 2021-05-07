@@ -111,39 +111,39 @@ let updateGame = async (id, newData) => {
 
   for(let i = 0; i < x.length; i++)
   {
-    if(x[i] === title)
+    if(x[i] === "title")
     {
       errorz.stringChecker(newData.title, "title");
     }
-    else if(x[i] === img)
+    else if(x[i] === "img")
     {
       errorz.stringChecker(newData.img, "img");
     }
-    else if(x[i] === dateReleased)
+    else if(x[i] === "dateReleased")
     {
       errorz.isValidDate(newData.dateReleased);
     }
-    else if(x[i] === genres)
+    else if(x[i] === "genres")
     {
       errorz.checkErrorArray(newData.genre, "string");
     }
-    else if(x[i] === developers)
+    else if(x[i] === "developers")
     {
       errorz.checkErrorArray(newData.developers, "string");
     }
-    else if(x[i] === publishers)
+    else if(x[i] === "publishers")
     {
       errorz.checkErrorArray(newData.publishers, "string");
     }
-    else if(x[i] === ageRating)
+    else if(x[i] === "ageRating")
     {
       errorz.stringChecker(newData.ageRating, "ageRating");
     }
-    else if(x[i] === platforms)
+    else if(x[i] === "platforms")
     {
       errorz.checkErrorArray(newData.platforms, "string");
     }
-    else if(x[i] === purchaseLinks)
+    else if(x[i] === "purchaseLinks")
     {
       errorz.checkErrorArray(newData.purchaseLinks, "string");
     }

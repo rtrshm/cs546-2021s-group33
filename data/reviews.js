@@ -105,6 +105,47 @@ let didUserReviewGame = async (username, gameId) => {
 let updateReview = async (id, username, newData) => {
   errorz.stringChecker(id, "id");
   errorz.stringChecker(username, "username");
+  errorz.existenceChecker(newData);
+  errorz.typeChecker(newData, "Object");
+  let x = Object.keys;
+
+  for(let i = 0; i < x.length; i++)
+  {
+    if(x[i] === "gameId")
+    {
+      errorz.stringChecker(newData.gameId, "gameId");
+    }
+    else if(x[i] === "spoiler")
+    {
+      errorz.existenceChecker(newData.spoiler);
+      errorz.typeChecker(newData.spoiler, "bool");
+    }
+    else if(x[i] === "recommended")
+    {
+      errorz.existenceChecker(newData.recommended);
+      errorz.typeChecker(newData.recommended, "bool");
+    }
+    else if(x[i] === "reviewTitle")
+    {
+      errorz.stringChecker(newData.reviewTitle, "reviewTitle");
+    }
+    else if(x[i] === "reviewContent")
+    {
+      errorz.stringChecker(newData.reviewContent, "reviewContent");
+    }
+    else if(x[i] === "rating")
+    {
+      errorz.ratingChecker(newData.rating);
+    }
+    else if(x[i] === "username")
+    {
+      errorz.stringChecker(newData.username, "username");
+    }
+    else
+    {
+      throw "Error: Key not valid";
+    }
+  }
 
   const parsedId = ObjectID(id);
 

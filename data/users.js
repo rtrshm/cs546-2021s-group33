@@ -66,7 +66,29 @@ let findByUsername = async (username) => {
 
 let updateUser = async (id, newData) => {
   errorz.stringChecker(id, "id");
-
+  errorz.existenceChecker(newData);
+  errorz.typeChecker(newData, "Object");
+  let x = Object.keys;
+  for(let i = 0; i < x.length; i++)
+  {
+    if(x[i] === "username")
+    {
+      errorz.stringChecker(newData.username, "username");
+    }
+    else if(x[i] === "hashPassword")
+    {
+      errorz.stringChecker(newData.hashPassword, "password");
+    }
+    else if(x[i] === "email")
+    {
+      errorz.stringChecker(newData.email, "email");
+      errorz.ValidateEmail(newData.email);
+    }
+    else
+    {
+      throw "Error: Key not valid";
+    }
+  }
   let parsedId = ObjectID(id);
 
   const userCollection = await users();
