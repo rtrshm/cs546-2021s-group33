@@ -52,6 +52,8 @@ let createReview = async (
   if (updatedInfo.modifiedCount === 0)
     throw `Could not update game with review.`;
 
+  userUtil.updateUserReview(user.username, newReview._id);
+
   const newGame = await gameUtil.updateReviewStats(game._id.toString(), rating);
   return newGame;
 };
@@ -115,8 +117,7 @@ let updateReview = async (id, username, newData) => {
   errorz.existenceChecker(newData);
   errorz.typeChecker(newData, "object");
   let x = Object.keys(newData);
-  if(x.length === 0)
-  {
+  if (x.length === 0) {
     throw "Error: newData is empty";
   }
   for (let i = 0; i < x.length; i++) {
