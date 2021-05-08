@@ -287,9 +287,250 @@ let main = async () => {
     );
   }catch (e) {
     console.log(e);
-    console.log("Failure success! Error: Not a Valid Email");
+    console.log("Test 16: Failure success! Error: Not a Valid Email");
     console.log("******************************************************************************************************");
   }
+  try{
+    const bean = await users.createUser(
+      "user",
+      "randomname",
+      "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
+      false
+    );
+  }catch (e) {
+    console.log(e);
+    console.log("Test 17: Failure success! Error: email is not a string");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean = await users.createUser(
+      "user",
+      "randomname",
+      "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
+    );
+  }catch (e) {
+    console.log(e);
+    console.log("Test 18: Failure success! Error: email does not exist");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean = await users.createUser(
+      "user",
+      "morerandomname",
+      "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
+      "ga@gmail.com"
+    );
+  }catch (e) {
+    console.log(e);
+    console.log("Test 19: Failure success! Error: Username already registered.");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean = await users.createUser(
+    );
+  }catch (e) {
+    console.log(e);
+    console.log("Test 20: Failure success! Error: username does not exist");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean = await users.createUser(
+      "user",
+      "username",
+      5,
+      "ga@gmail.com"
+    );
+  }catch (e) {
+    console.log(e);
+    console.log("Test 21: Failure success! Error: password is not a string");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean = await users.createUser(
+      "user",
+      5,
+      "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
+      "ga@gmail.com"
+    );
+  }catch (e) {
+    console.log(e);
+    console.log("Test 22: Failure success! Error: username is not a string");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean = await users.createUser(
+      "user",
+      "randomname",
+      "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
+      "gavinrules@gmail.com"
+    );
+    const bean2 = await users.readUser(bean._id.toString());
+    const bean3 = await users.findByUsername(bean.username);
+    console.log(bean2);
+    console.log(bean3);
+    const bean4 = await users.removeUser(bean._id.toString());
+    console.log("Test 23: Success!");
+    console.log("******************************************************************************************************");
+  }catch (e) {
+    console.log(e);
+  }
+  const bean = await users.createUser(
+    "user",
+    "randomname",
+    "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
+    "gavinrules@gmail.com"
+  );
+  try{
+    const bean2 = await users.readUser();
+  }catch (e) {
+    console.log(e);
+    console.log("Test 24: Failure success! Error: id does not exist");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.readUser(3483);
+  }catch (e) {
+    console.log(e);
+    console.log("Test 25: Failure success! Error: id is not a string");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.readUser("                          ");
+  }catch (e) {
+    console.log(e);
+    console.log("Test 26: Failure success! Error: id cannot be \"\" or contain only whitespace");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.readUser("232423");
+  }catch (e) {
+    console.log(e);
+    console.log("Test 27: Failure success! Error: Invalid Id!");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.findByUsername("Steve");
+  }catch (e) {
+    console.log(e);
+    console.log("Test 28: Failure success! User not found.");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.findByUsername();
+  }catch (e) {
+    console.log(e);
+    console.log("Test 29: Failure success! Error: username does not exist");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.findByUsername(3483);
+  }catch (e) {
+    console.log(e);
+    console.log("Test 30: Failure success! Error: username is not a string");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.findByUsername("                          ");
+  }catch (e) {
+    console.log(e);
+    console.log("Test 31: Failure success! Error: username cannot be \"\" or contain only whitespace");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.updateUser();
+  }catch (e) {
+    console.log(e);
+    console.log("Test 32: Failure success! Error: id does not exist");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.updateUser(3483);
+  }catch (e) {
+    console.log(e);
+    console.log("Test 33: Failure success! Error: id is not a string");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.updateUser("                          ");
+  }catch (e) {
+    console.log(e);
+    console.log("Test 34: Failure success! Error: id cannot be \"\" or contain only whitespace");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.updateUser("232423");
+  }catch (e) {
+    console.log(e);
+    console.log("Test 35: Failure success! Error: Invalid Id!");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.updateUser(bean._id.toString(), 1);
+  }catch (e) {
+    console.log(e);
+    console.log("Test 36: Failure success! Error: Input is not a object");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.updateUser(bean._id.toString(), {fish: "string"});
+  }catch (e) {
+    console.log(e);
+    console.log("Test 37: Failure success! Error: fish Key not valid");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.updateUser(bean._id.toString());
+  }catch (e) {
+    console.log(e);
+    console.log("Test 38: Failure success! Error: input does not exist");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.updateUser(bean._id.toString(), {username: "12312"});
+    const bean3 = await users.findByUsername("12312");
+    console.log(bean3);
+    console.log("Test 39: Success!");
+    console.log("******************************************************************************************************");
+  }catch (e) {
+    console.log(e);
+  }
+  try{
+    const bean2 = await users.removeUser();
+  }catch (e) {
+    console.log(e);
+    console.log("Test 40: Failure success! Error: id does not exist");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.removeUser(3483);
+  }catch (e) {
+    console.log(e);
+    console.log("Test 41: Failure success! Error: id is not a string");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.removeUser("                          ");
+  }catch (e) {
+    console.log(e);
+    console.log("Test 42: Failure success! Error: id cannot be \"\" or contain only whitespace");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.removeUser("232423");
+  }catch (e) {
+    console.log(e);
+    console.log("Test 43: Failure success! Error: Invalid Id!");
+    console.log("******************************************************************************************************");
+  }
+  try{
+    const bean2 = await users.removeUser(bean._id.toString());
+    console.log(bean2);
+    console.log("Test 44: Success! It got removed!");
+    console.log("******************************************************************************************************");
+  }catch (e) {
+    console.log(e);
+  }
+  
   // Testing complete with some basic information seeded.
   console.log("Done seeding database");
   await db.serverConfig.close();

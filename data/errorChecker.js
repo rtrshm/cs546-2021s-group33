@@ -1,3 +1,5 @@
+const ObjectId = require('mongodb').ObjectId;
+
 function typeChecker(input, string)//input is input, string is type. For example, (1, 'number')
 {
     if(typeof input !== string)
@@ -40,7 +42,7 @@ function existenceChecker(input)
 
 function stringChecker(string, name)
 {
-    if(!string)
+    if(string === undefined)
     {
         throw "Error: " + name + " does not exist";
     }
@@ -106,6 +108,14 @@ function ratingChecker(num)
         throw "Error: rating must be between 1-5";
     }
 }
+
+function idChecker(string)
+{
+    if(!ObjectId.isValid(string))
+    {
+        throw "Error: Invalid Id!";
+    }
+}
 module.exports = {
     typeChecker,
     checkErrorArray,
@@ -113,5 +123,6 @@ module.exports = {
     stringChecker,
     ValidateEmail,
     isValidDate,
-    ratingChecker
+    ratingChecker,
+    idChecker
 }

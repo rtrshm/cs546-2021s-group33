@@ -59,7 +59,7 @@ let createGame = async (
 
 let readGame = async (id) => {
   errorz.stringChecker(id, "id");
-
+  errorz.idChecker(id);
   let parsedId = ObjectID(id);
 
   const gameCollection = await games();
@@ -103,11 +103,15 @@ let getGamesByGenre = async (genre) => {
 };
 
 let updateGame = async (id, newData) => {
-  // errorz.stringChecker(id, "id");
+  errorz.stringChecker(id, "id");
+  errorz.idChecker(id);
   errorz.existenceChecker(newData);
   errorz.typeChecker(newData, "object");
   let x = Object.keys(newData);
-
+  if(x.length === 0)
+  {
+    throw "Error: newData is empty";
+  }
   for (let i = 0; i < x.length; i++) {
     if (x[i] === "title") {
        errorz.stringChecker(newData.title, "title");
@@ -175,7 +179,7 @@ let updateReviewStats = async (id, rating) => {
 
 let removeGame = async (id) => {
   errorz.stringChecker(id, "id");
-
+  errorz.idChecker(id);
   let parsedId = ObjectID(id);
 
   const gameCollection = await games();

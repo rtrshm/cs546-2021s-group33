@@ -58,7 +58,7 @@ let createReview = async (
 
 let readAllReviews = async (id) => {
   errorz.stringChecker(id, "id");
-
+  errorz.idChecker(id);
   const parsedId = ObjectID(id);
   const gameCollection = await games();
 
@@ -69,7 +69,7 @@ let readAllReviews = async (id) => {
 
 let readReview = async (id) => {
   errorz.stringChecker(id, "id");
-
+  errorz.idChecker(id);
   const parsedId = ObjectID(id);
 
   const gameCollection = await games();
@@ -110,11 +110,15 @@ let didUserReviewGame = async (username, gameId) => {
 
 let updateReview = async (id, username, newData) => {
   errorz.stringChecker(id, "id");
+  errorz.idChecker(id);
   errorz.stringChecker(username, "username");
   errorz.existenceChecker(newData);
   errorz.typeChecker(newData, "object");
   let x = Object.keys(newData);
-
+  if(x.length === 0)
+  {
+    throw "Error: newData is empty";
+  }
   for (let i = 0; i < x.length; i++) {
     if (x[i] === "gameId") {
       errorz.stringChecker(newData.gameId, "gameId");
@@ -164,7 +168,7 @@ let updateReview = async (id, username, newData) => {
 
 let removeReview = async (id) => {
   errorz.stringChecker(id, "id");
-
+  errorz.idChecker(id);
   const parsedId = ObjectID(id);
 
   const gameCollection = await games();

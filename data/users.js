@@ -44,7 +44,7 @@ let createUser = async (perms = "user", username, hashPassword, email) => {
 
 let readUser = async (id) => {
   errorz.stringChecker(id, "id");
-
+  errorz.idChecker(id);
   let parsedId = ObjectID(id);
 
   const userCollection = await users();
@@ -66,9 +66,14 @@ let findByUsername = async (username) => {
 
 let updateUser = async (id, newData) => {
   errorz.stringChecker(id, "id");
+  errorz.idChecker(id);
   errorz.existenceChecker(newData);
   errorz.typeChecker(newData, "object");
   let x = Object.keys(newData);
+  if(x.length === 0)
+  {
+    throw "Error: newData is empty";
+  }
   for (let i = 0; i < x.length; i++)
    {
     if (x[i] === "username") 
@@ -118,7 +123,7 @@ let updateUser = async (id, newData) => {
 
 let removeUser = async (id) => {
   errorz.stringChecker(id, "id");
-
+  errorz.idChecker(id);
   let parsedId = ObjectID(id);
 
   const userCollection = await users();
