@@ -97,6 +97,10 @@ app.get("/profile", async (req, res) => {
     res.render("profile.handlebars", {title: "User profile", object: profile});
 });
 
+app.get("/quiz", async (req, res) => {
+    res.render("quiz.handlebars", {title: "Quiz"});
+});
+
 configRoutes(app);
 
 app.listen(3000, () => {
