@@ -6,7 +6,15 @@ const router = express.Router();
 // let { ObjectId } = require('mongodb')
 
     router.get('/', async (req, res) => {
-        
+//         <h1>Profile</h1>
+// <p>Permission group: {{object.perms}} </p>
+// <p>Username: {{object.username}}</p>
+// <p>Date joined: {{object.dateJoined}}</p>
+// <p>Users following: {{object.usersFollowing}}</p>
+// <p>Email: {{object.email}}</p>
+// <p>Favorite Games: {{object.favoriteGames}}</p>
+// <p>Reviews:{{object.reviewsLeft}}</p>
+
         let obj = {
             perms: "member",
             username: "lempie",

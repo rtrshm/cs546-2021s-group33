@@ -5,6 +5,7 @@ const router = express.Router();
 // const booksData = mongoCollections.books;
 let { ObjectId } = require('mongodb');
 let gamesDatabase = require('../data/games');
+const errorChecker = require('../data/errorChecker')
 
     router.get('/allgames', async(req, res) => {
         let allgames;
@@ -13,19 +14,24 @@ let gamesDatabase = require('../data/games');
         } catch(e) {
             return res.status(500).render('gamesError.handlebars', {title: "No games"})
         }
-        res.render("games.handlebars", {title:"All games", games:allgames})
+        return res.render("games.handlebars", {title:"All games", games:allgames})
     });
 
     router.get('/game/:id', async(req, res) => {
         let game;
         try{
             game = await gamesDatabase.getGameByTitle(req.params.id);
-            if (!game.img || typeof(game.img) !== "string") {
+            if (!game.img || typeof(game.img) !== "string" || game.img.trim().length == 0) {
                 game.img = "/public/no_image.jpeg";
             }
-            if (!game.dateReleased || typeof(game.dateReleased) !== "string") {
+            if (!game.dateReleased || typeof(game.dateReleased) !== "string" || game.dateReleased.trim().length == 0) {
                 game.dateReleased = "N/A";
             }
+
+            if (!errorChecker.isValidDate(game.dateReleased)){
+                game.dateReleased = "N/A";
+            }
+            
             if (!game.genres || !Array.isArray(game.genres)) {
                 game.genres = "N/A";
             }
@@ -56,7 +62,7 @@ let gamesDatabase = require('../data/games');
             if (game.reviews.length < 1) {
                 game.reviews = "None";
             }
-            if (!game.ageRating || typeof(game.ageRating) !== "string") {
+            if (!game.ageRating || typeof(game.ageRating) !== "string" || game.ageRating.trim().length == 0) {
                 game.ageRating = "N/A";
             }
             if (!game.platforms || !Array.isArray(game.platforms)) {
