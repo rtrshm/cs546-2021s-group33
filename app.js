@@ -109,10 +109,6 @@ app.get("/profile", async (req, res) => {
     if (!user.dateJoined || typeof(user.dateJoined) != 'string' || user.dateJoined.trim().length == 0){
         user.dateJoined = 'N/A';
     }
-
-    if (!errorChecker.isValidDate(user.dateJoined)){
-        user.dateJoined = 'N/A';
-    }
     
     if (!user.email || typeof(user.email) != 'string' || user.email.trim().length == 0){
         user.email = 'N/A';
