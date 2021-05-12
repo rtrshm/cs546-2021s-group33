@@ -24,6 +24,9 @@ app.use(
 );
 
 app.get("/nav", async (req, res) => {
+    if (!req.session.user) {
+        return res.render("login.handlebars", {title: "Error", errormsg: "Error: Not logged in"});
+    }
     user = req.session.user;
     if (user.perms === "user") {
         return res.render("usernav.handlebars", {title: "Navigation", username: user.username});
@@ -39,18 +42,17 @@ app.get("/nav", async (req, res) => {
 app.post("/login", async (req, res) => {
     let { username, password } = req.body;
     if (!username || typeof(username) !== "string") {
-        res.render("signin.handlebars", {title: "Sign in failed", errormsg: "No username provided or username is not valid string."});
+        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "No username provided or username is not valid string."});
     }
     if (!password || typeof(password) !== "string") {
-        res.render("signin.handlebars", {title: "Sign in failed", errormsg: "No password provided or password is not valid string."});
+        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "No password provided or password is not valid string."});
     }
     username = username.toLowerCase();
     let user;
     try {
         user = await userDatabase.findByUsername(username);
     } catch(e){
-        res.render("signin.handlebars", {title: "Sign in failed", errormsg: "Incorrect username or password."});
-        return 0;
+        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "Incorrect username or password."});
     }
 
     if (bcrypt.compareSync(password,user.password)) {
@@ -58,12 +60,13 @@ app.post("/login", async (req, res) => {
         return res.redirect("/nav");
     }
     else {
-        res.render("signin.handlebars", {title: "Sign in failed", errormsg: "Invalid username or password."});
+        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "Invalid username or password."});
     }
 
     if (!req.session.user) {
         res.status(401);
         res.render("posts/login", {title: "Error", errormsg: "Error: Did not provide a valid username and/or password."});
+        return 0;
     }
 });
 
