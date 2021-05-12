@@ -25,13 +25,11 @@
 <p>Game reviews: {{object.reviews}}</p>
 <p>Age rating: {{object.ageRating}}</p>
 <p>Platforms: {{object.platforms}}</p>
-<p>Purchase links: {{object.purchaseLinks}}</p>
-
-{{!-- {{#if object.usersFollowing}}
-    <ul>
-        {{#each object.usersFollowing}}
-        <li><a href="/shows/{{this.show.id}}">{{this}}</a></li>
-        {{/each}}
-    </ul>
-{{/if}} --}}
-
+{{#if object.purchaseLinks}}
+<p>Purchase links:</p>
+<ul>
+    {{#each object.purchaseLinks}}
+    <li><a href="{{this}}">{{this}}</a></li>
+    {{/each}}
+</ul>
+{{/if}}
