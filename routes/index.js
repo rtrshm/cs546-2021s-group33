@@ -1,9 +1,9 @@
 const profile = require('./profile');
 const main = require('./main');
-const game = require('./game');
+const games = require('./games');
 const constructorMethod = (app) => {
   app.use('/profile', profile);
-  app.use('/game', game);
+  app.use('/games', games);
   app.use('/', main);
   app.use('*', (req, res) => {
     let url = `http://localhost:3000${req.baseUrl}`;

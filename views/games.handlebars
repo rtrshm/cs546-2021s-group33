@@ -1,0 +1,9 @@
+<main>
+    {{#if games}}
+    <ul>
+        {{#each games}}
+        <li><a href="/games/game/{{this.title}}">{{this.title}}</a></li>
+        {{/each}}
+    </ul>
+    {{/if}}
+</main>
