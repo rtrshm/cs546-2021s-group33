@@ -107,4 +107,76 @@ let gamesDatabase = require('../data/games');
         res.render("search.handlebars", {title:"Search for game"})
     });
 
+    router.post('/searchresults', async(req,res) => {
+        let {game} = req.body;
+        let gameFromDatabase;
+        try {
+            gameFromDatabase = await gamesDatabase.getGameByTitle(game);
+        } catch(e) {
+            return res.render("search.handlebars", {title:"Error", errormsg: "Error: No results found"});
+        }
+        res.redirect('/games/search/' + gameFromDatabase.title);
+    });
+
+    router.get('/search/:id', async(req, res) => {
+        let game;
+        try{
+            game = await gamesDatabase.getGameByTitle(req.params.id);
+            if (!game.img || typeof(game.img) !== "string") {
+                game.img = "../public/no_image.jpeg";
+            }
+            if (!game.dateReleased || typeof(game.dateReleased) !== "string") {
+                game.dateReleased = "N/A";
+            }
+            if (!game.genres || !Array.isArray(game.genres)) {
+                game.genres = "N/A";
+            }
+            if (game.genres.length < 1) {
+                game.genres = "N/A";
+            } 
+            if (!game.developers || !Array.isArray(game.developers)) {
+                game.developers = "N/A";
+            }
+            if (game.developers.length < 1) {
+                game.developers = "N/A";
+            } 
+            if (!game.publishers || !Array.isArray(game.publishers)) {
+                game.publishers = "N/A";
+            }
+            if (game.publishers.length < 1) {
+                game.publishers = "N/A";
+            }
+            if (game.averageRating === null || typeof(game.averageRating) !== "number") {
+                game.averageRating = "N/A";
+            }
+            if (game.numberOfReviews === null || typeof(game.numberOfReviews) !== "number") {
+                game.numberOfReviews = "N/A";
+            }
+            if (!game.reviews || !Array.isArray(game.reviews)) {
+                game.reviews = "None";
+            }
+            if (game.reviews.length < 1) {
+                game.reviews = "None";
+            }
+            if (!game.ageRating || typeof(game.ageRating) !== "string") {
+                game.ageRating = "N/A";
+            }
+            if (!game.platforms || !Array.isArray(game.platforms)) {
+                game.platforms = "N/A";
+            }
+            if (game.platforms.length < 1) {
+                game.platforms = "N/A";
+            }
+            if (!game.purchaseLinks || !Array.isArray(game.purchaseLinks)) {
+                game.publishers = "N/A";
+            }
+            if (game.purchaseLinks.length < 1) {
+                game.purchaseLinks = "N/A";
+            }
+        } catch(e) {
+            return res.status(500).render('searchError.handlebars', {title: "No game found"})
+        }
+        res.render("searchresult.handlebars", {title:"Game", object:game})
+    });
+
 module.exports = router;
