@@ -42,26 +42,35 @@ app.post("/login", async (req, res) => {
 
     if (bcrypt.compareSync(password,user.password)) {
         req.session.user = user;
-        let profile = {
-            perms: user.perms,
-            username: user.username,
-            dateJoined: user.dateJoined,
-            password: user.password,
-            usersFollowing: user.usersFollowing,
-            email: user.email,
-            favoriteGames: user.favoriteGames,
-            reviewsLeft: user.reviewsLeft
-        };
-        if (user.usersFollowing.length === 0) {
-            profile.usersFollowing = "This user is not following anyone.";
+        // let profile = {
+        //     perms: user.perms,
+        //     username: user.username,
+        //     dateJoined: user.dateJoined,
+        //     password: user.password,
+        //     usersFollowing: user.usersFollowing,
+        //     email: user.email,
+        //     favoriteGames: user.favoriteGames,
+        //     reviewsLeft: user.reviewsLeft
+        // };
+        // if (user.usersFollowing.length === 0) {
+        //     profile.usersFollowing = "This user is not following anyone.";
+        // }
+        // if (user.favoriteGames.length === 0) {
+        //     profile.favoriteGames = "This user has no favorite games.";
+        // }
+        // if (user.reviewsLeft.length === 0) {
+        //     profile.reviewsLeft = "This user has not left any reviews.";
+        // }
+        // res.render("profile.handlebars", {title: "User profile", object: profile});
+        if (user.perms === "user") {
+            return res.render("usernav.handlebars", {title: "Navigation", username: user.username});
         }
-        if (user.favoriteGames.length === 0) {
-            profile.favoriteGames = "This user has no favorite games.";
+        else if (user.perms == "admin") {
+            return res.render("adminnav.handlebars", {title: "Navigation", username: user.username});
         }
-        if (user.reviewsLeft.length === 0) {
-            profile.reviewsLeft = "This user has not left any reviews.";
+        else {
+            console.log("what");
         }
-        res.render("profile.handlebars", {title: "User profile", object: profile});
     }
     else {
         res.render("signin.handlebars", {title: "Sign in failed", errormsg: "Invalid username or password."});
