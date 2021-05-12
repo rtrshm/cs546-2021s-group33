@@ -26,7 +26,7 @@ let createGame = async (
   errorz.checkErrorArray(publishers, "string");
   errorz.stringChecker(ageRating, "ageRating");
   errorz.checkErrorArray(platforms, "string");
-  errorz.checkErrorArray(purchaseLinks, "string");
+  errorz.checkErrorArrayEmpty(purchaseLinks, "string");
 
   const newGame = {
     title: title,

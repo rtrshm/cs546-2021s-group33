@@ -1,32 +1,34 @@
 <main>
+    <a href="/nav">Go back</a>
     <header>
     <h1>Welcome, Admin. Add a game to the database by filling out the fields.</h1>
 	</header>
         <p>{{errormsg}}</p>
-        <form action = "/admin" method ="post" id="login-form">
+        <form action = "/addgame" method ="post" id="login-form">
             <label for="title">Game Title:</label>
-            <input type="text" name="title" id="title">
+            <input type="text" name="title" id="title"><br>
             <label for="dateReleased">Date Released:</label>
-            <input type="date" name="dateReleased" id="dateReleased">
+            <input type="date" name="dateReleased" id="dateReleased"><br>
+            <label for="image">Image link:</label>
+            <input type="text" name="image" id="image"><br>
             <label for="genres">Genres, separated by commas:</label>
-            <input type="text" name="genres" id="genres">
+            <input type="text" name="genres" id="genres"><br>
             <label for="developers">Developers, separated by commas:</label>
-            <input type="text" name="developers" id="developers">
+            <input type="text" name="developers" id="developers"><br>
             <label for="publishers">Publishers, separated by commas:</label>
-            <input type="text" name="publishers" id="publishers">
+            <input type="text" name="publishers" id="publishers"><br>
             <label for="averageRating">Average Rating:</label>
-            <input type="number" name="averageRating" id="averageRating">
+            <input type="number" name="averageRating" id="averageRating"><br>
             <label for="numberOfReviews">Number of reviews:</label>
-            <input type="number" name="numberOfReviews" id="numberOfReviews">
+            <input type="number" name="numberOfReviews" id="numberOfReviews"><br>
             <label for="gameReviews">Game Reviews:</label>
-            <input type="text" name="gameReviews" id="gameReviews">
+            <input type="text" name="gameReviews" id="gameReviews"><br>
             <label for="ageRating">Age Rating:</label>
-            <input type="text" name="ageRating" id="ageRating">
+            <input type="text" name="ageRating" id="ageRating"><br>
             <label for="platforms">Platforms, separated by commas</label>
-            <input type="text" name="platforms" id="platforms">
+            <input type="text" name="platforms" id="platforms"><br>
             <label for="purchaseLinks">Purchase Links, separated by commas:</label>
-            <input type="text" name="purchaseLinks" id="purchaseLinks">
+            <input type="text" name="purchaseLinks" id="purchaseLinks"><br>
             <button type="submit">Enter</button>
-        </form>
-        <a href="/signup">Sign up</a>        
+        </form>    
 </main>
