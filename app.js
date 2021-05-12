@@ -270,6 +270,12 @@ app.post("/addgame", async (req, res) => {
     res.render("createGameSuccess.handlebars", {title:"Success"});
 });
 
+app.get('/logout', function (request, response) {
+    request.session.destroy(function () {
+        response.render('loggedOut', {title: "Logged out"});
+    })
+});
+
 configRoutes(app);
 
 app.listen(3000, () => {
