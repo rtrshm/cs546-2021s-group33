@@ -2,8 +2,7 @@
     <header>
     <h1>GAMESEEKR</h1>
 	</header>
-        <p>{{errormsg}}</p>
-        <form action = "/login" method ="post" id="login-form">
+        <form action = "/login" method ="post" name="login" id="login-form">
             <label for="username">Username:</label>
             <input type="text" name="username" id="username">
             <label for="password">Password:</label>
@@ -11,6 +10,7 @@
             <button type="submit">Enter</button>
             <input type="hidden" name="redirect" id="redirect" value="{{redirect}}" />
         </form>
+        <p class='error' id='error'>{{errormsg}}</p>
         <a href="/signup">Sign up</a>
-        
+        <script src="/public/js/login.js"></script>
 </main>
