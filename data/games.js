@@ -115,6 +115,21 @@ let getGamesByGenreList = async (genres) => {
   return gameList;
 };
 
+let getRecommendedGameByGame = async (id) => {
+  errorz.stringChecker(id, "id");
+  errorz.idChecker(id);
+
+  let parsedId = ObjectID(id);
+
+  const gameCollection = await games();
+  const game = await gameCollection.findOne({ _id: parsedId });
+  if (game === null) throw `Game not found.`;
+
+  let gameList = await getGamesByGenreList(game.genres);
+
+  return gameList[0];
+};
+
 let updateGame = async (id, newData) => {
   errorz.stringChecker(id, "id");
   errorz.idChecker(id);
@@ -208,6 +223,7 @@ module.exports = {
   getGameByTitle,
   getGamesByGenre,
   getGamesByGenreList,
+  getRecommendedGameByGame,
   updateGame,
   updateReviewStats,
   removeGame,

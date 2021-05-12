@@ -19,7 +19,7 @@ let main = async () => {
   );
 
   // Initialize a game.
-  await games.createGame(
+  const dsr = await games.createGame(
     "Dark Souls",
     "https://assets2.ignimgs.com/2016/01/19/darksouls1cover-agame-coverjpg-c73c7a_765w.jpg",
     "9/22/2011",
