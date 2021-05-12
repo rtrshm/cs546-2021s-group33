@@ -83,7 +83,7 @@ let getGameByTitle = async (title) => {
   errorz.stringChecker(title, "title");
 
   const gameCollection = await games();
-  const game = await gameCollection.findOne({ title: title });
+  const game = await gameCollection.findOne({ title: {'$regex' : `^${title}$`, '$options': 'i'} });
   if (game === null) throw `Game not found.`;
 
   return game;
