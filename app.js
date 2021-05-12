@@ -24,11 +24,36 @@ app.use(
     })
 );
 
-app.get("/nav", async (req, res) => {
-    if (!req.session.user) {
-        return res.render("login.handlebars", {title: "Error", errormsg: "Error: Not logged in"});
+app.use(async (req, res, next) => {
+    //console.log(req);
+    //console.log(req.baseUrl);
+    //console.log(req.originalUrl);
+    if (req.originalUrl != '/' && req.originalUrl != '/login' && req.originalUrl != '/signup' && !req.session.user) {
+        //console.log(req.originalUrl);
+        return res.render("login.handlebars", {title: "Error", errormsg: "Error: Not logged in", redirect: req.originalUrl});
     }
+    next();
+});
+
+app.get("/", async (req, res, next) => {
+    if (req.session.user) {
+        return res.redirect('/nav')
+    }
+    next();
+});
+
+app.get("/signup", async (req, res, next) => {
+    if (req.session.user) {
+        return res.redirect('/nav')
+    }
+    next();
+});
+
+app.get("/nav", async (req, res) => {
     user = req.session.user;
+    if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
+        return res.render("navError.handlebars", {title: "No perms", errormsg: "User has no perms"});
+    }
     if (user.perms === "user") {
         return res.render("usernav.handlebars", {title: "Navigation", username: user.username});
     }
@@ -41,61 +66,75 @@ app.get("/nav", async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    let { username, password } = req.body;
-    if (!username || typeof(username) !== "string") {
-        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "No username provided or username is not valid string."});
+    let { username, password, redirect } = req.body;
+    if (!username || typeof(username) !== "string" || username.trim().length == 0) {
+        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "No username provided or username is not valid string.", redirect: redirect});
     }
-    if (!password || typeof(password) !== "string") {
-        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "No password provided or password is not valid string."});
+    if (!password || typeof(password) !== "string" || password.trim().length == 0) {
+        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "No password provided or password is not valid string.", redirect: redirect});
     }
     username = username.toLowerCase();
     let user;
     try {
         user = await userDatabase.findByUsername(username);
     } catch(e){
-        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "Incorrect username or password."});
+        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "Incorrect username or password.", redirect: redirect});
+    }
+
+    if (!user.password){
+        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "Invalid username or password.", redirect: redirect});
     }
 
     if (bcrypt.compareSync(password,user.password)) {
         req.session.user = user;
-        return res.redirect("/nav");
+        return res.redirect(redirect);
     }
     else {
-        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "Invalid username or password."});
-    }
-
-    if (!req.session.user) {
-        res.status(401);
-        res.render("posts/login", {title: "Error", errormsg: "Error: Did not provide a valid username and/or password."});
-        return 0;
+        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "Invalid username or password.", redirect: redirect});
     }
 });
 
 app.get("/profile", async (req, res) => {
-    if (!req.session.user) {
-        return res.render("login.handlebars", {title:"Login", errormsg:"Error: Not logged in"});
-    }
+
     user = req.session.user;
-    let profile = {
-        perms: user.perms,
-        username: user.username,
-        dateJoined: user.dateJoined,
-        password: user.password,
-        usersFollowing: user.usersFollowing,
-        email: user.email,
-        favoriteGames: user.favoriteGames,
-        reviewsLeft: user.reviewsLeft
-    };
-    if (user.usersFollowing.length === 0) {
-        profile.usersFollowing = "This user is not following anyone.";
+
+    if (!user.perms || typeof(user.perms) != 'string' || user.perms.trim().length == 0){
+        user.perms = 'N/A';
     }
-    if (user.favoriteGames.length === 0) {
-        profile.favoriteGames = "This user has no favorite games.";
+
+    if (!user.username || typeof(user.username) != 'string' || user.username.trim().length == 0){
+        user.username = 'N/A';
     }
-    if (user.reviewsLeft.length === 0) {
-        profile.reviewsLeft = "This user has not left any reviews.";
+
+    if (!user.dateJoined || typeof(user.dateJoined) != 'string' || user.dateJoined.trim().length == 0){
+        user.dateJoined = 'N/A';
     }
-    res.render("profile.handlebars", {title: "User profile", object: profile});
+
+    if (!errorChecker.isValidDate(user.dateJoined)){
+        user.dateJoined = 'N/A';
+    }
+    
+    if (!user.email || typeof(user.email) != 'string' || user.email.trim().length == 0){
+        user.email = 'N/A';
+    }
+
+    try {
+        errorChecker.ValidateEmail(user.email)
+    }
+    catch (e){
+        user.email = 'N/A';
+    }
+
+    if (!user.usersFollowing || !Array.isArray(user.usersFollowing) || user.usersFollowing.length === 0) {
+        user.usersFollowing = "This user is not following anyone.";
+    }
+    if (!user.favoriteGames || !Array.isArray(user.favoriteGames) || user.favoriteGames.length === 0) {
+        user.favoriteGames = "This user has no favorite games.";
+    }
+    if (!user.reviewsLeft || !Array.isArray(user.reviewsLeft) || user.reviewsLeft.length === 0) {
+        user.reviewsLeft = "This user has not left any reviews.";
+    }
+    res.render("profile.handlebars", {title: "User profile", object: user});
 });
 
 app.get("/quiz", async (req, res) => {
@@ -112,17 +151,21 @@ app.post("/addgame", async (req, res) => {
 
     let game;
 
-    if (!title || typeof(title) !== "string") {
+    if (!title || typeof(title) !== "string" || title.trim().length == 0) {
         return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: Cannot create game without a valid title"});
     }
-    if (!img || typeof(img) !== "string") {
+    if (!img || typeof(img) !== "string" || img.trim().length == 0) {
         img = "../public/no_image.jpeg";
     }
-    if (!dateReleased || typeof(dateReleased) !== "string") {
+    if (!dateReleased || typeof(dateReleased) !== "string" || dateReleased.trim().length == 0) {
         dateReleased = "N/A";
     }
-    
-    if (!genres || typeof(genres)!=='string') {
+
+    if (!errorChecker.isValidDate(dateReleased)){
+        dateReleased = "N/A"
+    }
+
+    if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
         return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must be a list of non-empty strings seperated by commas"});
     }
 
@@ -138,7 +181,7 @@ app.post("/addgame", async (req, res) => {
         }
     }
 
-    if (!developers || typeof(developers)!=='string') {
+    if (!developers || typeof(developers)!=='string' || developers.trim().length == 0) {
         return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must be a list of non-empty strings seperated by commas"});
     }
 
@@ -154,7 +197,7 @@ app.post("/addgame", async (req, res) => {
         }
     }
 
-    if (!publishers || typeof(publishers)!=='string') {
+    if (!publishers || typeof(publishers)!=='string' || publishers.trim().length == 0) {
         return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must be a list of non-empty strings seperated by commas"});
     }
 
@@ -174,7 +217,7 @@ app.post("/addgame", async (req, res) => {
         ageRating = "N/A";
     }
 
-    if (!platforms || typeof(platforms)!=='string') {
+    if (!platforms || typeof(platforms)!=='string' || platforms.trim().length == 0) {
         return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms must be a list of non-empty strings seperated by commas"});
     }
 
@@ -190,7 +233,7 @@ app.post("/addgame", async (req, res) => {
         }
     }
 
-    if (!purchaseLinks || typeof(purchaseLinks)!=='string') {
+    if (!purchaseLinks || typeof(purchaseLinks)!=='string' || purchaseLinks.trim().length == 0) {
         purchaseLinks = [];
     }
     else{
@@ -205,6 +248,16 @@ app.post("/addgame", async (req, res) => {
         if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
             return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must be an array of non-empty strings"});
         }
+        let url;
+        try {
+            url = new URL(purchaseLink);
+        }
+        catch (e){
+            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
+        }
+        if (url.protocol !== "http:" && url.protocol !== "https:"){
+            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
+        }
     }
     
     try {
@@ -213,7 +266,7 @@ app.post("/addgame", async (req, res) => {
     }catch(e) {
         return res.render("createGameError.handlebars", {title:"Error", errormsg:e});
     }
-    
+
     res.render("createGameSuccess.handlebars", {title:"Success"});
 });
 

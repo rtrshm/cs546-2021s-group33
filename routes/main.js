@@ -11,16 +11,16 @@ const saltRounds = 16;
 // let { ObjectId } = require('mongodb')
 
     router.get('/', async (req,res) => { 
-        res.render("login.handlebars", {title: "Login"})
+       return res.render("login.handlebars", {title: "Login", redirect: "/nav"});
     });
 
     router.get('/signup', async (req,res) => { 
-        res.render("signup.handlebars", {title: "Sign up"})
+        return res.render("signup.handlebars", {title: "Sign up"});
     });
 
     router.post('/signup', async (req,res) => {
         const {email, username, password, confirmpassword} = req.body;
-        if (!email) {
+        if (!email || typeof(email) !== 'string' || email.trim().length == 0) {
             res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Email not provided or is not a valid string."});
         }
         try {
@@ -29,15 +29,15 @@ const saltRounds = 16;
             res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Please enter a valid E-mail."});
             return 0;   
         }
-        if (!username || typeof(username) !== "string") {
+        if (!username || typeof(username) !== "string" || username.trim().length == 0) {
             res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Username not provided or is not a valid string."});
             return 0;  
         }
-        if (!password || typeof(password) !== "string") {
+        if (!password || typeof(password) !== "string" || password.trim().length == 0) {
             res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Password not provided or is not a valid string."});
             return 0;  
         }
-        if (!confirmpassword || typeof(confirmpassword) !== "string") {
+        if (!confirmpassword || typeof(confirmpassword) !== "string" || confirmpassword.trim().length == 0) {
             res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Confirm password not provided or is not a valid string."});
             return 0;  
         }
