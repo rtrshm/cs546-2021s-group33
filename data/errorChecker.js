@@ -32,6 +32,27 @@ function checkErrorArray(array, string)//array is array input, string is type. F
 
 }
 
+function checkErrorArrayEmpty(array, string)//array is array input, string is type. For example, ([1,2,3], 'number')
+{
+    if (array === undefined)
+    {
+        throw "Error: The array is undefined or does not exist";
+    }
+    if(!Array.isArray(array))
+    {
+        throw "Error: The input is not an array";
+    }
+
+    for(let i = 0; i < array.length; i++)
+    {
+        if(typeof array[i] !== string) 
+        {
+            throw "Error: Index " + i + " of the array is not a " + string;
+        }
+    }
+
+}
+
 function existenceChecker(input)
 {
     if(input === undefined)
@@ -119,6 +140,7 @@ function idChecker(string)
 module.exports = {
     typeChecker,
     checkErrorArray,
+    checkErrorArrayEmpty,
     existenceChecker,
     stringChecker,
     ValidateEmail,

@@ -66,10 +66,10 @@ let gamesDatabase = require('../data/games');
                 game.platforms = "N/A";
             }
             if (!game.purchaseLinks || !Array.isArray(game.purchaseLinks)) {
-                game.publishers = "N/A";
+                delete game.purchaseLinks;
             }
             if (game.purchaseLinks.length < 1) {
-                game.purchaseLinks = "N/A";
+                delete game.purchaseLinks;
             }
         } catch(e) {
             return res.status(500).render('gamesError.handlebars', {title: "No game found"})
