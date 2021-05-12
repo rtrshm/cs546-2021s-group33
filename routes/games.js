@@ -15,6 +15,7 @@ let gamesDatabase = require('../data/games');
         }
         res.render("games.handlebars", {title:"All games", games:allgames})
     });
+
     router.get('/game/:id', async(req, res) => {
         let game;
         try{
@@ -89,8 +90,21 @@ let gamesDatabase = require('../data/games');
             platforms: ["Playstation 3", "Xbox 360", "PC"],
             purchaseLinks: ["https://store.steampowered.com/app/570940/DARK_SOULS_REMASTERED/"]
         };
-        res.render("game.handlebars", {title: obj.title, object: obj})
-        
+        res.render("game.handlebars", {title: obj.title, object: obj}) 
+    });
+
+    router.get('/allgames', async(req, res) => {
+        let allgames;
+        try{
+            allgames = await gamesDatabase.getAllGames();
+        } catch(e) {
+            return res.status(500).render('gamesError.handlebars', {title: "No games"})
+        }
+        res.render("games.handlebars", {title:"All games", games:allgames})
+    });
+
+    router.get('/search', async(req, res) => {
+        res.render("search.handlebars", {title:"Search for game"})
     });
 
 module.exports = router;
