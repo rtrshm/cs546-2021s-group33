@@ -19,7 +19,7 @@ let main = async () => {
   );
 
   // Initialize a user.
-  await users.createUser(
+  const randomname = await users.createUser(
     "user",
     "randomname",
     "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
@@ -56,15 +56,15 @@ let main = async () => {
     ]
   );
 
-  // await reviews.createReview(
-  //   dsr._id.toString(),
-  //   false,
-  //   "Good Game",
-  //   "This a good game",
-  //   5,
-  //   true,
-  //   morerandomname.username
-  // );
+  await reviews.createReview(
+    dsr._id.toString(),
+    false,
+    "Good Game",
+    "This a good game",
+    5,
+    true,
+    randomname.username
+  );
 
   // Testing complete with some basic information seeded.
   console.log("Done seeding database");

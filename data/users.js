@@ -1,9 +1,7 @@
 const { ObjectID } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
-const games = mongoCollections.games;
 const errorz = require("./errorChecker");
-const reviewUtil = require("./reviews");
 //TODO: Handle errors in code.
 
 let createUser = async (perms, username, hashPassword, email) => {

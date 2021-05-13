@@ -42,9 +42,12 @@ let createReview = async (
     username: username,
     helpfulCount: 0,
     userId: user._id,
+    timestamp: Date.now(),
   };
 
   const game = await gameCollection.findOne({ _id: parsedId });
+  if (!game) throw `Error: Game does not exist.`;
+
   const updatedInfo = await gameCollection.updateOne(
     { _id: game._id },
     { $addToSet: { reviews: newReview } }
@@ -52,7 +55,7 @@ let createReview = async (
   if (updatedInfo.modifiedCount === 0)
     throw `Could not update game with review.`;
 
-  userUtil.updateUserReview(user.username, newReview._id);
+  await userUtil.updateUserReview(user.username, newReview._id.toString());
 
   const newGame = await gameUtil.updateReviewStats(game._id.toString(), rating);
   return newGame;

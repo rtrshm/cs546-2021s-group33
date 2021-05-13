@@ -4,7 +4,8 @@
   "description": "GAMESEEKR",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "node tasks/test.js"
   },
   "repository": {
     "type": "git",
