@@ -44,7 +44,18 @@ router.post("/addgame", async (req, res) => {
         dateReleased = "N/A";
     }
     else {
-        console.log(`${dateReleased} validity: ${errorChecker.isValidDate(dateReleased)}`);
+        dateReleased = dateReleased.split('-');
+        if (dateReleased.length != 3){
+            console.log(`length ${dateReleased}`);
+            dateReleased = 'N/A';
+        }
+        else {
+            dateReleased = `${dateReleased[1]}/${dateReleased[2]}/${dateReleased[0]}`;
+            //console.log(`${dateReleased} validity: ${errorChecker.isValidDate(dateReleased)}`);
+            if (!errorChecker.isValidDate(dateReleased)){
+                dateReleased = 'N/A';
+            }
+        }
     }
 
     if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
@@ -256,6 +267,7 @@ router.post("/modify/:id", async(req,res) => {
     }
     else if (user.perms == "admin") {
         let oldgame;
+        let sameName = false;
         try{
             oldgame = await gameDatabase.getGameByTitle(req.params.id);
         }catch(e) {
@@ -267,9 +279,15 @@ router.post("/modify/:id", async(req,res) => {
 
         if (!title) {
             title = oldgame.title;
+            sameName = true;
         }
         else if (typeof(title) !== "string" || title.trim().length == 0) {
             return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid title"});
+        }
+        else {
+            if (title == oldgame.title){
+                sameName = true;
+            }
         }
 
         if (!img) {
@@ -283,9 +301,21 @@ router.post("/modify/:id", async(req,res) => {
             dateReleased = oldgame.dateReleased;
         }
         else if (typeof(dateReleased) !== "string" || dateReleased.trim().length == 0) {
-            return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid date released"});
+            dateReleased = 'N/A';
         }
-
+        else {
+            dateReleased = dateReleased.split('-');
+            if (dateReleased.length != 3){
+                dateReleased = 'N/A';
+            }
+            else {
+                dateReleased = `${dateReleased[1]}/${dateReleased[2]}/${dateReleased[0]}`;
+                //console.log(`${dateReleased} validity: ${errorChecker.isValidDate(dateReleased)}`);
+                if (!errorChecker.isValidDate(dateReleased)){
+                    dateReleased = 'N/A';
+                }
+            }
+        }
         if(!genres) {
             if (!oldgame.genres || oldgame.genres.length === 0) {
                 genres = [];
@@ -428,7 +458,7 @@ router.post("/modify/:id", async(req,res) => {
         }
     
         try {
-            let myobj = {title: title, img: img, dateReleased: dateReleased, genres: genres, developers: developers, publishers: publishers, ageRating: ageRating, platforms: platforms, purchaseLinks: purchaseLinks}
+            let myobj = {title: title, img: img, dateReleased: dateReleased, genres: genres, developers: developers, publishers: publishers, ageRating: ageRating, platforms: platforms, purchaseLinks: purchaseLinks, sameName};
             newgame = await gameDatabase.updateGame(oldgame._id.toString(), myobj); 
         }catch(e) {
             return res.render("modifyGameError.handlebars", {title:"Error", errormsg:e});
