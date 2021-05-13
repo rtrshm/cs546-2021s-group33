@@ -26,7 +26,7 @@ let createGame = async (
   errorz.checkErrorArray(publishers, "string");
   errorz.stringChecker(ageRating, "ageRating");
   errorz.checkErrorArray(platforms, "string");
-  errorz.checkErrorArray(purchaseLinks, "string");
+  errorz.checkErrorArrayEmpty(purchaseLinks, "string");
 
   const newGame = {
     title: title,
@@ -83,7 +83,7 @@ let getGameByTitle = async (title) => {
   errorz.stringChecker(title, "title");
 
   const gameCollection = await games();
-  const game = await gameCollection.findOne({ title: title });
+  const game = await gameCollection.findOne({ title: {'$regex' : `^${title}$`, '$options': 'i'} });
   if (game === null) throw `Game not found.`;
 
   return game;
@@ -113,6 +113,21 @@ let getGamesByGenreList = async (genres) => {
   if (gameList === null) throw `No games with any genres found.`;
 
   return gameList;
+};
+
+let getRecommendedGameByGame = async (id) => {
+  errorz.stringChecker(id, "id");
+  errorz.idChecker(id);
+
+  let parsedId = ObjectID(id);
+
+  const gameCollection = await games();
+  const game = await gameCollection.findOne({ _id: parsedId });
+  if (game === null) throw `Game not found.`;
+
+  let gameList = await getGamesByGenreList(game.genres);
+
+  return gameList[0];
 };
 
 let updateGame = async (id, newData) => {
@@ -209,6 +224,7 @@ module.exports = {
   getGameByTitle,
   getGamesByGenre,
   getGamesByGenreList,
+  getRecommendedGameByGame,
   updateGame,
   updateReviewStats,
   removeGame,

@@ -10,6 +10,14 @@ let main = async () => {
 
   await db.dropDatabase();
 
+  // Initialize an admin.
+  await users.createUser(
+    "admin",
+    "lempie",
+    "$2b$16$dZk6oJKoy2NBpI5KUM0bVOv7tjusBluaKUWKzOEjOsAPciMcMRu36",
+    "lempie@gmail.com"
+  );
+
   // Initialize a user.
   await users.createUser(
     "user",
@@ -19,7 +27,7 @@ let main = async () => {
   );
 
   // Initialize a game.
-  await games.createGame(
+  const dsr = await games.createGame(
     "Dark Souls",
     "https://assets2.ignimgs.com/2016/01/19/darksouls1cover-agame-coverjpg-c73c7a_765w.jpg",
     "9/22/2011",
@@ -48,15 +56,15 @@ let main = async () => {
     ]
   );
 
-  await reviews.createReview(
-    dsr._id.toString(),
-    false,
-    "Good Game",
-    "This a good game",
-    5,
-    true,
-    morerandomname.username
-  );
+  // await reviews.createReview(
+  //   dsr._id.toString(),
+  //   false,
+  //   "Good Game",
+  //   "This a good game",
+  //   5,
+  //   true,
+  //   morerandomname.username
+  // );
 
   // Testing complete with some basic information seeded.
   console.log("Done seeding database");

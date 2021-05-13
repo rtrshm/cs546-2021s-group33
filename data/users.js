@@ -5,7 +5,7 @@ const games = mongoCollections.games;
 const errorz = require("./errorChecker");
 //TODO: Handle errors in code.
 
-let createUser = async (perms = "user", username, hashPassword, email) => {
+let createUser = async (perms, username, hashPassword, email) => {
   const userCollection = await users();
 
   //error checking I'm gonna add in -Gavin check if its good later
