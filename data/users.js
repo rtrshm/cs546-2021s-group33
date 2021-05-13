@@ -3,7 +3,6 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const games = mongoCollections.games;
 const errorz = require("./errorChecker");
-const reviewUtil = require("./reviews");
 //TODO: Handle errors in code.
 
 let createUser = async (perms = "user", username, hashPassword, email) => {

@@ -166,11 +166,12 @@ let updateGame = async (id, newData) => {
 let updateReviewStats = async (id, rating) => {
   errorz.stringChecker(id, "id");
   errorz.ratingChecker(rating);
+  errorz.idChecker(id);
 
   let parsedId = ObjectID(id);
 
   const gameCollection = await games();
-
+  
   const game = await gameCollection.findOne({ _id: parsedId });
 
   let newRating = (game.averageRating + rating) / (game.numberOfReviews + 1);
