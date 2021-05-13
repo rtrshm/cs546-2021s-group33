@@ -1,0 +1,12 @@
+<main>
+    <a href="/admin/manage">Go back</a>
+    <header>
+    <h1>Welcome, Admin. Remove a game from the database:</h1>
+	</header>
+    <p>{{errormsg}}</p>
+    <form action = "/admin/remove" method ="post" id="remove-form">
+        <label for="title">Game title:</label>
+        <input type="text" name="title" id="title">
+        <button type="submit">Enter</button>
+    </form>
+</main>

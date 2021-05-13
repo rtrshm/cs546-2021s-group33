@@ -8,7 +8,7 @@
 “email”:”JDoe@gmail.com”,
 “favoriteGames” : [ObjectId(6069054da54720327839a82e), ObjectId(6069056ca54720327839a82f)],
 “reviewsLeft”: [ObjectID(60690a32a54720327839a835), ObjectId(606908bfa54720327839a834)] --}}
-
+<a href="/nav">Go back</a>
 <h1>Profile</h1>
 <p>Permission group: {{object.perms}} </p>
 <p>Username: {{object.username}}</p>
@@ -16,8 +16,9 @@
 <p>Users following: {{object.usersFollowing}}</p>
 <p>Email: {{object.email}}</p>
 <p>Favorite Games: {{object.favoriteGames}}</p>
-<p>Reviews:{{object.reviewsLeft}}</p>
-<a href="/nav">Go back</a>
+<p>Reviews: {{object.reviewsLeft}}</p>
+<button id="followButton" type="button">Follow (currently not implemented)</button>
+
 {{!-- {{#if object.usersFollowing}}
     <ul>
         {{#each object.usersFollowing}}
