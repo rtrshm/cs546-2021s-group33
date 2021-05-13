@@ -5,9 +5,6 @@
 <p>Genres: {{object.genres}}</p>
 <p>Developers: {{object.developers}}</p>
 <p>Publishers: {{object.publishers}}</p>
-<p>Average rating: {{object.averageRating}}</p>
-<p>Number of reviews: {{object.numberOfReviews}}</p>
-<p>Game reviews: {{object.reviews}}</p>
 <p>Age rating: {{object.ageRating}}</p>
 <p>Platforms: {{object.platforms}}</p>
 {{#if object.purchaseLinks}}
@@ -18,4 +15,12 @@
     {{/each}}
 </ul>
 {{/if}}
+<p>Average rating: {{object.averageRating}}</p>
+<p>Number of reviews: {{object.numberOfReviews}}</p>
+<p>Game reviews: {{object.reviews}}</p>
+<ul>
+    {{#each object.reviews}}
+    <li><a href="{{this.username}}">{{this}}</a></li>
+    {{/each}}
+</ul>
 
