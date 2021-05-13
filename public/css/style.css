@@ -1,0 +1,12 @@
+.error {
+    color: red;
+    font-weight: 500;
+}
+
+.required {
+    color: red;
+}
+
+.nonrequired {
+    color: blue;
+}

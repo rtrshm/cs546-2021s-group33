@@ -2,33 +2,29 @@
     <a href="/nav">Go back</a>
     <header>
     <h1>Welcome, Admin. Add a game to the database by filling out the fields.</h1>
+    <p class='required'>Required fields are highlighted red.</p>
 	</header>
-        <p>{{errormsg}}</p>
-        <form action = "/addgame" method ="post" id="login-form">
-            <label for="title">Game Title:</label>
+        <form action = "/addgame" name="login" method ="post" id="addgame-form">
+            <label for="title" class='required'>Game Title:</label>
             <input type="text" name="title" id="title"><br>
-            <label for="dateReleased">Date Released:</label>
+            <label for="dateReleased" class="nonrequired">Date Released:</label>
             <input type="date" name="dateReleased" id="dateReleased"><br>
-            <label for="image">Image link:</label>
+            <label for="image" class="nonrequired">Image link:</label>
             <input type="text" name="image" id="image"><br>
-            <label for="genres">Genres, separated by commas:</label>
+            <label for="genres" class='required'>Genres, separated by commas:</label>
             <input type="text" name="genres" id="genres"><br>
-            <label for="developers">Developers, separated by commas:</label>
+            <label for="developers" class="nonrequired">Developers, separated by commas:</label>
             <input type="text" name="developers" id="developers"><br>
-            <label for="publishers">Publishers, separated by commas:</label>
+            <label for="publishers" class="nonrequired">Publishers, separated by commas:</label>
             <input type="text" name="publishers" id="publishers"><br>
-            <label for="averageRating">Average Rating:</label>
-            <input type="number" name="averageRating" id="averageRating"><br>
-            <label for="numberOfReviews">Number of reviews:</label>
-            <input type="number" name="numberOfReviews" id="numberOfReviews"><br>
-            <label for="gameReviews">Game Reviews:</label>
-            <input type="text" name="gameReviews" id="gameReviews"><br>
-            <label for="ageRating">Age Rating:</label>
+            <label for="ageRating" class="nonrequired">Age Rating:</label>
             <input type="text" name="ageRating" id="ageRating"><br>
-            <label for="platforms">Platforms, separated by commas</label>
+            <label for="platforms" class="nonrequired">Platforms, separated by commas</label>
             <input type="text" name="platforms" id="platforms"><br>
-            <label for="purchaseLinks">Purchase Links, separated by commas:</label>
+            <label for="purchaseLinks" class="nonrequired">Purchase Links, separated by commas:</label>
             <input type="text" name="purchaseLinks" id="purchaseLinks"><br>
             <button type="submit">Enter</button>
         </form>    
+        <p class='error' id='error'>{{errormsg}}</p>
+        <script src="/public/js/addgame.js"></script>
 </main>
