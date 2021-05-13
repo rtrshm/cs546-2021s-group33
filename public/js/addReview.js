@@ -6,6 +6,7 @@
         reviewText = $('#addReview'),
         reviewForm = $('#addReviewForm'),
         reviewErrorText = $('#reviewErrorText'),
+        reviewRating = $('#gameScore'),
         gameId = $('#gameId').text(),
         reviewList = $('#reviewList');
 
@@ -17,6 +18,7 @@
     });
 
     let renderReview = (review) => {
+        let author = $('')
         let parent = $('<ul class="review"></ul>');
         parent.append($(`<li>${review.reviewTitle}`));
         parent.append($(`<li>${review.reivewTextContent}`));
@@ -26,20 +28,31 @@
     }
 
     reviewForm.submit(event => {
+        event.preventDefault();
+
+        reviewErrorText.empty();
+        reviewErrorText.hide();
 
         let reviewObj = {};
 
         let titleTextContent = reviewTitle.val();
         if (!titleTextContent || titleTextContent.replace(/ +/, '') == "") {
             reviewErrorText.append($('<p>Please give your review a title!</p>'));
+            reviewErrorText.show();
             return;
         }
+
+        reviewObj.reviewTitle = titleTextContent;
 
         let reviewTextContent = reviewText.val();
         if (!reviewTextContent || reviewTextContent.replace(/ +/, '') == "") {
             reviewErrorText.append($('<p>Please add some text to your review!</p>'));
+            reviewErrorText.show();
             return;
         }
+
+        let rating = reviewRating.val();
+        reviewObj.rating = rating;
 
         reviewObj.reviewContent = reviewTextContent;
 
@@ -59,14 +72,13 @@
         let requestConfig = {
             method: 'POST',
             url: `/games/addReview/${gameId}`,
-            data: JSON.stringify(reviewObj)
+            data: reviewObj
         };
 
         // if review is added successfully, it's instantly rendered below other reviews (maybe needs changing?)
         $.ajax(requestConfig).then(response => {
-            if (response)
-                reviewList.append(renderReview(reviewObj));
-            else reviewErrorText.append(`<p>Review could not be added successfully.</p>`)
+            console.log('review response received');
+            location.reload();
         });
     });
 })(window.jQuery);

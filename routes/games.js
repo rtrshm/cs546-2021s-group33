@@ -199,14 +199,26 @@ router.post('/addReview/:id', async (req, res) => {
     }
 
     let reviewData = req.body;
+
     if (!reviewData)
         return res.status(400).json({message: "Missing request body"});
 
+
+
+    // ajax converts all input to strings, so we must convert to actual dtypes
+    reviewData.spoiler = (reviewData.spoiler == 'true');
+    reviewData.recommended = (reviewData.recommended == 'true');
+    reviewData.rating = +reviewData.rating;
+    reviewData.timestamp = +reviewData.timestamp;
+
+    console.log(reviewData);
+
+    // check for errors
     try {
-        errorChecker.stringChecker(reviewData.reviewTitle);
-        errorChecker.stringChecker(reviewData.reviewTextContent);
-        errorChecker.typeChecker(reviewData.timestamp, 'number');
-        errorChecker.ratingChecker(reviewData.rating);
+        errorChecker.stringChecker(reviewData.reviewTitle, 'review title');
+        errorChecker.stringChecker(reviewData.reviewContent, 'review text');
+        errorChecker.typeChecker(+reviewData.timestamp, 'number');
+        errorChecker.ratingChecker(+reviewData.rating);
         errorChecker.typeChecker(reviewData.spoiler, 'boolean');
         errorChecker.typeChecker(reviewData.recommended, 'boolean');
     } catch (e) {
@@ -214,23 +226,27 @@ router.post('/addReview/:id', async (req, res) => {
         return res.status(400).json({message: "Invalid add review parameter"});
     }
 
-    let username = req.session.username;
+    let username = req.session.user.username;
+    console.log(username);
     try {
-        reviewsDatabase.createReview(
+        await reviewsDatabase.createReview(
             gameId, 
             reviewData.spoiler,
             reviewData.reviewTitle,
-            reviewData.reviewTextContent,
+            reviewData.reviewContent,
             reviewData.rating,
             reviewData.recommended,
             username);
+        console.log('Review should be added!');
     } catch (e) {
-      if (e == "Error: Game does not exist.") {
-          res.status(404).render('gamesError.handlebars', {title: 'Game not found'});
-      } else if (e == "Could not update game with review.") {
-          res.status(500).json({message: "Review could not be added."});
-      }
+        console.log(e);
+        if (e == "Error: Game does not exist.") {
+            res.status(404).render('gamesError.handlebars', {title: 'Game not found'});
+        } else if (e == "Could not update game with review.") {
+            res.status(500).json({message: "Review could not be added."});
+        }
     }
+    res.status(200).send();
 
 })
 

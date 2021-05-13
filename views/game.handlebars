@@ -37,12 +37,6 @@
         <input id="addReview" type="text" name="reviewContent"/>
         <br>
 
-        <!-- Spoilers? -->
-        <input type="radio" id="spoiler" name="spoiler" value="yes">
-        <label for="spoiler">My review contains spoilers</label>
-        <input type="radio" id="nospoiler" name="spoiler" value="no" checked>
-        <label for="nospoiler">My review does not contain spoilers</label>
-        <br>
 
         <!-- Score from 1 to 5 -->
         <label for="gameScore">Score</label>
@@ -56,22 +50,30 @@
         <label for="norecommend">Do not recommend</label>
         <br>
 
+        <!-- Spoilers? -->
+        <input type="radio" id="spoiler" name="spoiler" value="yes">
+        <label for="spoiler">My review contains spoilers</label>
+        <input type="radio" id="nospoiler" name="spoiler" value="no" checked>
+        <label for="nospoiler">My review does not contain spoilers</label>
+        <br>
+
+
         <input id="submitReview" type="submit" value="Add review"/>
         <div id="reviewErrorText" hidden></div>
     </form>
 </div>
 
 <p>Number of reviews: {{object.numberOfReviews}}</p>
-<p>Game reviews: {{object.reviews}}</p>
+<p>Game reviews:</p>
 <ul id="reviewList">
     {{#each object.reviews}}
     <li>By <a href="/profile/{{this.username}}">{{this.username}}</a> <br>
-        <ul class="review">
+        <ul class="reviewPoints">
             <li>{{this.reviewTitle}}</li>
-            <li>{{this.reviewTextContent}}</li>
+            <li>{{this.reviewContent}}</li>
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
-        </ul>
+        </ul> <br>
     </li>
     {{/each}}
 </ul>
