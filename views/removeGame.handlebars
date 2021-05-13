@@ -1,12 +1,14 @@
 <main>
-    <a href="/admin/manage">Go back</a>
     <header>
     <h1>Welcome, Admin. Remove a game from the database:</h1>
 	</header>
     <p>{{errormsg}}</p>
-    <form action = "/admin/remove" method ="post" id="remove-form">
+    <form action = "/admin/remove" name = 'search' method ="post" id="game-search">
         <label for="title">Game title:</label>
         <input type="text" name="title" id="title">
         <button type="submit">Enter</button>
     </form>
+    <p class='error' id='error'>{{errormsg}}</p>
+    <a href="/admin/manage">Go back</a>
+    <script src="/public/js/search.js"></script>
 </main>
