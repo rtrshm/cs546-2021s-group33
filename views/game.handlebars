@@ -58,7 +58,14 @@
 <p>Game reviews: {{object.reviews}}</p>
 <ul id="reviewList">
     {{#each object.reviews}}
-    <li><a href="{{this.username}}">{{this.username}}</a></li>
+    <li>By <a href="/profile/{{this.username}}">{{this.username}}</a>
+        <ul>
+            <li>{{this.reviewTitle}}</li>
+            <li>{{this.reviewTextContent}}</li>
+            <li>Rating: {{this.rating}}</li>
+            <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
+        </ul>
+    </li>
     {{/each}}
 </ul>
 
