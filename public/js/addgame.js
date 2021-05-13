@@ -25,13 +25,6 @@ myForm.addEventListener('submit', (event) => {
     if (!img || typeof(img) !== "string" || img.trim().length == 0) {
         myImg.value = "../public/no_image.jpeg";
     }
-    if (!dateReleased || typeof(dateReleased) !== "string" || dateReleased.trim().length == 0) {
-        ;
-    }
-    else if (!errorChecker.isValidDate(dateReleased)){
-        err.innerHTML = "Error: Date released has invalid format";
-        myDate.focus();
-    }
 
     if (!developers || typeof(developers)!=='string' || developers.trim().length == 0) {
         //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must be a list of non-empty strings seperated by commas"});
