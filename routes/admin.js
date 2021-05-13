@@ -2,6 +2,17 @@ const express = require('express');
 const gameDatabase = require('../data/games')
 const router = express.Router();
 
+router.get("/manage", async(req,res) => {
+    if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
+        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+    }
+    if (user.perms === "user") {
+        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+    }
+    else if (user.perms == "admin") {
+        return res.render("manage.handlebars", {title: "Manage games"});
+    }
+});
 router.get("/addgame", async(req,res) => {
     user = req.session.user;
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
@@ -138,4 +149,45 @@ router.post("/addgame", async (req, res) => {
 
     res.render("createGameSuccess.handlebars", {title:"Success"});
 });
+
+router.get("/remove", async(req,res) => {
+    user = req.session.user;
+    if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
+        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+    }
+    if (user.perms === "user") {
+        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+    }
+    else if (user.perms == "admin") {
+        return res.render("removeGame.handlebars", {title: "Remove game"});
+    }
+});
+
+router.post("/remove", async(req,res) => {
+    user = req.session.user;
+    if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
+        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to remove a game."});
+    }
+    if (user.perms === "user") {
+        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to remove a game."});
+    }
+    else if (user.perms == "admin") {
+        let {title} = req.body;
+        let game;
+        try{
+            game = await gameDatabase.getGameByTitle(title);
+        }catch(e) {
+            return res.render("removeError.handlebars", {title: "Error", errormsg: e});
+        }
+        let gametitle = game.title;
+        let removegame;
+        try{
+            removegame = await gameDatabase.removeGame(game._id.toString());
+        }catch(e) {
+            return res.render("removeError.handlebars", {title: "Error", errormsg: e});
+        }
+        return res.render("removeSuccess.handlebars", {title: "Game removed", gametitle: gametitle});
+    }
+});
+
 module.exports = router;
