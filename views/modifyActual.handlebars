@@ -1,44 +1,47 @@
-<a href="/admin/modify">Go back</a>
-<h1>Modifying {{object.title}}:</h1>
-<h2>Old fields:</h2>
-<p>Title: {{object.title}}</p> 
-<p>Image link: {{object.img}}</p>
-<p>Date Released: {{object.dateReleased}}</p>
-<p>Genres: {{object.genres}}</p>
-<p>Developers: {{object.developers}}</p>
-<p>Publishers: {{object.publishers}}</p>
-<p>Age rating: {{object.ageRating}}</p>
-<p>Platforms: {{object.platforms}}</p>
-{{#if object.purchaseLinks}}
-<p>Purchase links:</p>
-<ul>
-    {{#each object.purchaseLinks}}
-    <li><a href="{{this}}">{{this}}</a></li>
-    {{/each}}
-</ul>
-{{/if}}
+<main>
+    <a href="/admin/modify">Go back</a>
+    <h1>Modifying {{object.title}}:</h1>
+    <h2>Old fields:</h2>
+    <p>Title: {{object.title}}</p> 
+    <p>Image link: {{object.img}}</p>
+    <p>Date Released: {{object.dateReleased}}</p>
+    <p>Genres: {{object.genres}}</p>
+    <p>Developers: {{object.developers}}</p>
+    <p>Publishers: {{object.publishers}}</p>
+    <p>Age rating: {{object.ageRating}}</p>
+    <p>Platforms: {{object.platforms}}</p>
+    {{#if object.purchaseLinks}}
+    <p>Purchase links:</p>
+    <ul>
+        {{#each object.purchaseLinks}}
+        <li><a href="{{this}}">{{this}}</a></li>
+        {{/each}}
+    </ul>
+    {{/if}}
 
-<h2>New fields:</h2>
-<h3>Only fill in fields you wish to modify. Blank fields will be ignored.</h3>
-<form action = "/admin/modify/{{object.title}}" name="modify" method ="post" id="modifygame-form">
-    <label for="title">Game Title:</label>
-    <input type="text" name="title" id="title"><br>
-    <label for="image">Image link:</label>
-    <input type="text" name="image" id="image"><br>
-    <label for="dateReleased">Date Released:</label>
-    <input type="date" name="dateReleased" id="dateReleased"><br>
-    <label for="genres">Genres, separated by commas:</label>
-    <input type="text" name="genres" id="genres"><br>
-    <label for="developers">Developers, separated by commas:</label>
-    <input type="text" name="developers" id="developers"><br>
-    <label for="publishers">Publishers, separated by commas:</label>
-    <input type="text" name="publishers" id="publishers"><br>
-    <label for="ageRating">Age Rating:</label>
-    <input type="text" name="ageRating" id="ageRating"><br>
-    <label for="platforms">Platforms, separated by commas</label>
-    <input type="text" name="platforms" id="platforms"><br>
-    <label for="purchaseLinks">Purchase Links, separated by commas:</label>
-    <input type="text" name="purchaseLinks" id="purchaseLinks"><br>
-    <button type="submit">Enter</button>
-</form> 
-
+    <h2>New fields:</h2>
+    <h3>Only fill in fields you wish to modify. Blank fields will be ignored.</h3>
+    <form action = "/admin/modify/{{object.title}}" name="modify" method ="post" id="modifygame-form">
+        <label for="title">Game Title:</label>
+        <input type="text" name="title" id="title"><br>
+        <label for="image">Image link:</label>
+        <input type="text" name="image" id="image"><br>
+        <label for="dateReleased">Date Released:</label>
+        <input type="date" name="dateReleased" id="dateReleased"><br>
+        <label for="genres">Genres, separated by commas:</label>
+        <input type="text" name="genres" id="genres"><br>
+        <label for="developers">Developers, separated by commas:</label>
+        <input type="text" name="developers" id="developers"><br>
+        <label for="publishers">Publishers, separated by commas:</label>
+        <input type="text" name="publishers" id="publishers"><br>
+        <label for="ageRating">Age Rating:</label>
+        <input type="text" name="ageRating" id="ageRating"><br>
+        <label for="platforms">Platforms, separated by commas</label>
+        <input type="text" name="platforms" id="platforms"><br>
+        <label for="purchaseLinks">Purchase Links, separated by commas:</label>
+        <input type="text" name="purchaseLinks" id="purchaseLinks"><br>
+        <button type="submit">Enter</button>
+    </form> 
+        <p class='error' id='error'>{{errormsg}}</p>
+        <script src="/public/js/modifygame.js"></script>
+</main>

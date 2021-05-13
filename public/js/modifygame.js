@@ -6,7 +6,7 @@ let myPubli = document.getElementById('publishers');
 let myAge = document.getElementById('ageRating');
 let myPlat = document.getElementById('platforms');
 let myPurch = document.getElementById('purchaseLinks');
-let myForm = document.getElementById('addgame-form');
+let myForm = document.getElementById('modifygame-form');
 let err = document.getElementById('error');
 
 myForm.addEventListener('submit', (event) => {
@@ -21,12 +21,11 @@ myForm.addEventListener('submit', (event) => {
     let purchaseLinks = myPurch.value;
 
     if (!img || typeof(img) !== "string" || img.trim().length == 0) {
-        myImg.value = "../public/no_image.jpeg";
+        ;
     }
 
     if (!developers || typeof(developers)!=='string' || developers.trim().length == 0) {
-        //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must be a list of non-empty strings seperated by commas"});
-        myDevel.value = "";
+        ;
     }
     else {
         developers = developers.split(',');
@@ -46,8 +45,7 @@ myForm.addEventListener('submit', (event) => {
     }
 
     if (!publishers || typeof(publishers)!=='string' || publishers.trim().length == 0) {
-        //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must be a list of non-empty strings seperated by commas"});
-        myPubli.value = "";
+        ;
     }
     else {
         publishers = publishers.split(',');
@@ -67,12 +65,11 @@ myForm.addEventListener('submit', (event) => {
     }
 
     if (!ageRating || typeof(ageRating) !== "string") {
-        myAge.value = "N/A";
+        ;
     }
 
     if (!platforms || typeof(platforms)!=='string' || platforms.trim().length == 0) {
-        //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms must be a list of non-empty strings seperated by commas"});
-        myPlat.value = "";
+        ;
     }
     else {
         platforms = platforms.split(',');
@@ -92,8 +89,7 @@ myForm.addEventListener('submit', (event) => {
     }
 
     if (!purchaseLinks || typeof(purchaseLinks)!=='string' || purchaseLinks.trim().length == 0) {
-        //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must be a list of non-empty strings seperated by commas"});
-        myPurch.value = "";
+        ;
     }
     else {
         purchaseLinks = purchaseLinks.split(',');
@@ -107,7 +103,7 @@ myForm.addEventListener('submit', (event) => {
             if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
                 err.innerHTML = "Error: purchaseLinks must contain non-empty comma seperated strings";
                 myPurch.focus();
-                return;
+                break;
             }
             let url;
             try {
@@ -127,16 +123,11 @@ myForm.addEventListener('submit', (event) => {
     }
     
     if (!title || typeof(title) !== "string" || title.trim().length == 0) {
-        err.innerHTML = "Error: Game needs a title.";
-        myTitle.focus();
-        return;
+        ;
     }
 
     if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
-        //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must be a list of non-empty strings seperated by commas"});
-        err.innerHTML = "Error: Game needs genres.";
-        myTitle.focus();
-        return;
+        ;
     }
     else {
         genres = genres.split(',');
@@ -155,5 +146,5 @@ myForm.addEventListener('submit', (event) => {
         }
     }
 
-    document.addgame.submit();
+    document.modify.submit();
   });

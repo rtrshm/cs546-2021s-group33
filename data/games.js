@@ -149,17 +149,17 @@ let updateGame = async (id, newData) => {
     } else if (x[i] === "dateReleased") {
       errorz.isValidDate(newData.dateReleased);
     } else if (x[i] === "genres") {
-      errorz.checkErrorArray(newData.genres, "string");
+      errorz.checkErrorArrayEmpty(newData.genres, "string");
     } else if (x[i] === "developers") {
-      errorz.checkErrorArray(newData.developers, "string");
+      errorz.checkErrorArrayEmpty(newData.developers, "string");
     } else if (x[i] === "publishers") {
-      errorz.checkErrorArray(newData.publishers, "string");
+      errorz.checkErrorArrayEmpty(newData.publishers, "string");
     } else if (x[i] === "ageRating") {
-      errorz.stringChecker(newData.ageRating, "ageRating");
+      errorz.stringCheckerEmpty(newData.ageRating, "ageRating");
     } else if (x[i] === "platforms") {
-      errorz.checkErrorArray(newData.platforms, "string");
+      errorz.checkErrorArrayEmpty(newData.platforms, "string");
     } else if (x[i] === "purchaseLinks") {
-      errorz.checkErrorArray(newData.purchaseLinks, "string");
+      errorz.checkErrorArrayEmpty(newData.purchaseLinks, "string");
     } else {
       throw "Error: " + x[i] + " Key not valid";
     }
