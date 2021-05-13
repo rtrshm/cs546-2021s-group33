@@ -1,6 +1,7 @@
 const express = require('express');
 const gameDatabase = require('../data/games')
 const router = express.Router();
+const errorChecker = require('../data/errorChecker')
 
 router.get("/manage", async(req,res) => {
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
@@ -37,10 +38,13 @@ router.post("/addgame", async (req, res) => {
         return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: Cannot create game without a valid title"});
     }
     if (!img || typeof(img) !== "string" || img.trim().length == 0) {
-        img = "../public/no_image.jpeg";
+        img = "../public/images/noimage.png";
     }
     if (!dateReleased || typeof(dateReleased) !== "string" || dateReleased.trim().length == 0) {
         dateReleased = "N/A";
+    }
+    else {
+        console.log(`${dateReleased} validity: ${errorChecker.isValidDate(dateReleased)}`);
     }
 
     if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
@@ -272,7 +276,7 @@ router.post("/modify/:id", async(req,res) => {
             img = oldgame.img;
         }
         else if (typeof(img) !== "string" || img.trim().length == 0) {
-            return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid img link"});
+            img = "../public/images/noimage.png";
         }
 
         if (!dateReleased) {

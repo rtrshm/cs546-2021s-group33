@@ -1,12 +1,14 @@
 <a href="/games/allgames">Go back</a>
 <h1>{{object.title}}</h1>
-<img src="{{object.img}}">
+<img src="{{object.img}}" onerror="this.onerror=null;this.src='../../public/images/noimage.png';">
 <p>Date Released: {{object.dateReleased}}</p>
 <p>Genres: {{object.genres}}</p>
 <p>Developers: {{object.developers}}</p>
 <p>Publishers: {{object.publishers}}</p>
 <p>Age rating: {{object.ageRating}}</p>
 <p>Platforms: {{object.platforms}}</p>
+<p>Average rating: {{object.averageRating}}</p>
+<p>Number of reviews: {{object.numberOfReviews}}</p>
 {{#if object.purchaseLinks}}
 <p>Purchase links:</p>
 <ul>
@@ -15,8 +17,6 @@
     {{/each}}
 </ul>
 {{/if}}
-<p>Average rating: {{object.averageRating}}</p>
-<p>Number of reviews: {{object.numberOfReviews}}</p>
 <p>Game reviews: {{object.reviews}}</p>
 <ul>
     {{#each object.reviews}}
