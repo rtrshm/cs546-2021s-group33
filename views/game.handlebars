@@ -7,8 +7,6 @@
 <p>Publishers: {{object.publishers}}</p>
 <p>Age rating: {{object.ageRating}}</p>
 <p>Platforms: {{object.platforms}}</p>
-<p>Average rating: {{object.averageRating}}</p>
-<p>Number of reviews: {{object.numberOfReviews}}</p>
 {{#if object.purchaseLinks}}
 <p>Purchase links:</p>
 <ul>
@@ -17,6 +15,8 @@
     {{/each}}
 </ul>
 {{/if}}
+<p>Average rating: {{object.averageRating}}</p>
+<p>Number of reviews: {{object.numberOfReviews}}</p>
 <p>Game reviews: {{object.reviews}}</p>
 <ul>
     {{#each object.reviews}}
