@@ -285,4 +285,5 @@ module.exports = {
   updateReviewStats,
   removeReview,
   removeGame,
+  titleTaken,
 };

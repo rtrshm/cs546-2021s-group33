@@ -80,23 +80,7 @@ const errorChecker = require('../data/errorChecker')
         } catch(e) {
             return res.status(500).render('gamesError.handlebars', {title: "No game found"})
         }
-        res.render("game.handlebars", {title:"Games", object:game})
-    });
-    router.get('/', async (req, res) => {
-        let obj = {
-            title: "Dark Souls",
-            dateReleased: "9/22/2011",
-            genres: ["Action role-playing game", "Dungeon crawl"],
-            developers: ["FromSoftware, Inc.", "Bluepoint Games", "Japan Studio", "Virtuos", "Shirogumi", "QLOC"],
-            publishers: ["FromSoftware, Inc.", "BANDAI NAMCO", "MORE"],
-            averageRating: 9.5,
-            numberOfReviews: 105,
-            gameReviews: [ObjectId("6069093d88a06901fd7b7b85").toString(), ObjectId("606909be50205ec3304bfc75").toString()],
-            ageRating: "M",
-            platforms: ["Playstation 3", "Xbox 360", "PC"],
-            purchaseLinks: ["https://store.steampowered.com/app/570940/DARK_SOULS_REMASTERED/"]
-        };
-        res.render("game.handlebars", {title: obj.title, object: obj}) 
+        return res.render("game.handlebars", {title:"Games", object:game})
     });
 
     router.get('/allgames', async(req, res) => {
@@ -106,22 +90,44 @@ const errorChecker = require('../data/errorChecker')
         } catch(e) {
             return res.status(500).render('gamesError.handlebars', {title: "No games"})
         }
-        res.render("games.handlebars", {title:"All games", games:allgames})
+        return res.render("games.handlebars", {title:"All games", games:allgames})
     });
 
     router.get('/search', async(req, res) => {
-        res.render("search.handlebars", {title:"Search for game"})
+        return res.render("search.handlebars", {title:"Search for game"})
+    });
+
+    router.post('/exists', async(req, res) => {
+        let {title} = req.body;
+        console.log('requested');
+        if (!title || typeof(title)!='string' || title.trim().length == 0){
+            return res.status(500).render('searchError.handlebars', {title: "No game found"});
+        }
+        console.log('requested2');
+        let taken;
+        try{
+          taken = await gamesDatabase.titleTaken(title);
+        }
+        catch (e){
+            console.log(e);
+            return res.status(500).render('searchError.handlebars', {title: "No game found"});
+        }
+        console.log('requested3');
+        res.json({bool:taken})
     });
 
     router.post('/searchresults', async(req,res) => {
         let {title} = req.body;
+        if (!title || typeof(title)!='string' || title.trim().length == 0){
+            return res.status(500).render('searchError.handlebars', {title: "No game found"});
+        }
         let gameFromDatabase;
         try {
             gameFromDatabase = await gamesDatabase.getGameByTitle(title);
         } catch(e) {
             return res.render("search.handlebars", {title:"Error", errormsg: "Error: No results found"});
         }
-        res.redirect('/games/search/' + gameFromDatabase.title);
+        return res.redirect('/games/search/' + gameFromDatabase.title);
     });
 
     router.get('/search/:id', async(req, res) => {
@@ -182,7 +188,7 @@ const errorChecker = require('../data/errorChecker')
         } catch(e) {
             return res.status(500).render('searchError.handlebars', {title: "No game found"})
         }
-        res.render("searchresult.handlebars", {title:"Game", object:game})
+        return res.render("searchresult.handlebars", {title:"Game", object:game})
     });
 
 module.exports = router;
