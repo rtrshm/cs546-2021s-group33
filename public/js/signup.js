@@ -23,7 +23,7 @@ myForm.addEventListener('submit', (event) => {
     let confirmpassword = myConfirmPass.value;
 
     if (!email || typeof(email) !== 'string' || email.trim().length == 0) {
-        err.innerHTML = "No email provided or email is not valid string.";
+        err.innerHTML = "No email provided or email is not a valid string.";
         myEmail.focus();
         return 0;
     }
@@ -36,19 +36,19 @@ myForm.addEventListener('submit', (event) => {
     }
     
     if (!username || typeof(username) !== "string" || username.trim().length == 0) {
-        err.innerHTML = "No username provided or username is not valid string.";
+        err.innerHTML = "No username provided or username is not a valid string.";
         myUser.focus();
         return;
     }
 
     if (!password || typeof(password) !== "string" || password.trim().length == 0) {
-        err.innerHTML = "No password provided or password is not valid string.";
+        err.innerHTML = "No password provided or password is not a valid string.";
         myPass.focus();
         return;
     }
 
     if (!confirmpassword || typeof(confirmpassword) !== "string" || confirmpassword.trim().length == 0) {
-        err.innerHTML = "No confirmpassword provided or confirmpassword is not valid string.";
+        err.innerHTML = "No confirmpassword provided or confirmpassword is not a valid string.";
         myPass.focus();
         return;
     }

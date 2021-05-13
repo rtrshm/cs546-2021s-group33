@@ -114,10 +114,10 @@ const errorChecker = require('../data/errorChecker')
     });
 
     router.post('/searchresults', async(req,res) => {
-        let {game} = req.body;
+        let {title} = req.body;
         let gameFromDatabase;
         try {
-            gameFromDatabase = await gamesDatabase.getGameByTitle(game);
+            gameFromDatabase = await gamesDatabase.getGameByTitle(title);
         } catch(e) {
             return res.render("search.handlebars", {title:"Error", errormsg: "Error: No results found"});
         }

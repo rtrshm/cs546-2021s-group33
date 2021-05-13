@@ -3,10 +3,11 @@
     <header>
     <h1>Search for game</h1>
 	</header>
-        <p>{{errormsg}}</p>
-        <form action = "/games/searchresults" method ="post" id="game-search">
+        <form action = "/games/searchresults" name = 'search' method ="post" id="game-search">
             <label for="game">Game title:</label>
-            <input type="text" name="game" id="game">
+            <input type="text" name="title" id="title">
             <button type="submit">Enter</button>
         </form>
+        <p class='error' id='error'>{{errormsg}}</p>
+        <script src="/public/js/search.js"></script>
 </main>
