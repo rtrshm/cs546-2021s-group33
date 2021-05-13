@@ -1,16 +1,19 @@
 ($ => {
-    let openReview = $('#displayAddReview'),
+
+    var openReview = $('#displayAddReview'),
         reviewDiv = $('#review'),
-        reviewTitle = $('reviewTitle'),
+        reviewTitle = $('#reviewTitle'),
         reviewText = $('#addReview'),
         reviewForm = $('#addReviewForm'),
         reviewErrorText = $('#reviewErrorText'),
         gameId = $('#gameId').text(),
         reviewList = $('#reviewList');
 
-    openReview.click(event => {
-        openReview.hide();
+    reviewDiv.hide();
+
+    openReview.on("click", () => {
         reviewDiv.show();
+        openReview.hide();
     });
 
     let renderReview = (review) => {
