@@ -32,7 +32,6 @@
         <!-- Text content of review -->
         <label for="addReview">Review content</label>
         <input id="addReview" type="text" name="reviewContent"/>
-        <div id="reviewErrorText" hidden></div>
 
         <!-- Spoilers? -->
         <input type="radio" id="spoiler" name="spoiler" value="yes">
@@ -51,6 +50,8 @@
         <label for="norecommend">Do not recommend</label>
 
         <input id="submitReview" type="submit" value="Add review"/>
+
+        <div id="reviewErrorText" hidden></div>
     </form>
 </div>
 
@@ -58,8 +59,8 @@
 <p>Game reviews: {{object.reviews}}</p>
 <ul id="reviewList">
     {{#each object.reviews}}
-    <li>By <a href="/profile/{{this.username}}">{{this.username}}</a>
-        <ul>
+    <li>By <a href="/profile/{{this.username}}">{{this.username}}</a> <br>
+        <ul class="review">
             <li>{{this.reviewTitle}}</li>
             <li>{{this.reviewTextContent}}</li>
             <li>Rating: {{this.rating}}</li>
