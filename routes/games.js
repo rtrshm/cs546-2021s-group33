@@ -5,6 +5,7 @@ const router = express.Router();
 // const booksData = mongoCollections.books;
 let { ObjectId } = require('mongodb');
 let gamesDatabase = require('../data/games');
+let reviewsDatabase = require('../data/reviews');
 const errorChecker = require('../data/errorChecker');
 
 router.get('/allgames', async(req, res) => {
@@ -185,5 +186,52 @@ router.get('/search/:id', async(req, res) => {
     }
     res.render("searchresult.handlebars", {title:"Game", object:game})
 });
+
+router.post('/addReview/:id', async (req, res) => {
+    let gameId = req.params.id;
+    if (!gameId)
+        return res.status(404).json({message: "No id provided"});
+    
+    try {
+        errorChecker.idChecker(gameId);
+    } catch (e) {
+        return res.status(400).json({message: "Invalid game ID"});
+    }
+
+    let reviewData = req.body;
+    if (!reviewData)
+        return res.status(400).json({message: "Missing request body"});
+
+    try {
+        errorChecker.stringChecker(reviewData.reviewTitle);
+        errorChecker.stringChecker(reviewData.reviewTextContent);
+        errorChecker.typeChecker(reviewData.timestamp, 'number');
+        errorChecker.ratingChecker(reviewData.rating);
+        errorChecker.typeChecker(reviewData.spoiler, 'boolean');
+        errorChecker.typeChecker(reviewData.recommended, 'boolean');
+    } catch (e) {
+        console.log(e);
+        return res.status(400).json({message: "Invalid add review parameter"});
+    }
+
+    let username = req.session.username;
+    try {
+        reviewsDatabase.createReview(
+            gameId, 
+            reviewData.spoiler,
+            reviewData.reviewTitle,
+            reviewData.reviewTextContent,
+            reviewData.rating,
+            reviewData.recommended,
+            username);
+    } catch (e) {
+      if (e == "Error: Game does not exist.") {
+          res.status(404).render('gamesError.handlebars', {title: 'Game not found'});
+      } else if (e == "Could not update game with review.") {
+          res.status(500).json({message: "Review could not be added."});
+      }
+    }
+
+})
 
 module.exports = router;
