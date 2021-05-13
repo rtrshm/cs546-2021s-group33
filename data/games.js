@@ -149,7 +149,7 @@ let updateGame = async (id, newData) => {
     } else if (x[i] === "dateReleased") {
       errorz.isValidDate(newData.dateReleased);
     } else if (x[i] === "genres") {
-      errorz.checkErrorArray(newData.genre, "string");
+      errorz.checkErrorArray(newData.genres, "string");
     } else if (x[i] === "developers") {
       errorz.checkErrorArray(newData.developers, "string");
     } else if (x[i] === "publishers") {
