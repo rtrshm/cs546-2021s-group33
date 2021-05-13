@@ -22,10 +22,10 @@ let createGame = async (
   errorz.stringChecker(img, "img");
   errorz.isValidDate(dateReleased);
   errorz.checkErrorArray(genres, "string");
-  errorz.checkErrorArray(developers, "string");
-  errorz.checkErrorArray(publishers, "string");
+  errorz.checkErrorArrayEmpty(developers, "string");
+  errorz.checkErrorArrayEmpty(publishers, "string");
   errorz.stringChecker(ageRating, "ageRating");
-  errorz.checkErrorArray(platforms, "string");
+  errorz.checkErrorArrayEmpty(platforms, "string");
   errorz.checkErrorArrayEmpty(purchaseLinks, "string");
 
   const newGame = {
