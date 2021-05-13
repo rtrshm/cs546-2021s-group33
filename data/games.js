@@ -91,6 +91,18 @@ let getGameByTitle = async (title) => {
   return game;
 };
 
+let titleTaken = async (title) => {
+  errorz.stringChecker(title, "title");
+
+  const gameCollection = await games();
+  const game = await gameCollection.findOne({
+    title: { $regex: `^${title}$`, $options: "i" },
+  });
+  if (game === null) return false;
+
+  return true;
+};
+
 let getGamesByGenre = async (genre) => {
   errorz.stringChecker(genre, "genre");
 
@@ -155,7 +167,7 @@ let updateGame = async (id, newData) => {
     } else if (x[i] === "publishers") {
       errorz.checkErrorArrayEmpty(newData.publishers, "string");
     } else if (x[i] === "ageRating") {
-      errorz.stringCheckerEmpty(newData.ageRating, "ageRating");
+      errorz.stringChecker(newData.ageRating, "ageRating");
     } else if (x[i] === "platforms") {
       errorz.checkErrorArrayEmpty(newData.platforms, "string");
     } else if (x[i] === "purchaseLinks") {
@@ -164,6 +176,14 @@ let updateGame = async (id, newData) => {
       throw "Error: " + x[i] + " Key not valid";
     }
   }
+  let taken;
+  try{
+    taken = await titleTaken(newData.title);
+  }
+  catch (e){
+    throw e;
+  }
+  if (taken) throw `Error: Title ${newData.title} already taken`;
 
   let parsedId = ObjectID(id);
 
