@@ -1,0 +1,1 @@
+let followButton = document.getElementById('follow');
