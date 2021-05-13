@@ -55,14 +55,15 @@
 
         let requestConfig = {
             method: 'POST',
-            url: `/game/addReview/${gameId}`,
+            url: `/games/addReview/${gameId}`,
             data: JSON.stringify(reviewObj)
         };
 
-        // if review is added successfully, it's instantly rendered at the bottom of the page
-        $.ajax(requestConfig).then(response => reviewList.append(renderReview(reviewObj)))
-            // if the route rejects or fails, give some error text
-            .reject(error => reviewErrorText.append($(`<p>Your review could not be added: ${error}</p>`)));            
+        // if review is added successfully, it's instantly rendered below other reviews (maybe needs changing?)
+        $.ajax(requestConfig).then(response => {
+            if (response)
+                reviewList.append(renderReview(reviewObj));
+            else reviewErrorText.append(`<p>Review could not be added successfully.</p>`)
+        });
     });
-
 })(window.jQuery);
