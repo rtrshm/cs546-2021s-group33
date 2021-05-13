@@ -218,7 +218,7 @@ router.post("/modify", async(req,res) => {
         try{
             game = await gameDatabase.getGameByTitle(title);
         }catch(e) {
-            return res.render("removeError.handlebars", {title: "Error", errormsg: e});
+            return res.render("modifyGameError.handlebars", {title: "Error", errormsg: e});
         }
         return res.redirect("/admin/modify/" + game.title);
     }
@@ -237,7 +237,7 @@ router.get("/modify/:id", async(req,res) => {
         try{
             game = await gameDatabase.getGameByTitle(req.params.id);
         }catch(e) {
-            return res.render("removeError.handlebars", {title: "Error", errormsg: e});
+            return res.render("modifyGameError.handlebars", {title: "Error", errormsg: e});
         }
         return res.render("modifyActual.handlebars", {title: "Modify game", object: game});
     }
@@ -256,7 +256,7 @@ router.post("/modify/:id", async(req,res) => {
         try{
             oldgame = await gameDatabase.getGameByTitle(req.params.id);
         }catch(e) {
-            return res.render("removeError.handlebars", {title: "Error", errormsg: e});
+            return res.render("modifyGameError.handlebars", {title: "Error", errormsg: e});
         }
         let { 
             title, img, dateReleased, genres, developers, publishers, ageRating, platforms, purchaseLinks 
