@@ -172,18 +172,25 @@ let updateGame = async (id, newData) => {
       errorz.checkErrorArrayEmpty(newData.platforms, "string");
     } else if (x[i] === "purchaseLinks") {
       errorz.checkErrorArrayEmpty(newData.purchaseLinks, "string");
-    } else {
+    } else if (x[i] === "sameName") {
+      ;
+    }else {
       throw "Error: " + x[i] + " Key not valid";
     }
   }
-  let taken;
-  try{
-    taken = await titleTaken(newData.title);
+  console.log(newData.sameName);
+  if (!newData.sameName){
+    let taken;
+    try{
+      taken = await titleTaken(newData.title);
+    }
+    catch (e){
+      throw e;
+    }
+    if (taken) throw `Error: Title ${newData.title} already taken`;
   }
-  catch (e){
-    throw e;
-  }
-  if (taken) throw `Error: Title ${newData.title} already taken`;
+  delete newData.sameName;
+
 
   let parsedId = ObjectID(id);
 
@@ -285,4 +292,5 @@ module.exports = {
   updateReviewStats,
   removeReview,
   removeGame,
+  titleTaken,
 };
