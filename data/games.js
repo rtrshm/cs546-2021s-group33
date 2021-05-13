@@ -83,7 +83,9 @@ let getGameByTitle = async (title) => {
   errorz.stringChecker(title, "title");
 
   const gameCollection = await games();
-  const game = await gameCollection.findOne({ title: {'$regex' : `^${title}$`, '$options': 'i'} });
+  const game = await gameCollection.findOne({
+    title: { $regex: `^${title}$`, $options: "i" },
+  });
   if (game === null) throw `Game not found.`;
 
   return game;
@@ -186,7 +188,7 @@ let updateReviewStats = async (id, rating) => {
   let parsedId = ObjectID(id);
 
   const gameCollection = await games();
-  
+
   const game = await gameCollection.findOne({ _id: parsedId });
 
   let newRating = (game.averageRating + rating) / (game.numberOfReviews + 1);
@@ -195,6 +197,40 @@ let updateReviewStats = async (id, rating) => {
     { _id: parsedId },
     {
       $inc: { numberOfReviews: 1 },
+      $set: { averageRating: newRating },
+    }
+  );
+
+  if (updatedInfo.modifiedCount === 0)
+    throw `Could not update game information.`;
+
+  return await readGame(id);
+};
+
+let removeReview = async (id, rating) => {
+  errorz.stringChecker(id, "id");
+  errorz.ratingChecker(rating);
+  errorz.idChecker(id);
+
+  let parsedId = ObjectID(id);
+
+  const gameCollection = await games();
+
+  const game = await gameCollection.findOne({ _id: parsedId });
+
+  const totalScore = game.averageRating * game.numberOfReviews;
+
+  let newRating;
+  if (game.numberOfReviews - 1 === 0) {
+    newRating = 0;
+  } else {
+    newRating = (totalScore - rating) / (game.numberOfReviews - 1);
+  }
+
+  const updatedInfo = await gameCollection.updateOne(
+    { _id: parsedId },
+    {
+      $inc: { numberOfReviews: -1 },
       $set: { averageRating: newRating },
     }
   );
@@ -227,5 +263,6 @@ module.exports = {
   getRecommendedGameByGame,
   updateGame,
   updateReviewStats,
+  removeReview,
   removeGame,
 };

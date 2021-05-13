@@ -57,8 +57,8 @@ let createReview = async (
 
   await userUtil.updateUserReview(user.username, newReview._id.toString());
 
-  const newGame = await gameUtil.updateReviewStats(game._id.toString(), rating);
-  return newGame;
+  await gameUtil.updateReviewStats(game._id.toString(), rating);
+  return newReview;
 };
 
 let readAllReviews = async (id) => {
@@ -181,11 +181,17 @@ let removeReview = async (id) => {
 
   const review = await readReview(id);
 
+  const user = await userUtil.findByUsername(review.username);
+
   let deletionInfo = await gameCollection.updateOne(
     { _id: game._id },
     { $pull: { reviews: review } }
   );
-  if (deletionInfo.deletedCount === 0) throw `Could not delete review.`;
+  if (deletionInfo.updatedCount === 0) throw `Could not delete review.`;
+
+  await userUtil.removeReview(user.username, id);
+
+  await gameUtil.removeReview(game._id.toString(), review.rating);
 
   return { reviewId: parsedId.toString(), deleted: true };
 };

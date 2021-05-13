@@ -172,6 +172,21 @@ let updateUserReview = async (username, reviewId) => {
   return await findByUsername(username);
 };
 
+let removeReview = async (username, reviewId) => {
+  errorz.stringChecker(reviewId, "id");
+  errorz.idChecker(reviewId);
+  let parsedId = ObjectID(reviewId);
+
+  const userCollection = await users();
+  const deletionInfo = await userCollection.updateOne(
+    { username: username },
+    { $pull: { reviewsLeft: parsedId } }
+  );
+  if (deletionInfo.updatedCount === 0) throw `Could not delete review.`;
+
+  return { reviewId: parsedId.toString(), deleted: true };
+};
+
 let removeUser = async (id) => {
   errorz.stringChecker(id, "id");
   errorz.idChecker(id);
@@ -192,5 +207,6 @@ module.exports = {
   followUser,
   favoriteGame,
   updateUserReview,
+  removeReview,
   removeUser,
 };
