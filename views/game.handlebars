@@ -30,29 +30,33 @@
         <!-- Title of review -->
         <label for="reviewTitle">Review title</label>
         <input id="reviewTitle" type="text" name="reviewTitle"/>
+        <br>
 
         <!-- Text content of review -->
         <label for="addReview">Review content</label>
         <input id="addReview" type="text" name="reviewContent"/>
+        <br>
 
         <!-- Spoilers? -->
         <input type="radio" id="spoiler" name="spoiler" value="yes">
         <label for="spoiler">My review contains spoilers</label>
         <input type="radio" id="nospoiler" name="spoiler" value="no" checked>
         <label for="nospoiler">My review does not contain spoilers</label>
+        <br>
 
         <!-- Score from 1 to 5 -->
         <label for="gameScore">Score</label>
         <input type="number" id="gameScore" name="score" min="1" max="5">
+        <br>
 
         <!-- Recommendation -->
         <input type="radio" id="recommend" name="recommended" value="yes" checked>
         <label for="recommend">Recommend</label>
         <input type="radio" id="norecommend" name="recommended" value="no">
         <label for="norecommend">Do not recommend</label>
+        <br>
 
         <input id="submitReview" type="submit" value="Add review"/>
-
         <div id="reviewErrorText" hidden></div>
     </form>
 </div>
