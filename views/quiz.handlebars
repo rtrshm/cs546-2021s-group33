@@ -1,6 +1,8 @@
 <main>
     <h1>Seek a game!</h1>
     <form id="quizForm">
+        <!-- some placeholder questions for now, will expand by a lot
+        when we can rough out what tags we have-->
 
         <!-- filter by year of release (some modern games have a 
         retro vibe, maybe filter by that tag as well) -->
@@ -13,23 +15,32 @@
         </div>
 
         <div class="question">
-            <p>Do you like to </p>
+            <p>Which of the below aspects of a game are you most
+                interested in?</p>
+            <input type="radio" id="action" name="genre1" value="Action">
+            <label for="action">Action</label><br>
+            <input type="radio" id="strategy" name="genre1" value="Strategy">
+            <label for="strategy">Strategy</label><br>
+            <input type="radio" id="story" name="genre1" value="Story">
+            <label for="story">Story</label><br>
         </div>
 
         <div class="question">
+            <p>Are you looking for a solo adventure, to play with
+                others, or both?</p>
+            <input type="radio" id="solo" name="multiplayer" value="Solo">
+            <label for="solo">Solo</label><br>
+            <input type="radio" id="multi" name="multiplayer" value="Multiplayer">
+            <label for="multi">Multiplayer</label><br>
+            <input type="radio" id="both" name="multiplayer" value="Both">
+            <label for="both">Both</label><br>
         </div>
-
-        <div class="question">
-        </div>
-
-        <div class="question">
-        </div>
-
-        <div class="question">
-        </div>
-
-        <div class="question">
-        </div>
-
     </form>
+
+    <div id="quizResult" hidden>
+        <ul id="seconaryResults"></ul>
+    </div>
 </main>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+<script src="../public/js/quiz.js"/>
