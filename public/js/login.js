@@ -31,7 +31,7 @@ myForm.addEventListener('submit', (event) => {
 
     login.hidden = false;
     $.ajax(requestConfig).then(function(responseMessage) {
-        console.log(responseMessage);
+        //console.log(responseMessage);
         if (!responseMessage.bool){
             err.innerHTML = "Incorrect username or password.";
             myPass.focus();

@@ -23,10 +23,8 @@
             })
         };
         
-        console.log('here');
-
         $.ajax(requestConfig).then(function(responseMessage) {
-            console.log(responseMessage);
+            //console.log(responseMessage);
             if (!responseMessage.bool){
                 err.innerHTML = "No results were found.";
                 myGame.focus();

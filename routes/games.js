@@ -101,7 +101,7 @@ const errorChecker = require('../data/errorChecker')
         let {title} = req.body;
         console.log('requested');
         if (!title || typeof(title)!='string' || title.trim().length == 0){
-            return res.status(500).render('searchError.handlebars', {title: "No game found"});
+            return res.json({bool:false});
         }
         console.log('requested2');
         let taken;
