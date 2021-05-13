@@ -18,10 +18,10 @@ function checkErrorArray(array, string)//array is array input, string is type. F
     {
         throw "Error: The input is not an array";
     }
-    if(array.length == 0)
-    {
-        throw "Error: The array is empty";
-    }
+    // if(array.length == 0)
+    // {
+    //     throw "Error: The array is empty";
+    // }
     for(let i = 0; i < array.length; i++)
     {
         if(typeof array[i] !== string) 

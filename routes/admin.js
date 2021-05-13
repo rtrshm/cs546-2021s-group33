@@ -144,7 +144,6 @@ router.post("/addgame", async (req, res) => {
         game = await gameDatabase.createGame(title, img, dateReleased, genres, developers,
             publishers, ageRating, platforms, purchaseLinks); 
     }catch(e) {
-        console.log('z');
         return res.render("createGameError.handlebars", {title:"Error", errormsg:e});
     }
 
@@ -428,14 +427,9 @@ router.post("/modify/:id", async(req,res) => {
             let myobj = {title: title, img: img, dateReleased: dateReleased, genres: genres, developers: developers, publishers: publishers, ageRating: ageRating, platforms: platforms, purchaseLinks: purchaseLinks}
             newgame = await gameDatabase.updateGame(oldgame._id.toString(), myobj); 
         }catch(e) {
-            console.log(genres);
-            console.log(developers);
-            console.log(publishers);
-            console.log(platforms);
-            console.log(purchaseLinks);
             return res.render("modifyGameError.handlebars", {title:"Error", errormsg:e});
         }
-        return res.render("modifyGameSuccess.handlebars", {title: "Game modified", gametitle: oldgame.title});
+        return res.render("modifyGameSuccess.handlebars", {title: "Game modified", gametitle: title});
     }
 });
 
