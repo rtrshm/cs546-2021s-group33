@@ -157,55 +157,58 @@ app.post("/addgame", async (req, res) => {
         dateReleased = "N/A";
     }
 
-    if (!errorChecker.isValidDate(dateReleased)){
-        dateReleased = "N/A"
+    else if (!errorChecker.isValidDate(dateReleased)){
+        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: Invalid date released format"});
     }
 
     if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must be a list of non-empty strings seperated by commas"});
+        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres cannot be empty"});
     }
+    else {
+        genres = genres.split(',');
 
-    genres = genres.split(',');
-
-    if (!genres || !Array.isArray(genres)) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres split failed"});
-    }
-
-    for(let genre of genres) {
-        if(typeof(genre)!=="string" || genre.trim().length === 0) {
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must be an array of non-empty strings"});
+        if (!genres || !Array.isArray(genres)) {
+            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres split failed"});
+        }
+    
+        for(let genre of genres) {
+            if(typeof(genre)!=="string" || genre.trim().length === 0) {
+                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
+            }
         }
     }
 
     if (!developers || typeof(developers)!=='string' || developers.trim().length == 0) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must be a list of non-empty strings seperated by commas"});
+        //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must be a list of non-empty strings seperated by commas"});
+        developers = [];
     }
-
-    developers = developers.split(',');
-
-    if (!developers || !Array.isArray(developers)) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers split failed"});
-    }
-
-    for(let developer of developers) {
-        if(typeof(developer)!=="string" || developer.trim().length === 0) {
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must be an array of non-empty strings"});
+    else {
+        developers = developers.split(',');
+        if (!developers || !Array.isArray(developers)) {
+            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers split failed"});
+        }
+    
+        for(let developer of developers) {
+            if(typeof(developer)!=="string" || developer.trim().length === 0) {
+                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must contain non-empty comma seperated strings"});
+            }
         }
     }
 
     if (!publishers || typeof(publishers)!=='string' || publishers.trim().length == 0) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must be a list of non-empty strings seperated by commas"});
+     //   return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must be a list of non-empty strings seperated by commas"});
+        publishers = [];
     }
-
-    publishers = publishers.split(',');
-
-    if (!publishers || !Array.isArray(publishers)) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers split failed"});
-    }
-
-    for(let publisher of publishers) {
-        if(typeof(publisher)!=="string" || publisher.trim().length === 0) {
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must be an array of non-empty strings"});
+    else {
+        publishers = publishers.split(',');
+        if (!publishers || !Array.isArray(publishers)) {
+            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers split failed"});
+        }
+    
+        for(let publisher of publishers) {
+            if(typeof(publisher)!=="string" || publisher.trim().length === 0) {
+                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must contain non-empty comma seperated strings"});
+            }
         }
     }
 
@@ -214,18 +217,18 @@ app.post("/addgame", async (req, res) => {
     }
 
     if (!platforms || typeof(platforms)!=='string' || platforms.trim().length == 0) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms must be a list of non-empty strings seperated by commas"});
-    }
-
-    platforms = platforms.split(',');
-
-    if (!platforms || !Array.isArray(platforms)) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms split failed"});
-    }
-
-    for(let platform of platforms) {
-        if(typeof(platform)!=="string" || platform.trim().length === 0) {
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: Platforms must be an array of non-empty strings"});
+        //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms must be a list of non-empty strings seperated by commas"});
+        platforms = [];
+    }else {
+        platforms = platforms.split(',');
+        if (!platforms || !Array.isArray(platforms)) {
+            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms split failed"});
+        }
+    
+        for(let platform of platforms) {
+            if(typeof(platform)!=="string" || platform.trim().length === 0) {
+                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
+            }
         }
     }
 
@@ -234,28 +237,27 @@ app.post("/addgame", async (req, res) => {
     }
     else{
         purchaseLinks = purchaseLinks.split(',');
-    }
-
-    if (!purchaseLinks || !Array.isArray(purchaseLinks)) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks split failed"});
-    }
-
-    for(let purchaseLink of purchaseLinks) {
-        if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must be an array of non-empty strings"});
+        if (!purchaseLinks || !Array.isArray(purchaseLinks)) {
+            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks split failed"});
         }
-        let url;
-        try {
-            url = new URL(purchaseLink);
-        }
-        catch (e){
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
-        }
-        if (url.protocol !== "http:" && url.protocol !== "https:"){
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
-        }
-    }
     
+        for(let purchaseLink of purchaseLinks) {
+            if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
+                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must contain non-empty comma seperated strings"});
+            }
+            let url;
+            try {
+                url = new URL(purchaseLink);
+            }
+            catch (e){
+                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
+            }
+            if (url.protocol !== "http:" && url.protocol !== "https:"){
+                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
+            }
+        }
+    }
+
     try {
         game = await gameDatabase.createGame(title, img, dateReleased, genres, developers,
             publishers, ageRating, platforms, purchaseLinks); 

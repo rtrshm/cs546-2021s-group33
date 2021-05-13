@@ -3,7 +3,7 @@ let myUser = document.getElementById('username');
 let myPass = document.getElementById('password');
 let myEmail = document.getElementById('email');
 let myConfirmPass = document.getElementById('confirmpassword');
-let myForm = document.getElementById('login-form');
+let myForm = document.getElementById('signup-form');
 let err = document.getElementById('error');
 
 function ValidateEmail(email)
