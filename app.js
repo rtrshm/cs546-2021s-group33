@@ -28,7 +28,7 @@ app.use(async (req, res, next) => {
     //console.log(req);
     //console.log(req.baseUrl);
     //console.log(req.originalUrl);
-    if (req.originalUrl != '/' && req.originalUrl != '/login' && req.originalUrl != '/signup' && !req.session.user) {
+    if (req.originalUrl != '/' && req.originalUrl != '/login' && req.originalUrl != '/signup' && req.originalUrl != '/verifylogin' && !req.session.user) {
         //console.log(req.originalUrl);
         return res.render("login.handlebars", {title: "Error", errormsg: "Error: Not logged in", redirect: req.originalUrl});
     }
@@ -50,31 +50,36 @@ app.get("/signup", async (req, res, next) => {
 });
 
 app.post("/login", async (req, res) => {
-    let { username, password, redirect } = req.body;
+    let { redirect } = req.body;
+    return res.redirect(redirect);
+});
+
+app.post("/verifylogin", async (req, res) => {
+    let { username, password} = req.body;
     if (!username || typeof(username) !== "string" || username.trim().length == 0) {
-        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "No username provided or username is not valid string.", redirect: redirect});
+        return res.json({bool : false});
     }
     if (!password || typeof(password) !== "string" || password.trim().length == 0) {
-        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "No password provided or password is not valid string.", redirect: redirect});
+        return res.json({bool : false});
     }
     username = username.toLowerCase();
     let user;
     try {
         user = await userDatabase.findByUsername(username);
     } catch(e){
-        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "Incorrect username or password.", redirect: redirect});
+        return res.json({bool : false});
     }
 
     if (!user.password){
-        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "Invalid username or password.", redirect: redirect});
+        return res.json({bool : false});
     }
 
     if (bcrypt.compareSync(password,user.password)) {
         req.session.user = user;
-        return res.redirect(redirect);
+        return res.json({bool : true});
     }
     else {
-        return res.render("login.handlebars", {title: "Sign in failed", errormsg: "Invalid username or password.", redirect: redirect});
+        return res.json({bool : false});
     }
 });
 
