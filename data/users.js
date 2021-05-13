@@ -150,6 +150,22 @@ let unfollowUser = async (followerId, followedId) => {
     return await readUser(followerId);
 }
 
+let isFollowing = async (followerUser, followedUser) => {
+    errorz.stringChecker(followerUser, 'follower');
+    errorz.stringChecker(followedUser, 'followed');
+
+    let follower, followedId;
+    try {
+        follower = await findByUsername(followerUser);
+        followedId = (await findByUsername(followedUser))._id;
+    } catch (e) {
+        throw "User not found.";
+    }
+
+    if (followedId in follower.usersFollowing) return true;
+    else return false;
+}
+
 let favoriteGame = async (userId, gameId) => {
   errorz.stringChecker(userId, "id");
   errorz.idChecker(userId);
@@ -226,6 +242,7 @@ module.exports = {
   updateUser,
   followUser,
   unfollowUser,
+  isFollowing,
   favoriteGame,
   updateUserReview,
   removeReview,
