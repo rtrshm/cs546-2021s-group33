@@ -23,7 +23,7 @@ myForm.addEventListener('submit', (event) => {
     let purchaseLinks = myPurch.value;
 
     if (!img || typeof(img) !== "string" || img.trim().length == 0) {
-        myImg.value = "../public/no_image.jpeg";
+        myImg.value = "../public/images/noimage.png";
     }
 
     if (!developers || typeof(developers)!=='string' || developers.trim().length == 0) {
