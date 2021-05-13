@@ -157,10 +157,6 @@ app.post("/addgame", async (req, res) => {
         dateReleased = "N/A";
     }
 
-    else if (!errorChecker.isValidDate(dateReleased)){
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: Invalid date released format"});
-    }
-
     if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
         return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres cannot be empty"});
     }
