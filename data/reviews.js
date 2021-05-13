@@ -190,10 +190,44 @@ let removeReview = async (id) => {
   return { reviewId: parsedId.toString(), deleted: true };
 };
 
+let getRecentReviews = async (username) =>
+{
+  errorz.stringChecker(username, "username");
+  let user = await userUtil.findByUsername(username);
+  let readThese = user.usersFollowing;
+  let array = [];
+  for(let i = 0; i < readThese.length; i++)
+  {
+    array.push(await userUtil.readUser(readThese[i].toString()));
+  }
+  let allReviews =[];
+  for(let i = 0; i < array.length; i++)
+  {
+    if(array[i].reviewsLeft)
+    {
+      allReviews = allReviews.concat(array[i].reviewsLeft);
+    }
+  }
+  if(allReviews.length > 10)
+  {
+    allReviews.slice(0,10);
+  }
+  let reviewObjs = [];
+  for(let i =0; i < allReviews.length; i++)
+  {
+    reviewObjs.push(await readReview(allReviews[i].toString()));
+  }
+  reviewObjs.sort(function(a, b) {
+    return b.timestamp - a.timestamp;
+  });
+  return reviewObjs;
+
+}
 module.exports = {
   createReview,
   readAllReviews,
   readReview,
   updateReview,
   removeReview,
+  getRecentReviews
 };

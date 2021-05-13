@@ -654,6 +654,73 @@ let main = async () => {
     console.log(e);
   }
 
+  const bean1 = await users.createUser(
+    "user",
+    "randomname",
+    "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
+    "gavinrules@gmail.com"
+  );
+
+  const bean2 = await users.createUser(
+    "user",
+    "randomname2",
+    "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
+    "gavinrul1es@gmail.com"
+  );
+
+  const bean3 = await users.createUser(
+    "user",
+    "randomnsame2",
+    "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
+    "gavinrusl1es@gmail.com"
+  );
+
+  const bean4 = await users.followUser(morerandomname._id.toString() ,bean1._id.toString());
+  const bean5 = await users.followUser(morerandomname._id.toString() ,bean2._id.toString());
+  const bean6 = await users.followUser(morerandomname._id.toString() ,bean3._id.toString());
+  await reviews.createReview(
+    dsr._id.toString(),
+    true,
+    "this should be last",
+    "this should be last",
+    5,
+    true,
+    bean1.username
+  );
+  await reviews.createReview(
+    dsr._id.toString(),
+    false,
+    "asdas",
+    "asdasda",
+    5,
+    true,
+    bean2.username
+  );
+  await reviews.createReview(
+    dsr._id.toString(),
+    false,
+    "this should be first",
+    "this should be first",
+    5,
+    true,
+    bean3.username
+  );
+  
+  try {
+    let array = await reviews.getRecentReviews(morerandomname.username);
+    
+    for(let i = 0; i < array.length; i++)
+    {
+      console.log(array[i]);
+    }
+    console.log("Test 45: Success!");
+    console.log(
+      "******************************************************************************************************"
+    );
+  } catch (e) {
+    console.log(e);
+  }
+
   // Testing complete with some basic information seeded.
   console.log("Done seeding database");
   await db.serverConfig.close();
