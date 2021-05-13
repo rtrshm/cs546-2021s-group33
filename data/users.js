@@ -130,6 +130,26 @@ let followUser = async (followerId, followedId) => {
   return await readUser(followerId);
 };
 
+let unfollowUser = async (followerId, followedId) => {
+    errorz.stringChecker(followerId, "id");
+    errorz.idChecker(followerId);
+    errorz.stringChecker(followedId, "id");
+    errorz.idChecker(followedId);
+
+    const parsedFollowerID = ObjectID(followerId);
+    const parsedFollowedID = ObjectID(followedId);
+
+    const userCollection = await users();
+
+    const updatedInfo = await userCollection.updateOne( 
+        {_id: parsedFollowerID},
+        {$pull : {usersFollowing: parsedFollowedID}});
+
+    if (updatedInfo.modifiedCount === 0)
+        throw `Could not update user information.`;
+    return await readUser(followerId);
+}
+
 let favoriteGame = async (userId, gameId) => {
   errorz.stringChecker(userId, "id");
   errorz.idChecker(userId);
@@ -205,6 +225,7 @@ module.exports = {
   findByUsername,
   updateUser,
   followUser,
+  unfollowUser,
   favoriteGame,
   updateUserReview,
   removeReview,
