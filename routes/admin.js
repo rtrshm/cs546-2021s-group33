@@ -148,7 +148,7 @@ router.post("/addgame", async (req, res) => {
         return res.render("createGameError.handlebars", {title:"Error", errormsg:e});
     }
 
-    res.render("createGameSuccess.handlebars", {title:"Success"});
+    res.render("createGameSuccess.handlebars", {title:"Success", game:title});
 });
 
 router.get("/remove", async(req,res) => {
