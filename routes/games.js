@@ -5,6 +5,7 @@ const router = express.Router();
 // const booksData = mongoCollections.books;
 let { ObjectId } = require('mongodb');
 let gamesDatabase = require('../data/games');
+let reviewsDatabase = require('../data/reviews');
 const errorChecker = require('../data/errorChecker')
 
     router.get('/allgames', async(req, res) => {
@@ -20,7 +21,7 @@ const errorChecker = require('../data/errorChecker')
     router.get('/game/:id', async(req, res) => {
         let game;
         try{
-            game = await gamesDatabase.getGameByTitle(req.params.id);
+            game = await gamesDatabase.readGame(req.params.id);
             if (!game.img || typeof(game.img) !== "string" || game.img.trim().length == 0) {
                 game.img = "/public/no_image.jpeg";
             }
@@ -187,5 +188,68 @@ const errorChecker = require('../data/errorChecker')
         }
         return res.render("searchresult.handlebars", {title:"Game", object:game})
     });
+
+router.post('/addReview/:id', async (req, res) => {
+    let gameId = req.params.id;
+    if (!gameId)
+        return res.status(404).json({message: "No id provided"});
+    
+    try {
+        errorChecker.idChecker(gameId);
+    } catch (e) {
+        return res.status(400).json({message: "Invalid game ID"});
+    }
+
+    let reviewData = req.body;
+
+    if (!reviewData)
+        return res.status(400).json({message: "Missing request body"});
+
+
+
+    // ajax converts all input to strings, so we must convert to actual dtypes
+    reviewData.spoiler = (reviewData.spoiler == 'true');
+    reviewData.recommended = (reviewData.recommended == 'true');
+    reviewData.rating = +reviewData.rating;
+    reviewData.timestamp = +reviewData.timestamp;
+
+    console.log(reviewData);
+
+    // check for errors
+    try {
+        errorChecker.stringChecker(reviewData.reviewTitle, 'review title');
+        errorChecker.stringChecker(reviewData.reviewContent, 'review text');
+        errorChecker.typeChecker(+reviewData.timestamp, 'number');
+        errorChecker.ratingChecker(+reviewData.rating);
+        errorChecker.typeChecker(reviewData.spoiler, 'boolean');
+        errorChecker.typeChecker(reviewData.recommended, 'boolean');
+    } catch (e) {
+        console.log(e);
+        return res.status(400).json({message: "Invalid add review parameter"});
+    }
+
+    let username = req.session.user.username;
+    console.log(username);
+    try {
+        await reviewsDatabase.createReview(
+            gameId, 
+            reviewData.spoiler,
+            reviewData.reviewTitle,
+            reviewData.reviewContent,
+            reviewData.rating,
+            reviewData.recommended,
+            username);
+        console.log('Review should be added!');
+    } catch (e) {
+        console.log(e);
+        if (e == "Error: Game does not exist.") {
+            res.status(404).render('gamesError.handlebars', {title: 'Game not found'});
+        } else if (e == "Could not update game with review.") {
+            res.status(500).json({message: "Review could not be added."});
+        }
+    }
+    res.status(200).send();
+
+})
 
 module.exports = router;
