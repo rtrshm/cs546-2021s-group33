@@ -35,16 +35,22 @@ router.get("/", async (req, res) => {
     }catch(e) {
         return res.render('profileError.handlebars', {title: "error", errormsg: e});
     }
+    let usersFollowing = false;
     if (!user.usersFollowing || !Array.isArray(user.usersFollowing) || user.usersFollowing.length === 0) {
         user.usersFollowing = "This user is not following anyone.";
+        usersFollowing = true;
     }
     if (!user.favoriteGames || !Array.isArray(user.favoriteGames) || user.favoriteGames.length === 0) {
         user.favoriteGames = "This user has no favorite games.";
     }
     if (!user.reviewsLeft || !Array.isArray(user.reviewsLeft) || user.reviewsLeft.length === 0) {
         user.reviewsLeft = "This user has not left any reviews.";
+    } else try { 
+    user.reviewsLeft = await reviewsDatabase.getAllReviewsFromUser(user.username);
+    } catch (e) {
+    res.render(500).json({message: "Could not retrieve reviews for user"});
     }
-    res.render("profile.handlebars", {title: "User profile", object: user});
+    res.render("profile.handlebars", {title: "User profile", object: user, hasUsersFollowing: usersFollowing});
 });
 
 router.get("/:id", async (req, res) => {
@@ -87,8 +93,10 @@ router.get("/:id", async (req, res) => {
     }catch(e) {
         return res.render('profileError.handlebars', {title: "error", errormsg: e});
     }
+    let userFollowing = false;
     if (!profile.usersFollowing || !Array.isArray(profile.usersFollowing) || profile.usersFollowing.length === 0) {
         profile.usersFollowing = "None";
+        userFollowing = true;
     }
     if (!user.favoriteGames || !Array.isArray(user.favoriteGames) || user.favoriteGames.length === 0) {
         profile.favoriteGames = "This user has no favorite games.";
@@ -97,11 +105,11 @@ router.get("/:id", async (req, res) => {
     if (!user.reviewsLeft || !Array.isArray(user.reviewsLeft) || user.reviewsLeft.length === 0) {
         profile.reviewsLeft = "This user has not left any reviews.";
     } else try { 
-        profile.reviewsLeft = await reviewsDatabase.getAllReviewsFromUser(user.username);
+    profile.reviewsLeft = await reviewsDatabase.getAllReviewsFromUser(user.username);
     } catch (e) {
-        res.render(500).json({message: "Could not retrieve reviews for user"});
+    res.render(500).json({message: "Could not retrieve reviews for user"});
     }
-    res.render("profile.handlebars", {title: "User profile", object: profile});
+    res.render("profileOther.handlebars", {title: "User profile", object: profile, hasUsersFollowing: userFollowing});
 });
     
 module.exports = router;

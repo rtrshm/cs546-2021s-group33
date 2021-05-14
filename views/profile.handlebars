@@ -13,7 +13,12 @@
 <p>Permission group: {{object.perms}} </p>
 <p>Username: {{object.username}}</p>
 <p>Date joined: {{object.dateJoined}}</p>
-<p>Users following: {{object.usersFollowing}}</p>
+<p>Users following:{{#if hasUsersFollowing}} None{{/if}}</p>
+{{#each object.usersFollowing}}
+<a href="/profile/{{this}}">{{this}}</a>
+{{/each}}
+<p>Email: {{object.email}}</p>
+<p>Favorite Games: {{object.favoriteGames}}</p>
 <p>Email: {{object.email}}</p>
 <p>Favorite Games: {{object.favoriteGames}}</p>
 <p>Reviews:</p>
@@ -39,12 +44,4 @@
     {{/each}}
 </ul>
 {{else}} <p>This user has not left any reviews</p>
-
-{{!-- {{#if object.usersFollowing}}
-    <ul>
-        {{#each object.usersFollowing}}
-        <li><a href="/shows/{{this.show.id}}">{{this}}</a></li>
-        {{/each}}
-    </ul>
-{{/if}} --}}
-
+{{/if}}

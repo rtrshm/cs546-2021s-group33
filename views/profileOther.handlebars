@@ -13,16 +13,35 @@
 <p>Permission group: {{object.perms}} </p>
 <p>Username: {{object.username}}</p>
 <p>Date joined: {{object.dateJoined}}</p>
-<p>Users following: {{object.usersFollowing}}</p>
+<p>Users following:{{#if hasUsersFollowing}} None{{/if}}</p>
+{{#each object.usersFollowing}}
+<a href="/profile/{{this}}">{{this}}</a>
+{{/each}}
 <p>Favorite Games: {{object.favoriteGames}}</p>
-<p>Reviews: {{object.reviewsLeft}}</p>
-<button id="followButton" type="button">Follow (currently not implemented)</button>
-
-{{!-- {{#if object.usersFollowing}}
-    <ul>
-        {{#each object.usersFollowing}}
-        <li><a href="/shows/{{this.show.id}}">{{this}}</a></li>
-        {{/each}}
-    </ul>
-{{/if}} --}}
-
+<p>Reviews:</p>
+{{#if object.reviewsLeft}}
+<ul id="reviewList">
+    {{#each object.reviewsLeft}}
+    {{#if this.spoiler}}
+        <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
+        <ul class="reviewPoints" hidden>
+            <li>{{this.reviewTitle}}</li>
+            <li>{{this.reviewContent}}</li>
+            <li>Rating: {{this.rating}}</li>
+            <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
+        </ul> <br>
+    {{else}}
+        <ul class="reviewPoints">
+            <li>{{this.reviewTitle}}</li>
+            <li>{{this.reviewContent}}</li>
+            <li>Rating: {{this.rating}}</li>
+            <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
+        </ul> <br>
+    {{/if}}
+    {{/each}}
+</ul>
+{{else}} <p>This user has not left any reviews</p>
+{{/if}}
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+<script src="/public/js/addReview.js"> </script>
