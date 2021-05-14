@@ -10,7 +10,6 @@ router.get("/", async (req, res) => {
     }catch(e) {
         console.log(e);
     }
-    console.log(reviews);
     res.render("usersFollowing.handlebars", {title: "Reviews", reviews: reviews});
 });
 
