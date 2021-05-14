@@ -120,6 +120,8 @@ let getGamesByParameters = async (params) => {
   errorz.checkErrorArray(params.genres, "string");
   errorz.checkErrorArray(params.platforms, "string");
   const gameCollection = await games();
+  
+  // ensure that at least one genre and platform is satisfied
   const gameList = await gameCollection
     .find( {$and: 
         [{ genres: {$in: params.genres}}, 
@@ -127,6 +129,9 @@ let getGamesByParameters = async (params) => {
         { title: 1, genres: 1, averageRating: 1 })
     .sort({ averageRating: 1 })
     .toArray();
+
+  // consider sorting by number of categories satisfied in later updates
+  
   if (gameList === null) throw `No games with given parameters found.`;
 
   return gameList;

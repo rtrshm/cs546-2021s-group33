@@ -95,7 +95,7 @@
 
         let requestConfig = {
             method: 'GET',
-            url: '/game/search',
+            url: '/game/quiz',
             data: JSON.stringify(data)
         }
 
