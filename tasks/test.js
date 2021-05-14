@@ -784,6 +784,43 @@ let main = async () => {
         "******************************************************************************************************"
     );
 
+    try {
+        let array = await reviews.getAllReviewIdsFromUser(morerandomname.username);
+        let arrayz =[];
+        for(let i = 0; i < array.length; i++)
+        {
+            console.log(array[i]);
+        }
+        for(let i = 0; i < array.length; i++)
+        {
+            arrayz.push(await reviews.readReview(array[i].toString()));
+        }
+        for(let i = 0; i < arrayz.length; i++)
+        {
+            console.log(arrayz[i]);
+        }
+        console.log("Test 47: Success!");
+        console.log(
+            "******************************************************************************************************"
+        );
+    } catch (e) {
+        console.log(e);
+    }
+
+    try {
+        let array = await reviews.getAllReviewsFromUser(morerandomname.username);
+        for(let i = 0; i < array.length; i++)
+        {
+            console.log(array[i]);
+        }
+        console.log("Test 48: Success!");
+        console.log(
+            "******************************************************************************************************"
+        );
+    } catch (e) {
+        console.log(e);
+    }
+
     // Testing complete with some basic information seeded.
     console.log("Done seeding database");
     await db.serverConfig.close();

@@ -239,6 +239,28 @@ let getRecentReviews = async (username) => {
   });
   return reviewObjs;
 };
+
+let getAllReviewIdsFromUser = async (username) =>
+{
+  errorz.stringChecker(username, "username");
+  let user = await userUtil.findByUsername(username);
+  let reviews = user.reviewsLeft;
+  return reviews; 
+};
+
+let getAllReviewsFromUser = async (username) =>
+{
+  errorz.stringChecker(username, "username");
+  let user = await userUtil.findByUsername(username);
+  let reviews = user.reviewsLeft;
+  let reviewz = [];
+  for(let i = 0; i < reviews.length; i++)
+  {
+    reviewz.push(await readReview(reviews[i].toString()));
+  }
+  return reviewz;
+};
+
 module.exports = {
   createReview,
   readAllReviews,
@@ -247,4 +269,6 @@ module.exports = {
   markHelpful,
   removeReview,
   getRecentReviews,
+  getAllReviewIdsFromUser,
+  getAllReviewsFromUser
 };
