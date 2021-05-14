@@ -4,6 +4,7 @@ const games = require('./games');
 const nav = require('./nav');
 const admin = require('./admin');
 const quiz = require('./quiz');
+const following = require('./following');
 
 const constructorMethod = (app) => {
   app.use('/profile', profile);
@@ -11,6 +12,7 @@ const constructorMethod = (app) => {
   app.use('/nav', nav)
   app.use('/admin', admin)
   app.use('/quiz', quiz)
+  app.use('/following', following)
   app.use('/', main);
   app.use('*', (req, res) => {
     let url = `http://localhost:3000${req.baseUrl}`;

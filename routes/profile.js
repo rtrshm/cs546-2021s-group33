@@ -29,7 +29,11 @@ router.get("/", async (req, res) => {
     catch (e){
         user.email = 'N/A';
     }
-
+    try {
+        user.usersFollowing = await usersDatabase.getListFollowing(user.username);
+    }catch(e) {
+        return res.render('profileError.handlebars', {title: "error", errormsg: e});
+    }
     if (!user.usersFollowing || !Array.isArray(user.usersFollowing) || user.usersFollowing.length === 0) {
         user.usersFollowing = "This user is not following anyone.";
     }
@@ -77,13 +81,18 @@ router.get("/:id", async (req, res) => {
     if (user.username !== currentUser.username) {
         profile.email = 'Hidden';
     }
-
-    if (!user.usersFollowing || !Array.isArray(user.usersFollowing) || user.usersFollowing.length === 0) {
-        profile.usersFollowing = "This user is not following anyone.";
+    try {
+        profile.usersFollowing = await usersDatabase.getListFollowing(user.username);
+    }catch(e) {
+        return res.render('profileError.handlebars', {title: "error", errormsg: e});
+    }
+    if (!profile.usersFollowing || !Array.isArray(profile.usersFollowing) || profile.usersFollowing.length === 0) {
+        profile.usersFollowing = "None";
     }
     if (!user.favoriteGames || !Array.isArray(user.favoriteGames) || user.favoriteGames.length === 0) {
         profile.favoriteGames = "This user has no favorite games.";
     }
+    
     if (!user.reviewsLeft || !Array.isArray(user.reviewsLeft) || user.reviewsLeft.length === 0) {
         profile.reviewsLeft = "This user has not left any reviews.";
     }

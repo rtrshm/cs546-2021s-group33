@@ -11,19 +11,25 @@ let main = async () => {
   await db.dropDatabase();
 
   // Initialize an admin.
-  await users.createUser(
+  const lempie = await users.createUser(
     "admin",
     "lempie",
     "$2b$16$dZk6oJKoy2NBpI5KUM0bVOv7tjusBluaKUWKzOEjOsAPciMcMRu36",
     "lempie@gmail.com"
   );
-
+ 
   // Initialize a user.
   const randomname = await users.createUser(
     "user",
     "randomname",
     "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
     "aszyluk@stevens.edu"
+  );
+  const dylan = await users.createUser(
+    "user",
+    "dulan",
+    "$2b$16$ufnk/noA/fhVyjF06Z9XkeiS39djqRFl5xdRUhUrGOMc2GO0LhXL6",
+    "dulan@gmail.com"
   );
 
   // Initialize a game.
@@ -65,6 +71,8 @@ let main = async () => {
     true,
     randomname.username
   );
+  await users.followUser(lempie._id.toString(), randomname._id.toString());
+  await users.followUser(lempie._id.toString(), dylan._id.toString());
 
   // Testing complete with some basic information seeded.
   console.log("Done seeding database");
