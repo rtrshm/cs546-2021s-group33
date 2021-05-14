@@ -17,7 +17,7 @@ let main = async () => {
     "$2b$16$dZk6oJKoy2NBpI5KUM0bVOv7tjusBluaKUWKzOEjOsAPciMcMRu36",
     "lempie@gmail.com"
   );
- 
+
   // Initialize a user.
   const randomname = await users.createUser(
     "user",
@@ -62,7 +62,7 @@ let main = async () => {
     ]
   );
 
-  await reviews.createReview(
+  const review = await reviews.createReview(
     dsr._id.toString(),
     false,
     "Good Game",
@@ -73,6 +73,8 @@ let main = async () => {
   );
   await users.followUser(lempie._id.toString(), randomname._id.toString());
   await users.followUser(lempie._id.toString(), dylan._id.toString());
+
+  await reviews.markHelpful(review._id.toString());
 
   // Testing complete with some basic information seeded.
   console.log("Done seeding database");

@@ -170,6 +170,23 @@ let updateReview = async (id, username, newData) => {
   return await readReview(id);
 };
 
+let markHelpful = async (id) => {
+  errorz.stringChecker(id, "id");
+  errorz.idChecker(id);
+  const parsedId = ObjectID(id);
+
+  const gameCollection = await games();
+
+  const updatedInfo = await gameCollection.updateOne(
+    { "reviews._id": parsedId },
+    { $inc: { "reviews.$.helpfulCount": 1 } }
+  );
+  if (updatedInfo.modifiedCount === 0)
+    throw `Could not update review information.`;
+
+  return await readReview(id);
+};
+
 let removeReview = async (id) => {
   errorz.stringChecker(id, "id");
   errorz.idChecker(id);
@@ -196,44 +213,38 @@ let removeReview = async (id) => {
   return { reviewId: parsedId.toString(), deleted: true };
 };
 
-let getRecentReviews = async (username) =>
-{
+let getRecentReviews = async (username) => {
   errorz.stringChecker(username, "username");
   let user = await userUtil.findByUsername(username);
   let readThese = user.usersFollowing;
   let array = [];
-  for(let i = 0; i < readThese.length; i++)
-  {
+  for (let i = 0; i < readThese.length; i++) {
     array.push(await userUtil.readUser(readThese[i].toString()));
   }
-  let allReviews =[];
-  for(let i = 0; i < array.length; i++)
-  {
-    if(array[i].reviewsLeft)
-    {
+  let allReviews = [];
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].reviewsLeft) {
       allReviews = allReviews.concat(array[i].reviewsLeft);
     }
   }
-  if(allReviews.length > 10)
-  {
-    allReviews.slice(0,10);
+  if (allReviews.length > 10) {
+    allReviews.slice(0, 10);
   }
   let reviewObjs = [];
-  for(let i =0; i < allReviews.length; i++)
-  {
+  for (let i = 0; i < allReviews.length; i++) {
     reviewObjs.push(await readReview(allReviews[i].toString()));
   }
-  reviewObjs.sort(function(a, b) {
+  reviewObjs.sort(function (a, b) {
     return b.timestamp - a.timestamp;
   });
   return reviewObjs;
-
-}
+};
 module.exports = {
   createReview,
   readAllReviews,
   readReview,
   updateReview,
+  markHelpful,
   removeReview,
-  getRecentReviews
+  getRecentReviews,
 };

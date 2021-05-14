@@ -131,63 +131,63 @@ let followUser = async (followerId, followedId) => {
 };
 
 let unfollowUser = async (followerId, followedId) => {
-    errorz.stringChecker(followerId, "id");
-    errorz.idChecker(followerId);
-    errorz.stringChecker(followedId, "id");
-    errorz.idChecker(followedId);
+  errorz.stringChecker(followerId, "id");
+  errorz.idChecker(followerId);
+  errorz.stringChecker(followedId, "id");
+  errorz.idChecker(followedId);
 
-    const parsedFollowerID = ObjectID(followerId);
-    const parsedFollowedID = ObjectID(followedId);
+  const parsedFollowerID = ObjectID(followerId);
+  const parsedFollowedID = ObjectID(followedId);
 
-    const userCollection = await users();
+  const userCollection = await users();
 
-    const updatedInfo = await userCollection.updateOne( 
-        {_id: parsedFollowerID},
-        {$pull : {usersFollowing: parsedFollowedID}});
+  const updatedInfo = await userCollection.updateOne(
+    { _id: parsedFollowerID },
+    { $pull: { usersFollowing: parsedFollowedID } }
+  );
 
-    if (updatedInfo.modifiedCount === 0)
-        throw `Could not update user information.`;
-    return await readUser(followerId);
-}
+  if (updatedInfo.modifiedCount === 0)
+    throw `Could not update user information.`;
+  return await readUser(followerId);
+};
 
 let isFollowing = async (followerUser, followedUser) => {
-    errorz.stringChecker(followerUser, 'follower');
-    errorz.stringChecker(followedUser, 'followed');
+  errorz.stringChecker(followerUser, "follower");
+  errorz.stringChecker(followedUser, "followed");
 
-    let follower, followed;
-    try {
-        follower = await findByUsername(followerUser);
-        followed = await findByUsername(followedUser);
-    } catch (e) {
-        throw "User not found.";
-    }
+  let follower, followed;
+  try {
+    follower = await findByUsername(followerUser);
+    followed = await findByUsername(followedUser);
+  } catch (e) {
+    throw "User not found.";
+  }
 
-    for (let user of follower.usersFollowing.map(x => x.toString())) {
-        if (followed._id.toString() == user)
-            return true; 
-    }
-    return false;
-}
+  for (let user of follower.usersFollowing.map((x) => x.toString())) {
+    if (followed._id.toString() == user) return true;
+  }
+  return false;
+};
 
 let getListFollowing = async (username) => {
-    errorz.stringChecker(username, 'username');
+  errorz.stringChecker(username, "username");
 
-    let user;
-    try {
-        user = await findByUsername(username);
-    } catch (e) {
-        throw "User not found";
-    }
+  let user;
+  try {
+    user = await findByUsername(username);
+  } catch (e) {
+    throw "User not found";
+  }
 
-    let result = [];
+  let result = [];
 
-    for (let userId of user.usersFollowing) {
-        let followed = await readUser(userId.toString());
-        result.push(followed.username);
-    }
+  for (let userId of user.usersFollowing) {
+    let followed = await readUser(userId.toString());
+    result.push(followed.username);
+  }
 
-    return result;
-}
+  return result;
+};
 
 let favoriteGame = async (userId, gameId) => {
   errorz.stringChecker(userId, "id");
@@ -241,7 +241,7 @@ let removeReview = async (username, reviewId) => {
     { username: username },
     { $pull: { reviewsLeft: parsedId } }
   );
-  if (deletionInfo.updatedCount === 0) throw `Could not delete review.`;
+  if (deletionInfo.modifiedCount === 0) throw `Could not delete review.`;
 
   return { reviewId: parsedId.toString(), deleted: true };
 };
