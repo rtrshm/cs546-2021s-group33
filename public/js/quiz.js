@@ -15,21 +15,20 @@
   };
  */
 
-
 ($ => {
-    let quizForm = $('quizForm'),
-        quizResult = $('quizResult'),
-        primaryResult = $('quizResult'),
-        secondaryResults=$('secondaryResults');
+    let quizForm = $('#quizForm'),
+        quizResult = $('#quizResult'),
+        secondaryResults=$('#secondaryResults');
+
+    quizResult.hide();
 
     let listResults = results => {
         if (results.length == 0) {
             quizResult.append($('<p>No matches were found!' + 
                 'This might be Artur\'s fault!</p>'));
         } else 
-            primaryResult.append(renderGame(results[0]));
+            quizResult.append(renderGame(results[0]));
 
-        
         for (let game of results.slice(1)) 
             // links that will lead to each game
             secondaryResults.append(`<a href="/game/${game._id}"/>`);
@@ -44,7 +43,7 @@
      * Returns a <div> element with a list of fields
      */
     let renderGame = game => {
-        let gameDiv = $('<div id="primaryResult" hidden></div>');
+        let gameDiv = $('<div id="primaryResult"></div>');
 
         gameDiv.append($( game.image ? `<img src=${game.image}`
             : 'game'));
@@ -77,26 +76,26 @@
                     // otherwise, just display the item as string
                     } else {
                         dd.append(`${field[1]}`);
-                        attrlist.append(dd);
+                        attrList.append(dd);
                     }
                 }
             }
-            gameDiv.append(attrlist);
-            return gameDiv;
+        gameDiv.append(attrList);
+        return gameDiv;
         };
 
     quizForm.submit(event => {
         event.preventDefault();
         quizResult.hide();
-        let genres = $('input:radio:checked').map(x => x.val().toLowerCase());
-        let platforms = $("input[name='platform']:checked").map(x => x.val().toLowerCase());
-
+        let genres = $.map($('input[type="radio"]:checked'), elem => $(elem).val())
+        let platforms = $.map($("input[name='platform']:checked"), elem => $(elem).val());
         let data = {genres, platforms};
 
         let requestConfig = {
-            method: 'GET',
-            url: '/game/quiz',
-            data: JSON.stringify(data)
+            method: 'POST',
+            url: '/games/quiz',
+            dataType: 'json',
+            data
         }
 
         $.ajax(requestConfig)

@@ -213,7 +213,6 @@ router.post('/addReview/:id', async (req, res) => {
     reviewData.rating = +reviewData.rating;
     reviewData.timestamp = +reviewData.timestamp;
 
-    console.log(reviewData);
 
     // check for errors
     try {
@@ -229,7 +228,6 @@ router.post('/addReview/:id', async (req, res) => {
     }
 
     let username = req.session.user.username;
-    console.log(username);
     try {
         await reviewsDatabase.createReview(
             gameId, 
@@ -239,7 +237,6 @@ router.post('/addReview/:id', async (req, res) => {
             reviewData.rating,
             reviewData.recommended,
             username);
-        console.log('Review should be added!');
     } catch (e) {
         console.log(e);
         if (e == "Error: Game does not exist.") {
@@ -254,12 +251,12 @@ router.post('/addReview/:id', async (req, res) => {
 router.post('/quiz', async (req, res) => {
     let params = req.body;
     if (!params) res.status(400).json({message: "No parameters provided"});
-    console.log(params);
     try {
         let resultList = await gamesDatabase.getGamesByParameters(params);
-        res.json(resultList);
+        res.json(resultList).send();
         return;
     } catch (e) {
+        console.log(e);
         res.status(404).json({message: "No games with matching parameter found"});
         return;
     }

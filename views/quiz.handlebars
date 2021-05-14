@@ -1,7 +1,7 @@
 <main>
     <a href="/nav">Go back</a>
     <h1>Seek a game!</h1>
-    <form id="quizForm">
+    <form id="quizForm" method="post">
         <!-- some placeholder questions for now, will expand by a lot
         when we can rough out what tags we have-->
 
@@ -52,12 +52,12 @@
             <label for="ps5">PlayStation 5</label> <br>
 
             <input type="checkbox" id="xbox360" name="platform" value="Xbox 360">
-            <label for="xbox360">XBox 360</label> <br>
+            <label for="xbox360">Xbox 360</label> <br>
 
             <input type="checkbox" id="xboxone" name="platform" value="Xbox One">
-            <label for="xboxone">XBox One</label> <br>
+            <label for="xboxone">Xbox One</label> <br>
 
-            <input type="checkbox" id="switch" name="platform" value="Switch">
+            <input type="checkbox" id="switch" name="platform" value="Nintendo Switch">
             <label for="switch">Nintendo Switch</label> <br>
 
             <input type="checkbox" id="ios" name="platform" value="iOS">
@@ -71,7 +71,7 @@
 
     </form>
 
-    <div id="quizResult" hidden>
+    <div id="quizResult">
         <ul id="seconaryResults"></ul>
     </div>
 </main>
