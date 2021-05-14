@@ -51,7 +51,6 @@
         
         let attrList = $('<dl></dl>');
 
-
         // go through all attributes of game and list them
         // depending on what type the attribute is
         for (let field of [
@@ -64,7 +63,7 @@
             ['Platforms', game.platforms],
             ['Purchase links', game.puchaseLinks]]) {
                 if (field[1]) {
-                    attrlist.append($(`<dt>${field[0]}</dt>`));
+                    attrList.append($(`<dt>${field[0]}</dt>`));
                     let dd = $('<dd></dd>');
 
                     // if attribute is an array, display an itemized list
@@ -73,7 +72,7 @@
                         for (let entry of field[1]) 
                             uldd.append($(`<li>${entry}</li>`));
                         dd.append(uldd);
-                        attrlist.append(dd);
+                        attrList.append(dd);
 
                     // otherwise, just display the item as string
                     } else {
@@ -87,12 +86,17 @@
         };
 
     quizForm.submit(event => {
+        event.preventDefault();
         quizResult.hide();
-        let answers = $('input:radio:checked').map(x => x.val().toLowerCase());
+        let genres = $('input:radio:checked').map(x => x.val().toLowerCase());
+        let platforms = $("input[name='platform']:checked").map(x => x.val().toLowerCase());
+
+        let data = {genres, platforms};
+
         let requestConfig = {
             method: 'GET',
             url: '/game/search',
-            data: JSON.stringify(answers)
+            data: JSON.stringify(data)
         }
 
         $.ajax(requestConfig)
