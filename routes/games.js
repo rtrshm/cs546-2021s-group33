@@ -249,7 +249,20 @@ router.post('/addReview/:id', async (req, res) => {
         }
     }
     res.status(200).send();
+});
 
+router.post('/quiz', async (req, res) => {
+    let params = req.body;
+    try {
+        let resultList = await gamesDatabase.getGamesByParameters(params);
+        res.json(resultList);
+        return;
+    } catch (e) {
+        res.status(404).json({message: "No games with matching parameter found"});
+        return;
+    }
 })
+
+
 
 module.exports = router;

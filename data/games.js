@@ -116,15 +116,16 @@ let getGamesByGenre = async (genre) => {
   return gameList;
 };
 
-let getGamesByGenreList = async (genres) => {
-  errorz.checkErrorArray(genre, "string");
-
+let getGamesByParameters = async (params) => {
+  errorz.checkErrorArray(params.genres, "string");
+  errorz.checkErrorArray(params.platforms, "string");
   const gameCollection = await games();
   const gameList = await gameCollection
-    .find({ $or: { genres } }, { title: 1, genres: 1, averageRating: 1 })
+    .find({ $or: [{ genres: params.genres}, {platforms: params.platforms} ]},
+        { title: 1, genres: 1, averageRating: 1 })
     .sort({ averageRating: 1 })
     .toArray();
-  if (gameList === null) throw `No games with any genres found.`;
+  if (gameList === null) throw `No games with given parameters found.`;
 
   return gameList;
 };
@@ -286,7 +287,7 @@ module.exports = {
   getAllGames,
   getGameByTitle,
   getGamesByGenre,
-  getGamesByGenreList,
+  getGamesByParameters,
   getRecommendedGameByGame,
   updateGame,
   updateReviewStats,
