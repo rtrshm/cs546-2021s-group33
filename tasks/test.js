@@ -19,6 +19,14 @@ let main = async () => {
     "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
     "aszyluk@stevens.edu"
   );
+  
+  const epicgamer69420 = await users.createUser(
+      "user",
+      "epicgamer69420",
+      // 'gaming'
+      "$2b$16$2c4OX8P2k.H4ilbWo3FfY.zroEWy1Hl4QEZ67EjByeXUmWYAC3RX6",
+      "epicgaming@gamers.com"
+  );
 
   // Some functions for testing the functionality of user database functions.
   // This is not checking if errors are properly handled. This should be done separately.
@@ -64,6 +72,48 @@ let main = async () => {
       "******************************************************************************************************"
     );
   }
+
+  try {
+      const test3andahalf = await users.followUser(randomname._id.toString(), epicgamer69420._id.toString());
+      console.log(`Test 3.5 (followUser): ${test3andahalf.usersFollowing}`);
+      console.log(
+        "******************************************************************************************************"
+      );
+  } catch(e) {
+      console.log(e);
+      console.log(
+        "******************************************************************************************************"
+      )
+  }
+
+  try {
+    const test3pt66 = await users.isFollowing("morerandomname", "epicgamer69420");
+    console.log(`Test 3.66 (isFollowing) should be true: ${test3pt66}`);
+    console.log(
+      "******************************************************************************************************"
+    )
+  } catch(e) {
+    console.log(e);
+    console.log(
+        "******************************************************************************************************"
+    )
+  }
+
+  try {
+      const test3and3q = await users.unfollowUser(randomname._id.toString(), epicgamer69420._id.toString());
+      console.log(`Test 3.75 (unfollowUser) should be empty: ${test3and3q.usersFollowing}`);
+      console.log(
+        "******************************************************************************************************"
+      );
+  } catch(e) {
+      console.log(e);
+      console.log(
+        "******************************************************************************************************"
+      )
+  }
+
+
+
   try {
     const test4 = await users.removeUser(randomname._id.toString());
     console.log(`Test 4 (removeUser): ${JSON.stringify(test4)}`);
@@ -76,6 +126,8 @@ let main = async () => {
       "******************************************************************************************************"
     );
   }
+
+
 
   // Initializing a user with the same information as the first user. Since the user was deleted, there's no issue.
   // If there's an issue, that means the user wasn't removed properly.

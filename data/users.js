@@ -154,16 +154,20 @@ let isFollowing = async (followerUser, followedUser) => {
     errorz.stringChecker(followerUser, 'follower');
     errorz.stringChecker(followedUser, 'followed');
 
-    let follower, followedId;
+    let follower, followed;
     try {
         follower = await findByUsername(followerUser);
-        followedId = (await findByUsername(followedUser))._id;
+        followed = await findByUsername(followedUser);
     } catch (e) {
         throw "User not found.";
     }
 
-    if (followedId in follower.usersFollowing) return true;
-    else return false;
+    for (let user of follower.usersFollowing.map(x => x.toString())) {
+        if (followed._id.toString() == user)
+            return true; 
+    }
+
+    return false;
 }
 
 let favoriteGame = async (userId, gameId) => {
