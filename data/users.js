@@ -166,8 +166,27 @@ let isFollowing = async (followerUser, followedUser) => {
         if (followed._id.toString() == user)
             return true; 
     }
-
     return false;
+}
+
+let getListFollowing = async (username) => {
+    errorz.stringChecker(username, 'username');
+
+    let user;
+    try {
+        user = await findByUsername(username);
+    } catch (e) {
+        throw "User not found";
+    }
+
+    let result = [];
+
+    for (let userId of user.usersFollowing) {
+        let followed = await readUser(userId.toString());
+        result.push(followed.username);
+    }
+
+    return result;
 }
 
 let favoriteGame = async (userId, gameId) => {
@@ -247,6 +266,7 @@ module.exports = {
   followUser,
   unfollowUser,
   isFollowing,
+  getListFollowing,
   favoriteGame,
   updateUserReview,
   removeReview,
