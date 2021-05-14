@@ -37,7 +37,7 @@ let main = async () => {
     "Dark Souls",
     "https://assets2.ignimgs.com/2016/01/19/darksouls1cover-agame-coverjpg-c73c7a_765w.jpg",
     "9/22/2011",
-    ["Action role-playing game", "Dungeon crawl"],
+    ["Action", "RPG"],
     [
       "FromSoftware, Inc.",
       "Bluepoint Games",
@@ -51,7 +51,7 @@ let main = async () => {
     [
       "Playstation 3",
       "Xbox 360",
-      "Microsoft Windows",
+      "PC",
       "Playstation 4",
       "Xbox One",
       "Nintendo Switch",
