@@ -17,7 +17,7 @@
 <p>Email: {{object.email}}</p>
 <p>Favorite Games: {{object.favoriteGames}}</p>
 <p>Reviews:</p>
-
+{{#if object.reviewsLeft}}
 <ul id="reviewList">
     {{#each object.reviewsLeft}}
     {{#if this.spoiler}}
@@ -38,6 +38,7 @@
     {{/if}}
     {{/each}}
 </ul>
+{{else}} <p>This user has not left any reviews</p>
 
 {{!-- {{#if object.usersFollowing}}
     <ul>
