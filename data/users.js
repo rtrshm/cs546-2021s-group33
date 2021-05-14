@@ -22,6 +22,7 @@ let createUser = async (perms, username, hashPassword, email) => {
     email: email,
     favoriteGames: [],
     reviewsLeft: [],
+    reviewsMarkedHelpful: [],
   };
 
   const userChecker = new RegExp(`^${username}$`, "i");

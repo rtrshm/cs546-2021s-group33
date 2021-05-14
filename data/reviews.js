@@ -4,6 +4,7 @@ const games = mongoCollections.games;
 const gameUtil = require("./games");
 const userUtil = require("./users");
 const errorz = require("./errorChecker");
+const { users } = require("../config/mongoCollections");
 
 let createReview = async (
   gameId,
@@ -170,12 +171,21 @@ let updateReview = async (id, username, newData) => {
   return await readReview(id);
 };
 
-let markHelpful = async (id) => {
+let markHelpful = async (id, username) => {
   errorz.stringChecker(id, "id");
   errorz.idChecker(id);
+  errorz.stringChecker(username, "username");
   const parsedId = ObjectID(id);
 
   const gameCollection = await games();
+  const userCollection = await users();
+
+  const updatedUser = await userCollection.updateOne(
+    { username: username },
+    { $addToSet: { reviewsMarkedHelpful: parsedId } }
+  );
+  if (updatedUser.modifiedCount === 0)
+    throw `Could not update review information.`;
 
   const updatedInfo = await gameCollection.updateOne(
     { "reviews._id": parsedId },
@@ -240,22 +250,19 @@ let getRecentReviews = async (username) => {
   return reviewObjs;
 };
 
-let getAllReviewIdsFromUser = async (username) =>
-{
+let getAllReviewIdsFromUser = async (username) => {
   errorz.stringChecker(username, "username");
   let user = await userUtil.findByUsername(username);
   let reviews = user.reviewsLeft;
-  return reviews; 
+  return reviews;
 };
 
-let getAllReviewsFromUser = async (username) =>
-{
+let getAllReviewsFromUser = async (username) => {
   errorz.stringChecker(username, "username");
   let user = await userUtil.findByUsername(username);
   let reviews = user.reviewsLeft;
   let reviewz = [];
-  for(let i = 0; i < reviews.length; i++)
-  {
+  for (let i = 0; i < reviews.length; i++) {
     reviewz.push(await readReview(reviews[i].toString()));
   }
   return reviewz;
@@ -270,5 +277,5 @@ module.exports = {
   removeReview,
   getRecentReviews,
   getAllReviewIdsFromUser,
-  getAllReviewsFromUser
+  getAllReviewsFromUser,
 };
