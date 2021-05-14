@@ -121,7 +121,9 @@ let getGamesByParameters = async (params) => {
   errorz.checkErrorArray(params.platforms, "string");
   const gameCollection = await games();
   const gameList = await gameCollection
-    .find({ $or: [{ genres: params.genres}, {platforms: params.platforms} ]},
+    .find( {$and: 
+        [{ genres: {$in: params.genres}}, 
+         {platforms: {$in: params.platforms}}]},
         { title: 1, genres: 1, averageRating: 1 })
     .sort({ averageRating: 1 })
     .toArray();
