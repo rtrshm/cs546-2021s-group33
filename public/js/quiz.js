@@ -45,8 +45,7 @@
     let renderGame = game => {
         let gameDiv = $('<div id="primaryResult"></div>');
 
-        gameDiv.append($( game.image ? `<img src=${game.image}`
-            : 'game'));
+        gameDiv.append($(`<img alt="No image found" src=${game.img}>`));
         
         let attrList = $('<dl></dl>');
 
