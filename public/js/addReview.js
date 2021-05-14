@@ -7,8 +7,7 @@
         reviewForm = $('#addReviewForm'),
         reviewErrorText = $('#reviewErrorText'),
         reviewRating = $('#gameScore'),
-        gameId = $('#gameId').text(),
-        reviewList = $('#reviewList');
+        gameId = $('#gameId').text();
 
     reviewDiv.hide();
 
@@ -17,15 +16,10 @@
         openReview.hide();
     });
 
-    let renderReview = (review) => {
-        let author = $('')
-        let parent = $('<ul class="review"></ul>');
-        parent.append($(`<li>${review.reviewTitle}`));
-        parent.append($(`<li>${review.reivewTextContent}`));
-        parent.append($(`<li>Rating: ${review.rating}`));
-        parent.append($(`<li>Recommended: ${review.recommended ? "Yes" : "No"}</li>`));
-        return parent;
-    }
+    // attach handler to spoiler buttons
+    $(".revealSpoiler").click(function() {
+        $(this).siblings(".reviewPoints").show()
+    });
 
     reviewForm.submit(event => {
         event.preventDefault();

@@ -32,7 +32,7 @@
         <input id="reviewTitle" type="text" name="reviewTitle"/>
         <br>
 
-        <!-- Text content of review -->
+        <!-- Text gicontent of review -->
         <label for="addReview">Review content</label>
         <input id="addReview" type="text" name="reviewContent"/>
         <br>
@@ -68,6 +68,15 @@
 <ul id="reviewList">
     {{#each object.reviews}}
     <li>By <a href="/profile/{{this.username}}">{{this.username}}</a> <br>
+    {{#if this.spoiler}}
+        <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
+        <ul class="reviewPoints" hidden>
+            <li>{{this.reviewTitle}}</li>
+            <li>{{this.reviewContent}}</li>
+            <li>Rating: {{this.rating}}</li>
+            <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
+        </ul> <br>
+    {{else}}
         <ul class="reviewPoints">
             <li>{{this.reviewTitle}}</li>
             <li>{{this.reviewContent}}</li>
@@ -75,6 +84,7 @@
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
         </ul> <br>
     </li>
+    {{/if}}
     {{/each}}
 </ul>
 
