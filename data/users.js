@@ -130,6 +130,46 @@ let followUser = async (followerId, followedId) => {
   return await readUser(followerId);
 };
 
+let unfollowUser = async (followerId, followedId) => {
+    errorz.stringChecker(followerId, "id");
+    errorz.idChecker(followerId);
+    errorz.stringChecker(followedId, "id");
+    errorz.idChecker(followedId);
+
+    const parsedFollowerID = ObjectID(followerId);
+    const parsedFollowedID = ObjectID(followedId);
+
+    const userCollection = await users();
+
+    const updatedInfo = await userCollection.updateOne( 
+        {_id: parsedFollowerID},
+        {$pull : {usersFollowing: parsedFollowedID}});
+
+    if (updatedInfo.modifiedCount === 0)
+        throw `Could not update user information.`;
+    return await readUser(followerId);
+}
+
+let isFollowing = async (followerUser, followedUser) => {
+    errorz.stringChecker(followerUser, 'follower');
+    errorz.stringChecker(followedUser, 'followed');
+
+    let follower, followed;
+    try {
+        follower = await findByUsername(followerUser);
+        followed = await findByUsername(followedUser);
+    } catch (e) {
+        throw "User not found.";
+    }
+
+    for (let user of follower.usersFollowing.map(x => x.toString())) {
+        if (followed._id.toString() == user)
+            return true; 
+    }
+
+    return false;
+}
+
 let favoriteGame = async (userId, gameId) => {
   errorz.stringChecker(userId, "id");
   errorz.idChecker(userId);
@@ -205,6 +245,8 @@ module.exports = {
   findByUsername,
   updateUser,
   followUser,
+  unfollowUser,
+  isFollowing,
   favoriteGame,
   updateUserReview,
   removeReview,
