@@ -74,7 +74,7 @@ let main = async () => {
   await users.followUser(lempie._id.toString(), randomname._id.toString());
   await users.followUser(lempie._id.toString(), dylan._id.toString());
 
-  await reviews.markHelpful(review._id.toString());
+  await reviews.markHelpful(review._id.toString(), "lempie");
 
   // Testing complete with some basic information seeded.
   console.log("Done seeding database");
