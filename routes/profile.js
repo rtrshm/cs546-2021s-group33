@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const errorChecker = require('../data/errorChecker');
 const usersDatabase = require('../data/users');
+const reviewsDatabase = require('../data/reviews');
 
 router.get("/", async (req, res) => {
 
@@ -95,6 +96,10 @@ router.get("/:id", async (req, res) => {
     
     if (!user.reviewsLeft || !Array.isArray(user.reviewsLeft) || user.reviewsLeft.length === 0) {
         profile.reviewsLeft = "This user has not left any reviews.";
+    } else try { 
+        profile.reviewsLeft = await reviewsDatabase.getAllReviewsFromUser(user.username);
+    } catch (e) {
+        res.render(500).json({message: "Could not retrieve reviews for user"});
     }
     res.render("profile.handlebars", {title: "User profile", object: profile});
 });

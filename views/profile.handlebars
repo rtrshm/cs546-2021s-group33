@@ -18,6 +18,27 @@
 <p>Favorite Games: {{object.favoriteGames}}</p>
 <p>Reviews: {{object.reviewsLeft}}</p>
 
+<ul id="reviewList">
+    {{#each object.reviewsLeft}}
+    {{#if this.spoiler}}
+        <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
+        <ul class="reviewPoints" hidden>
+            <li>{{this.reviewTitle}}</li>
+            <li>{{this.reviewContent}}</li>
+            <li>Rating: {{this.rating}}</li>
+            <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
+        </ul> <br>
+    {{else}}
+        <ul class="reviewPoints">
+            <li>{{this.reviewTitle}}</li>
+            <li>{{this.reviewContent}}</li>
+            <li>Rating: {{this.rating}}</li>
+            <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
+        </ul> <br>
+    {{/if}}
+    {{/each}}
+</ul>
+
 {{!-- {{#if object.usersFollowing}}
     <ul>
         {{#each object.usersFollowing}}
