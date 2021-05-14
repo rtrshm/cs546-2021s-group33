@@ -46,7 +46,7 @@ router.post("/addgame", async (req, res) => {
     else {
         dateReleased = dateReleased.split('-');
         if (dateReleased.length != 3){
-            console.log(`length ${dateReleased}`);
+            //console.log(`length ${dateReleased}`);
             dateReleased = 'N/A';
         }
         else {
@@ -162,7 +162,7 @@ router.post("/addgame", async (req, res) => {
         return res.render("createGameError.handlebars", {title:"Error", errormsg:e});
     }
 
-    res.render("createGameSuccess.handlebars", {title:"Success", game:title});
+    res.render("createGameSuccess.handlebars", {title:"Success", game:game});
 });
 
 router.get("/remove", async(req,res) => {
@@ -463,7 +463,7 @@ router.post("/modify/:id", async(req,res) => {
         }catch(e) {
             return res.render("modifyGameError.handlebars", {title:"Error", errormsg:e});
         }
-        return res.render("modifyGameSuccess.handlebars", {title: "Game modified", gametitle: title});
+        return res.render("modifyGameSuccess.handlebars", {title: "Game modified", game: newgame});
     }
 });
 
