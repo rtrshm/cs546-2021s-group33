@@ -5,8 +5,7 @@ const configRoutes = require('./routes')
 const exphbs = require('express-handlebars');
 const static = express.static(__dirname + '/public');
 const userDatabase = require('./data/users');
-const gameDatabase = require('./data/games');
-const errorChecker = require('./data/errorChecker')
+require('./tasks/seed');
 const bcrypt = require('bcrypt');
 
 app.use('/public', static);
