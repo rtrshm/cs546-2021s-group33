@@ -1,3 +1,5 @@
+// NOTE: seed.js is being run when app.js is run. Do not run it independently anymore.
+
 const dbConnection = require("../config/mongoConnection");
 const data = require("../data");
 const users = data.users;
@@ -393,7 +395,8 @@ let main = async () => {
 
   // Testing complete with some basic information seeded.
   console.log("Done seeding database");
-  await db.serverConfig.close();
+  // We no longer need to close the database connection since we are running seed.js in tandem with app.js.
+  // await db.serverConfig.close();
 };
 
 main().catch((error) => {
@@ -402,5 +405,3 @@ main().catch((error) => {
     return db.serverConfig.close();
   });
 });
-
-module.exports = main;
