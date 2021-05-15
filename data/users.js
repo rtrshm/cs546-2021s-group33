@@ -109,6 +109,29 @@ let updateUser = async (id, newData) => {
   return await readUser(id);
 };
 
+let userMarkReviewHelpful = async (userId, reviewId) => {
+    errorz.stringChecker(userId, "userId");
+    errorz.idChecker(userId, "userId");
+    errorz.stringChecker(reviewId, "reviewId");
+    errorz.idChecker(reviewId, "reviewId");
+
+    const parsedUserId = ObjectID(userId);
+
+    try {
+        const updatedInfo = await UserCollection.updateOne(
+            {_id: parsedUserId},
+            {$addToSet: { reviewsMarkedHelpful: reviewId }}
+        );
+        if (updatedInfo.modifiedCount === 0) 
+            throw `Review was already present.`
+    } catch (e) {
+        console.log(e);
+        throw `Ran into error while trying to add review marked helpful.`
+    }
+
+    return await readUser(userId);
+}
+
 let followUser = async (followerId, followedId) => {
   errorz.stringChecker(followerId, "id");
   errorz.idChecker(followerId);
@@ -331,6 +354,7 @@ module.exports = {
   followUser,
   unfollowUser,
   isFollowing,
+  userMarkReviewHelpful,
   followUserByName,
   unfollowUserByName,
   getListFollowing,
