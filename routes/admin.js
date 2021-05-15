@@ -297,7 +297,7 @@ router.post("/modify/:id", async(req,res) => {
         let oldgame;
         let sameName = false;
         try{
-            oldgame = await gameDatabase.getGameByTitle(req.params.id);
+            oldgame = await gameDatabase.readGame(req.params.id);
         }catch(e) {
             return res.status(500).render("modifyGameError.handlebars", {title: "Error", errormsg: e});
         }
