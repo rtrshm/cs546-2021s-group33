@@ -8,7 +8,7 @@
 }
 
 .nonrequired {
-    color: blue;
+    color: #7979ff;
 }
 
 body{
@@ -97,10 +97,6 @@ a {
     margin-left: auto;
     margin-right: auto;
     width: 50%;
-}
-
-.textlength{
-    display: inline;
 }
 
 p{

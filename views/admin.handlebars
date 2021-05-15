@@ -1,10 +1,11 @@
-<main>
-    <a href="/admin/manage">Go back</a>
+<button onclick="location.href='/admin/manage'" type="button">Go Back</button>
+<main class="screen">
+    <!--<a href="/admin/manage">Go back</a> -->
     <header>
     <h1>Welcome, Admin. Add a game to the database by filling out the fields.</h1>
     <p class='required'>Required fields are highlighted red.</p>
 	</header>
-        <form action = "/admin/addgame" name="addgame" method ="post" id="addgame-form">
+        <form action = "/admin/addgame" name="addgame" method ="post" id="addgame-form" class= "container centered">
             <label for="title" class='required'>Game Title:</label>
             <input type="text" name="title" id="title"><br>
             <label for="dateReleased" class="nonrequired">Date Released:</label>
@@ -17,9 +18,9 @@
             <input type="text" name="developers" id="developers"><br>
             <label for="publishers" class="nonrequired">Publishers, separated by commas:</label>
             <input type="text" name="publishers" id="publishers"><br>
-            <label for="ageRating" class="nonrequired">Age Rating:</label>
+            <label for="ageRating" class="required">Age Rating:</label>
             <input type="text" name="ageRating" id="ageRating"><br>
-            <label for="platforms" class="nonrequired">Platforms, separated by commas</label>
+            <label for="platforms" class="required">Platforms, separated by commas</label>
             <input type="text" name="platforms" id="platforms"><br>
             <label for="purchaseLinks" class="nonrequired">Purchase Links, separated by commas:</label>
             <input type="text" name="purchaseLinks" id="purchaseLinks"><br>
