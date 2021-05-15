@@ -152,12 +152,15 @@ let getRecommendedGameByGame = async (id) => {
   const game = await gameCollection.findOne({ _id: parsedId });
   if (game === null) throw `Game not found.`;
 
-  let gameList = await getGamesByParams({
+  let gameList = await getGamesByParameters({
     genres: game.genres,
     platforms: game.platforms,
   });
 
-  return gameList[0];
+  console.log(gameList.length);
+  if (gameList.length > 5) gameList = gameList.slice(0, 5);
+
+  return gameList;
 };
 
 let updateGame = async (id, newData) => {
