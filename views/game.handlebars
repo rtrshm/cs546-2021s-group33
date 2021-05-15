@@ -71,7 +71,7 @@
 <p>Game reviews:</p>
 <ul id="reviewList">
     {{#each object.reviews}}
-    <li><p hidden id='hiddenId'>{{this._id}}</p></li>
+    <li><p hidden class='hiddenId'>{{this._id}}</p></li>
     <li>By <a href="/profile/{{this.username}}">{{this.username}}</a> <br>
     {{#if this.spoiler}}
         <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
@@ -82,7 +82,7 @@
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
             <li>{{this.helpfulCount}} users found this review helpful</li>
-            <li><button id="rateHelpful">Rate this review helpful</button></li>
+            <li><button class="rateHelpful">Rate this review helpful</button></li>
         </ul> <br>
     {{else}}
         <ul class="reviewPoints">
@@ -91,7 +91,7 @@
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
             <li>{{this.helpfulCount}} users found this review helpful</li>
-            <li><button id="rateHelpful">Rate this review helpful</button></li>
+            <li><button class="rateHelpful">Rate this review helpful</button></li>
         </ul> <br>
     </li>
     {{/if}}
