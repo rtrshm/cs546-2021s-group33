@@ -132,6 +132,29 @@ let userMarkReviewHelpful = async (userId, reviewId) => {
     return await readUser(userId);
 }
 
+let userUnmarkReviewHelpful = async (userId, reviewId) => {
+    errorz.stringChecker(userId, "userId");
+    errorz.idChecker(userId, "userId");
+    errorz.stringChecker(reviewId, "reviewId");
+    errorz.idChecker(reviewId, "reviewId");
+
+    const parsedUserId = ObjectID(userId);
+
+    try {
+        const updatedInfo = await UserCollection.updateOne(
+            {_id: parsedUserId},
+            {$pull: { reviewsMarkedHelpful: reviewId }}
+        );
+        if (updatedInfo.modifiedCount === 0) 
+            throw `Review was already present.`
+    } catch (e) {
+        console.log(e);
+        throw `Ran into error while trying to add review marked helpful.`
+    }
+
+    return await readUser(userId);
+}
+
 let followUser = async (followerId, followedId) => {
   errorz.stringChecker(followerId, "id");
   errorz.idChecker(followerId);
