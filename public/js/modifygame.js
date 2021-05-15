@@ -74,6 +74,38 @@ myForm.addEventListener('submit', (event) => {
         ;
     }
 
+    if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
+        ;
+    }
+    else {
+        genres = genres.split(',');
+        if (!genres || !Array.isArray(genres)) {
+            err.innerHTML = "Error: Error: genres split failed";
+            myGenres.focus();
+            return;
+        }
+    
+        for(let genre of genres) {
+            if(typeof(genre)!=="string" || genre.trim().length === 0) {
+                err.innerHTML = "Error: genres must contain non-empty comma seperated strings";
+                myGenres.focus();
+                return;
+            }
+            else {
+                genre = genre.trim();
+                try{
+                    genreChecker(genre);
+                 }catch(e){
+                    err.innerHTML = `invalid genre ${e}, genres can be "action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
+                    "competitive", "multiplayer", "singleplayer", "romance", "roguelike", "dating sim", "survival", "sexual content", "anime",
+                    "horror", "building", "educational", "jrpg", "bullet hell", "card game", "agriculture", "indie", "aaa"`;        
+                    myGenres.focus();
+                    return;
+                 }
+            }
+        }
+    }
+
     if (!developers || typeof(developers)!=='string' || developers.trim().length == 0) {
         ;
     }
@@ -91,6 +123,7 @@ myForm.addEventListener('submit', (event) => {
                 myDevel.focus();
                 return;
             }
+            developer = developer.trim();
         }
     }
 
@@ -111,6 +144,7 @@ myForm.addEventListener('submit', (event) => {
                 myPubli.focus();
                 return;
             }
+            publisher = publisher.trim();
         }
     }
 
@@ -145,6 +179,7 @@ myForm.addEventListener('submit', (event) => {
                 return;
             }
             else {
+                platform = platform.trim();
                 try{
                     platformChecker(platform);
                  }catch(e){
@@ -173,6 +208,7 @@ myForm.addEventListener('submit', (event) => {
                 myPurch.focus();
                 break;
             }
+            purchaseLink = purchaseLink.trim();
             let url;
             try {
                 url = new URL(purchaseLink);
@@ -192,37 +228,6 @@ myForm.addEventListener('submit', (event) => {
     
     if (!title || typeof(title) !== "string" || title.trim().length == 0) {
         ;
-    }
-
-    if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
-        ;
-    }
-    else {
-        genres = genres.split(',');
-        if (!genres || !Array.isArray(genres)) {
-            err.innerHTML = "Error: Error: genres split failed";
-            myGenres.focus();
-            return;
-        }
-    
-        for(let genre of genres) {
-            if(typeof(genre)!=="string" || genre.trim().length === 0) {
-                err.innerHTML = "Error: genres must contain non-empty comma seperated strings";
-                myGenres.focus();
-                return;
-            }
-            else {
-                try{
-                    genreChecker(genre);
-                 }catch(e){
-                    err.innerHTML = `invalid genre ${e}, genres can be "action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
-                    "competitive", "multiplayer", "singleplayer", "romance", "roguelike", "dating sim", "survival", "sexual content", "anime",
-                    "horror", "building", "educational", "jrpg", "bullet hell", "card game", "agriculture", "indie", "aaa"`;        
-                    myGenres.focus();
-                    return;
-                 }
-            }
-        }
     }
 
     document.modify.submit();

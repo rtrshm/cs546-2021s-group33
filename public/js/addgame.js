@@ -70,8 +70,50 @@ myForm.addEventListener('submit', (event) => {
     let platforms = myPlat.value;
     let purchaseLinks = myPurch.value;
 
+    if (!title || typeof(title) !== "string" || title.trim().length == 0) {
+        err.innerHTML = "Error: Game needs a title.";
+        myTitle.focus();
+        return;
+    }
+
     if (!img || typeof(img) !== "string" || img.trim().length == 0) {
         myImg.value = "../public/images/noimage.png";
+    }
+
+    if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
+        //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must be a list of non-empty strings seperated by commas"});
+        err.innerHTML = "Error: Game needs genres.";
+        myTitle.focus();
+        return;
+    }
+    else {
+        genres = genres.split(',');
+        if (!genres || !Array.isArray(genres)) {
+            err.innerHTML = "Error: Error: genres split failed";
+            myGenres.focus();
+            return;
+        }
+    
+        for(let genre of genres) {
+            if(typeof(genre)!=="string" || genre.trim().length === 0) {
+                err.innerHTML = "Error: genres must contain non-empty comma seperated strings";
+                myGenres.focus();
+                return;
+            }
+            else {
+                genre = genre.trim();
+                try{
+                    console.log(genre);
+                    genreChecker(genre);
+                }catch(e){
+                    err.innerHTML = `invalid genre ${e}, genres can be "action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
+                    "competitive", "multiplayer", "singleplayer", "romance", "roguelike", "dating sim", "survival", "sexual content", "anime",
+                    "horror", "building", "educational", "jrpg", "bullet hell", "card game", "agriculture", "indie", "aaa"`;
+                    myGenres.focus();
+                    return;
+                }
+            }
+        }
     }
 
     if (!developers || typeof(developers)!=='string' || developers.trim().length == 0) {
@@ -91,6 +133,9 @@ myForm.addEventListener('submit', (event) => {
                 err.innerHTML = "Error: developers must contain non-empty comma seperated strings";
                 myDevel.focus();
                 return;
+            }
+            else {
+                developer = developer.trim();
             }
         }
     }
@@ -113,11 +158,16 @@ myForm.addEventListener('submit', (event) => {
                 myPubli.focus();
                 return;
             }
+            else {
+                publisher = publisher.trim();
+            }
         }
     }
 
     if (!ageRating || typeof(ageRating) !== "string") {
-        myAge.value = "N/A";
+        err.innerHTML = "Error: Game needs an age rating.";
+        myAge.focus();
+        return;
     }
     else {
         try{
@@ -130,8 +180,9 @@ myForm.addEventListener('submit', (event) => {
     }
 
     if (!platforms || typeof(platforms)!=='string' || platforms.trim().length == 0) {
-        //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms must be a list of non-empty strings seperated by commas"});
-        myPlat.value = "";
+        err.innerHTML = "Error: Game needs platforms.";
+        myPlat.focus();
+        return;
     }
     else {
         platforms = platforms.split(',');
@@ -148,6 +199,7 @@ myForm.addEventListener('submit', (event) => {
                 return;
             }
             else {
+                platform = platform.trim();
                 try{
                     platformChecker(platform);
                 }catch(e){
@@ -177,6 +229,7 @@ myForm.addEventListener('submit', (event) => {
                 myPurch.focus();
                 return;
             }
+            purchaseLink = purchaseLink.trim();
             let url;
             try {
                 url = new URL(purchaseLink);
@@ -190,46 +243,6 @@ myForm.addEventListener('submit', (event) => {
                 err.innerHTML = "Error: purchaseLinks contains invalid URL";
                 myPurch.focus();
                 return;
-            }
-        }
-    }
-    
-    if (!title || typeof(title) !== "string" || title.trim().length == 0) {
-        err.innerHTML = "Error: Game needs a title.";
-        myTitle.focus();
-        return;
-    }
-
-    if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
-        //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must be a list of non-empty strings seperated by commas"});
-        err.innerHTML = "Error: Game needs genres.";
-        myTitle.focus();
-        return;
-    }
-    else {
-        genres = genres.split(',');
-        if (!genres || !Array.isArray(genres)) {
-            err.innerHTML = "Error: Error: genres split failed";
-            myGenres.focus();
-            return;
-        }
-    
-        for(let genre of genres) {
-            if(typeof(genre)!=="string" || genre.trim().length === 0) {
-                err.innerHTML = "Error: genres must contain non-empty comma seperated strings";
-                myGenres.focus();
-                return;
-            }
-            else {
-                try{
-                    genreChecker(genre);
-                }catch(e){
-                    err.innerHTML = `invalid genre ${e}, genres can be "action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
-                    "competitive", "multiplayer", "singleplayer", "romance", "roguelike", "dating sim", "survival", "sexual content", "anime",
-                    "horror", "building", "educational", "jrpg", "bullet hell", "card game", "agriculture", "indie", "aaa"`;
-                    myGenres.focus();
-                    return;
-                }
             }
         }
     }
