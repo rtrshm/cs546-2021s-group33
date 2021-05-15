@@ -3,6 +3,8 @@ const router = express.Router();
 const errorChecker = require('../data/errorChecker');
 const usersDatabase = require('../data/users');
 const reviewsDatabase = require('../data/reviews');
+const gamesDatabase = require('../data/games');
+
 
 router.get("/", async (req, res) => {
     currentUser = req.session.user;
@@ -47,6 +49,23 @@ router.get("/", async (req, res) => {
     }
     if (!user.favoriteGames || !Array.isArray(user.favoriteGames) || user.favoriteGames.length === 0) {
         user.favoriteGames = "This user has no favorite games.";
+    }
+    else {
+        user.favoriteArr = [];
+        console.log('ran')
+        for (let id of user.favoriteGames){
+            let game;
+            try {
+                game = await gamesDatabase.readGame(id.toString());
+            }
+            catch (e){
+                console.log(e);
+            }
+            user.favoriteArr.push(game);
+            console.log(game);
+            console.log(`${game.title} pushed`)
+        }
+        delete user.favoriteGames;
     }
     
     if (!user.reviewsLeft || !Array.isArray(user.reviewsLeft) || user.reviewsLeft.length === 0) {
@@ -111,6 +130,23 @@ router.get("/:id", async (req, res) => {
     }
     if (!user.favoriteGames || !Array.isArray(user.favoriteGames) || user.favoriteGames.length === 0) {
         profile.favoriteGames = "This user has no favorite games.";
+    }
+    else {
+        profile.favoriteArr = [];
+        console.log('ran')
+        for (let id of user.favoriteGames){
+            let game;
+            try {
+                game = await gamesDatabase.readGame(id.toString());
+            }
+            catch (e){
+                console.log(e);
+            }
+            profile.favoriteArr.push(game);
+            console.log(game);
+            console.log(`${game.title} pushed`)
+        }
+        delete profile.favoriteGames;
     }
 
     if (!user.reviewsLeft || !Array.isArray(user.reviewsLeft) || user.reviewsLeft.length === 0) {

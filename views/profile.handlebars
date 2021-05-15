@@ -10,7 +10,15 @@
 <a href="/profile/{{this}}">{{this}}</a>
 {{/each}}
 <p>Email: {{object.email}}</p>
+{{#if object.favoriteGames}}
 <p>Favorite Games: {{object.favoriteGames}}</p>
+{{/if}}
+{{#if object.favoriteArr.length}}
+<p>Favorite games:</p>
+{{#each object.favoriteArr}}
+<a href="/games/game/{{this._id}}">{{this.title}}</a>
+{{/each}}
+{{/if}}
 <p>Reviews:</p>
 {{#if object.reviewsLeft.length}}
 <ul id="reviewList">
