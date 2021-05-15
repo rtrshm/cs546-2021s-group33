@@ -9,6 +9,55 @@ let myPurch = document.getElementById('purchaseLinks');
 let myForm = document.getElementById('addgame-form');
 let err = document.getElementById('error');
 
+function stringChecker(string, name)
+{
+    if(string === undefined)
+    {
+        throw "Error: " + name + " does not exist";
+    }
+    if(typeof string !== 'string')
+    {
+        throw "Error: " + name + " is not a string";
+    }
+    string = string.trim();
+    if(string === "" || string.length === 0)
+    {
+        throw "Error: " + name + " cannot be \"\" or contain only whitespace";
+    }
+}
+
+function genreChecker(string)
+{
+    stringChecker(string, "string");
+    let genres = ["action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
+    "competitive", "multiplayer", "singleplayer", "romance", "roguelike", "dating sim", "survival", "sexual content", "anime",
+    "horror", "building", "educational", "jrpg", "bullet hell", "card game", "agriculture", "indie", "aaa"];
+
+    if(!genres.includes(string.toLowerCase())){
+        throw string.toLowerCase();
+    }
+}
+
+function platformChecker(string)
+{
+    stringChecker(string, "string");
+    let plat= ["pc", "playstation 3", "playstation 4", "playstation 5", "xbox 360", "xbox one", "nintendo switch", "ios", "android"];
+
+    if(!plat.includes(string.toLowerCase())){
+        throw string.toLowerCase();
+    }
+}
+
+function ageRatingChecker(string)
+{
+    stringChecker(string, "ageRating");
+    let rating = ["e", "e10", "t", "m", "rp", "a"];
+    if(!rating.includes(string.toLowerCase()))
+    {
+        throw string.toLowerCase();
+    }
+}
+
 myForm.addEventListener('submit', (event) => {
     event.preventDefault();
     let title = myTitle.value;
@@ -69,6 +118,15 @@ myForm.addEventListener('submit', (event) => {
     if (!ageRating || typeof(ageRating) !== "string") {
         myAge.value = "N/A";
     }
+    else {
+        try{
+           ageRatingChecker(ageRating);
+        }catch(e){
+            err.innerHTML = `invalid age rating ${e}`;
+            myAge.focus();
+            return;
+        }
+    }
 
     if (!platforms || typeof(platforms)!=='string' || platforms.trim().length == 0) {
         //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms must be a list of non-empty strings seperated by commas"});
@@ -85,6 +143,13 @@ myForm.addEventListener('submit', (event) => {
         for(let platform of platforms) {
             if(typeof(platform)!=="string" || platform.trim().length === 0) {
                 err.innerHTML = "Error: platforms must contain non-empty comma seperated strings";
+                myPlats.focus();
+                return;
+            }
+            try{
+                platformChecker(platform)
+            }catch(e){
+                err.innerHTML = `invalid platform ${e}`;
                 myPlats.focus();
                 return;
             }
@@ -149,6 +214,13 @@ myForm.addEventListener('submit', (event) => {
         for(let genre of genres) {
             if(typeof(genre)!=="string" || genre.trim().length === 0) {
                 err.innerHTML = "Error: genres must contain non-empty comma seperated strings";
+                myGenres.focus();
+                return;
+            }
+            try{
+                genreChecker(genre);
+            }catch(e){
+                err.innerHTML = `invalid genre ${e}`;
                 myGenres.focus();
                 return;
             }

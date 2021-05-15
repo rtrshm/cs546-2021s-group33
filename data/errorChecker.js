@@ -71,7 +71,8 @@ function stringChecker(string, name)
     }
     if(typeof string !== 'string')
     {
-        throw "Error: " + name + " is not a string";
+        console.log(typeof(string));
+        throw "Error: " + `${string}` + " is not a string";
     }
     string = string.trim();
     if(string === "" || string.length === 0)
@@ -137,6 +138,38 @@ function idChecker(string)
     if(!ObjectId.isValid(string))
     {
         throw "Error: Invalid Id!";
+    }
+}
+
+function genreChecker(string)
+{
+    stringChecker(string, "string");
+    let genres = ["action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
+    "competitive", "multiplayer", "singleplayer", "romance", "roguelike", "dating sim", "survival", "sexual content", "anime",
+    "horror", "building", "educational", "jrpg", "bullet hell", "card game", "agriculture", "indie", "aaa"];
+
+    if(!genres.includes(string.toLowerCase())){
+        throw string.toLowerCase();
+    }
+}
+
+function platformChecker(string)
+{
+    stringChecker(string, "string");
+    let plat= ["pc", "playstation 3", "playstation 4", "playstation 5", "xbox 360", "xbox one", "nintendo switch", "ios", "android"];
+
+    if(!plat.includes(string.toLowerCase())){
+        throw string.toLowerCase();
+    }
+}
+
+function ageRatingChecker(string)
+{
+    stringChecker(string, "ageRating");
+    let rating = ["e", "e10", "t", "m", "rp", "a"];
+    if(!rating.includes(string.toLowerCase()))
+    {
+        throw string.toLowerCase();
     }
 }
 module.exports = {

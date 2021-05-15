@@ -72,6 +72,11 @@ router.post("/addgame", async (req, res) => {
             if(typeof(genre)!=="string" || genre.trim().length === 0) {
                 return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
             }
+            try{
+            errorChecker.genreChecker(genre)
+            }catch(e){
+                return res.render("createGameError.handlebars", {title:"Error", errormsg:`invalid genre ${e}`});
+            }
         }
     }
 
@@ -108,9 +113,15 @@ router.post("/addgame", async (req, res) => {
             }
         }
     }
-
     if (!ageRating || typeof(ageRating) !== "string") {
         ageRating = "N/A";
+    }
+    else {
+        try{
+            errorChecker.ageRatingChecker(ageRating)
+        }catch(e){
+            return res.render("createGameError.handlebars", {title:"Error", errormsg:`invalid age rating ${e}`});
+        }
     }
 
     if (!platforms || typeof(platforms)!=='string' || platforms.trim().length == 0) {
@@ -125,6 +136,11 @@ router.post("/addgame", async (req, res) => {
         for(let platform of platforms) {
             if(typeof(platform)!=="string" || platform.trim().length === 0) {
                 return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
+            }
+            try{
+                errorChecker.platformChecker(platform)
+            }catch(e){
+                return res.render("createGameError.handlebars", {title:"Error", errormsg:`invalid platform ${e}`});
             }
         }
     }
@@ -338,6 +354,13 @@ router.post("/modify/:id", async(req,res) => {
                 if(typeof(genre)!=="string" || genre.trim().length === 0) {
                     return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
                 }
+                else {
+                    try{
+                        errorChecker.genreChecker(genre);
+                    }catch(e){
+                        return res.render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid genre ${e}`});
+                    }
+                }  
             }
         }
 
@@ -397,6 +420,13 @@ router.post("/modify/:id", async(req,res) => {
         else if (typeof(ageRating) !== "string") {
             return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid age rating"});
         }
+        else {
+            try{
+                errorChecker.ageRatingChecker(ageRating)
+            }catch(e){
+                return res.render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid age rating ${e}`});
+            }
+        }
 
         if (!platforms) {
             if (!oldgame.platforms || oldgame.platforms.length === 0){
@@ -419,6 +449,11 @@ router.post("/modify/:id", async(req,res) => {
             for(let platform of platforms) {
                 if(typeof(platform)!=="string" || platform.trim().length === 0) {
                     return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
+                }
+                try{
+                    errorChecker.platformChecker(platform)
+                }catch(e){
+                    return res.render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid platform ${e}`});
                 }
             }
         }

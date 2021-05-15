@@ -188,4 +188,77 @@ const errorChecker = require('../data/errorChecker')
         return res.render("searchresult.handlebars", {title:"Game", object:game})
     });
 
+router.post('/addReview/:id', async (req, res) => {
+    let gameId = req.params.id;
+    if (!gameId)
+        return res.status(404).json({message: "No id provided"});
+    
+    try {
+        errorChecker.idChecker(gameId);
+    } catch (e) {
+        return res.status(400).json({message: "Invalid game ID"});
+    }
+
+    let reviewData = req.body;
+
+    if (!reviewData)
+        return res.status(400).json({message: "Missing request body"});
+
+
+
+    // ajax converts all input to strings, so we must convert to actual dtypes
+    reviewData.spoiler = (reviewData.spoiler == 'true');
+    reviewData.recommended = (reviewData.recommended == 'true');
+    reviewData.rating = +reviewData.rating;
+    reviewData.timestamp = +reviewData.timestamp;
+
+
+    // check for errors
+    try {
+        errorChecker.stringChecker(reviewData.reviewTitle, 'review title');
+        errorChecker.stringChecker(reviewData.reviewContent, 'review text');
+        errorChecker.typeChecker(+reviewData.timestamp, 'number');
+        errorChecker.ratingChecker(+reviewData.rating);
+        errorChecker.typeChecker(reviewData.spoiler, 'boolean');
+        errorChecker.typeChecker(reviewData.recommended, 'boolean');
+    } catch (e) {
+        console.log(e);
+        return res.status(400).json({message: "Invalid add review parameter"});
+    }
+
+    let username = req.session.user.username;
+    try {
+        await reviewsDatabase.createReview(
+            gameId, 
+            reviewData.spoiler,
+            reviewData.reviewTitle,
+            reviewData.reviewContent,
+            reviewData.rating,
+            reviewData.recommended,
+            username);
+    } catch (e) {
+        console.log(e);
+        if (e == "Error: Game does not exist.") {
+            res.status(404).render('gamesError.handlebars', {title: 'Game not found'});
+        } else if (e == "Could not update game with review.") {
+            res.status(500).json({message: "Review could not be added."});
+        }
+    }
+    res.status(200).send();
+});
+
+router.post('/quiz', async (req, res) => {
+    let params = req.body;
+    if (!params) res.status(400).json({message: "No parameters provided"});
+    try {
+        let resultList = await gamesDatabase.getGamesByParameters(params);
+        res.json(resultList).send();
+        return;
+    } catch (e) {
+        console.log(e);
+        res.status(404).json({message: "No games with matching parameter found"});
+        return;
+    }
+});
+
 module.exports = router;
