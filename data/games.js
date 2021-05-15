@@ -109,7 +109,7 @@ let getGamesByGenre = async (genre) => {
   const gameCollection = await games();
   const gameList = await gameCollection
     .find({ genres: genre }, { title: 1, genres: 1, averageRating: 1 })
-    .sort({ averageRating: 1 })
+    .sort({ averageRating: -1 })
     .toArray();
   if (gameList === null) throw `No games with that genre found.`;
 
@@ -132,7 +132,7 @@ let getGamesByParameters = async (params) => {
       },
       { title: 1, genres: 1, averageRating: 1 }
     )
-    .sort({ averageRating: 1 })
+    .sort({ averageRating: -1 })
     .toArray();
 
   // consider sorting by number of categories satisfied in later updates

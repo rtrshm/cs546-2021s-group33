@@ -59,7 +59,8 @@
             ['Publishers', game.publishers],
             ['Average Rating', game.averageRating],
             ['Platforms', game.platforms],
-            ['Purchase links', game.puchaseLinks]]) {
+            ['Reviews', game.reviews],
+            ['Purchase links', game.purchaseLinks]]) {
                 if (field[1]) {
                     attrList.append($(`<dt>${field[0]}</dt>`));
                     let dd = $('<dd></dd>');
