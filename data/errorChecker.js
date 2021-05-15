@@ -139,6 +139,45 @@ function idChecker(string)
         throw "Error: Invalid Id!";
     }
 }
+
+function genreChecker(array)
+{
+    checkErrorArray(array, "string");
+    let genres = ["action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
+    "competitive", "multiplayer", "singleplayer", "romance", "roguelike", "dating sim", "survival", "sexual content", "anime",
+    "horror", "building", "educational", "jrpg", "bullet hell", "card game", "agriculture", "indie", "aaa"];
+
+    for(let i = 0; i < array.length; i++)
+    {
+        if(!genres.includes(array[i].toLowerCase()))
+        {
+            throw "Error: Invalid Genre";
+        }
+    }
+}
+function platformChecker(array)
+{
+    checkErrorArray(array, "string");
+    let plat= ["pc", "playstation 3", "playstation 4", "playstation 5", "xbox 360", "xbox one", "nintendo switch", "ios", "android"]
+    for(let i = 0; i < array.length; i++)
+    {
+        if(!plat.includes(array[i].toLowerCase()))
+        {
+            throw "Error: Invalid Platform";
+        }
+    }
+}
+
+function ageRatingChecker(string)
+{
+    stringChecker(string, "ageRating");
+    let rating = ["e", "e10", "t", "m", "rp", "a"];
+    if(!rating.includes(string.toLowerCase()))
+    {
+        throw "Error: Invalid ageRating";
+    }
+
+}
 module.exports = {
     typeChecker,
     checkErrorArray,
@@ -148,5 +187,8 @@ module.exports = {
     ValidateEmail,
     isValidDate,
     ratingChecker,
-    idChecker
+    idChecker,
+    genreChecker,
+    ageRatingChecker,
+    platformChecker
 }

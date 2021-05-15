@@ -21,11 +21,11 @@ let createGame = async (
   errorz.stringChecker(title, "title");
   errorz.stringChecker(img, "img");
   errorz.isValidDate(dateReleased);
-  errorz.checkErrorArray(genres, "string");
+  errorz.genre(genres);
   errorz.checkErrorArrayEmpty(developers, "string");
   errorz.checkErrorArrayEmpty(publishers, "string");
-  errorz.stringChecker(ageRating, "ageRating");
-  errorz.checkErrorArrayEmpty(platforms, "string");
+  errorz.ageRatingChecker(ageRating);
+  errorz.platformChecker(platforms);
   errorz.checkErrorArrayEmpty(purchaseLinks, "string");
 
   const newGame = {
@@ -117,8 +117,8 @@ let getGamesByGenre = async (genre) => {
 };
 
 let getGamesByParameters = async (params) => {
-  errorz.checkErrorArray(params.genres, "string");
-  errorz.checkErrorArray(params.platforms, "string");
+  errorz.genreChecker(params.genres);
+  errorz.platformChecker(params.platforms);
   const gameCollection = await games();
   
   // ensure that at least one genre and platform is satisfied
@@ -169,15 +169,15 @@ let updateGame = async (id, newData) => {
     } else if (x[i] === "dateReleased") {
       errorz.isValidDate(newData.dateReleased);
     } else if (x[i] === "genres") {
-      errorz.checkErrorArrayEmpty(newData.genres, "string");
+      errorz.genreChecker(newData.genres);
     } else if (x[i] === "developers") {
       errorz.checkErrorArrayEmpty(newData.developers, "string");
     } else if (x[i] === "publishers") {
       errorz.checkErrorArrayEmpty(newData.publishers, "string");
     } else if (x[i] === "ageRating") {
-      errorz.stringChecker(newData.ageRating, "ageRating");
+      errorz.ageRatingChecker(newData.ageRating);
     } else if (x[i] === "platforms") {
-      errorz.checkErrorArrayEmpty(newData.platforms, "string");
+      errorz.platformChecker(newData.platforms);
     } else if (x[i] === "purchaseLinks") {
       errorz.checkErrorArrayEmpty(newData.purchaseLinks, "string");
     } else if (x[i] === "sameName") {
