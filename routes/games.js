@@ -80,7 +80,7 @@ router.get('/game/:id', async(req, res) => {
             delete game.purchaseLinks;
         }
     } catch(e) {
-        return res.status(500).render('gamesError.handlebars', {title: "No game found"})
+        return res.status(404).render('gamesError.handlebars', {title: "No game found"})
     }
     return res.render("game.handlebars", {title:"Games", object:game})
 });
@@ -102,7 +102,7 @@ router.get('/search', async(req, res) => {
 router.post('/exists', async(req, res) => {
     let {title} = req.body;
     if (!title || typeof(title)!='string' || title.trim().length == 0){
-        return res.json({bool:false});
+        return res.status(400).json({bool:false});
     }
     let taken;
     try{
@@ -110,7 +110,7 @@ router.post('/exists', async(req, res) => {
     }
     catch (e){
         console.log(e);
-        return res.json({bool:false});
+        return res.status(500).json({bool:false});
     }
     res.json({bool:taken})
 });
@@ -118,13 +118,13 @@ router.post('/exists', async(req, res) => {
 router.post('/searchresults', async(req,res) => {
     let {title} = req.body;
     if (!title || typeof(title)!='string' || title.trim().length == 0){
-        return res.status(500).render('searchError.handlebars', {title: "No game found"});
+        return res.status(404).render('searchError.handlebars', {title: "No game found"});
     }
     let gameFromDatabase;
     try {
         gameFromDatabase = await gamesDatabase.getGameByTitle(title);
     } catch(e) {
-        return res.render("search.handlebars", {title:"Error", errormsg: "Error: No results found"});
+        return res.status(500).render("search.handlebars", {title:"Error", errormsg: "Error: No results found"});
     }
     return res.redirect('/games/search/' + gameFromDatabase.title);
 });
@@ -185,7 +185,7 @@ router.get('/search/:id', async(req, res) => {
             game.purchaseLinks = "N/A";
         }
     } catch(e) {
-        return res.status(500).render('searchError.handlebars', {title: "No game found"})
+        return res.status(404).render('searchError.handlebars', {title: "No game found"})
     }
     return res.render("searchresult.handlebars", {title:"Game", object:game})
 });
@@ -271,7 +271,7 @@ router.post("/hasRatedHelpful", async (req, res) => {
         hasRatedHelpful = await usersDatabase.hasRatedHelpful(user,reviewId);
     } catch(e) {
         console.log(e);
-        return res.json({bool:false});
+        return res.status(500).json({bool:false});
     }
     return res.json({bool:hasRatedHelpful});
 });
@@ -286,7 +286,7 @@ router.post("/rateHelpful", async (req, res) => {
         res.json({bool:success});
     } catch (e) {
         console.log(e);
-        res.json({bool:false});
+        res.status(500).json({bool:false});
     }
 });
 
@@ -300,7 +300,7 @@ router.post("/unrateHelpful", async (req, res) => {
         res.json({bool:success});
     } catch (e) {
         console.log(e);
-        res.json({bool:false});
+        res.status(500).json({bool:false});
     }
 });
 
@@ -331,7 +331,7 @@ router.post('/generateSuggestions', async (req, res) => {
         let suggestions = await gamesDatabase.getRecommendedGameByGame(gameId);
         return res.json({suggestions});
     } else {
-        return res.json({suggestions: []});
+        return res.status(500).json({suggestions: []});
     }
 })
 

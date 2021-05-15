@@ -21,32 +21,31 @@ const saltRounds = 16;
     router.post('/signup', async (req,res) => {
         const {email, username, password, confirmpassword} = req.body;
         if (!email || typeof(email) !== 'string' || email.trim().length == 0) {
-            return res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Email not provided or is not a valid string."});
+            return res.status(400).render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Email not provided or is not a valid string."});
         }
         try {
             errorChecker.ValidateEmail(email);
         } catch(e) {
-            return res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Please enter a valid E-mail."});
+            return res.status(400).render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Please enter a valid E-mail."});
         }
         if (!username || typeof(username) !== "string" || username.trim().length == 0) {
-            return res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Username not provided or is not a valid string."});
+            return res.status(400).render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Username not provided or is not a valid string."});
         }
         if (!password || typeof(password) !== "string" || password.trim().length == 0) {
-            return res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Password not provided or is not a valid string."});
+            return res.status(400).render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Password not provided or is not a valid string."});
         }
         if (!confirmpassword || typeof(confirmpassword) !== "string" || confirmpassword.trim().length == 0) {
-            return res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Confirm password not provided or is not a valid string."});
+            return res.status(400).render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Confirm password not provided or is not a valid string."});
         }
         if (password !== confirmpassword) {
-            return res.render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Passwords do not match."});
+            return res.status(400).render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Passwords do not match."});
         }
         const realusername = username.toLowerCase();
         const hashPassword = await bcrypt.hash(password, saltRounds);
         try {
-            let user = await usersDatabase.createUser("user", realusername, hashPassword, email);
+            await usersDatabase.createUser("user", realusername, hashPassword, email);
         } catch (e){
-            return res.render("signupError.handlebars", {title: "Sign up failed", error: e});
-            return 0;
+            return res.status(500).render("signupError.handlebars", {title: "Sign up failed", error: e});
         }
         return res.render("signupSuccess.handlebars", {title: "Sign up success", user: realusername});
         //let createUser = async (perms = "user", username, hashPassword, email) => { 

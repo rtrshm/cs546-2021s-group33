@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
     try {
         user.usersFollowing = await usersDatabase.getListFollowing(user.username);
     } catch (e) {
-        return res.render('profileError.handlebars', { title: "error", errormsg: e });
+        return res.status(500).render('profileError.handlebars', { title: "error", errormsg: e });
     }
     let usersFollowing = false;
     if (!user.usersFollowing || !Array.isArray(user.usersFollowing) || user.usersFollowing.length === 0) {
@@ -70,7 +70,7 @@ router.get("/:id", async (req, res) => {
     try {
         user = await usersDatabase.findByUsername(req.params.id);
     } catch (e) {
-        return res.render('profileError.handlebars', { title: "error", errormsg: e });
+        return res.status(500).render('profileError.handlebars', { title: "error", errormsg: e });
     }
     let profile = user;
     if (!user.perms || typeof (user.perms) != 'string' || user.perms.trim().length == 0) {
@@ -102,7 +102,7 @@ router.get("/:id", async (req, res) => {
     try {
         profile.usersFollowing = await usersDatabase.getListFollowing(user.username);
     } catch (e) {
-        return res.render('profileError.handlebars', { title: "error", errormsg: e });
+        return res.status(500).render('profileError.handlebars', { title: "error", errormsg: e });
     }
     let userFollowing = false;
     if (!profile.usersFollowing || !Array.isArray(profile.usersFollowing) || profile.usersFollowing.length === 0) {
