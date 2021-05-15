@@ -11,6 +11,7 @@
         {{#if this.spoiler}}
         <li><button class="revealSpoiler">This review contains spoilers. Press to view.</button></li>
         <li><br></li>
+        <li>
         <ul class="reviewPoints" hidden>
             <li>Title: {{this.reviewTitle}}</li>
             <li>Rating: {{this.rating}}</li>
@@ -18,8 +19,10 @@
             <li>Review: {{this.reviewContent}}</li>
             <li>{{this.helpfulCount}} people rated this review Helpful</li>
         </ul>
+        </li>
         <li><br></li>
         {{else}}
+        <li>
         <ul class="reviewPoints">
             <li>Title: {{this.reviewTitle}}</li>
             <li>Rating: {{this.rating}}</li>
@@ -27,6 +30,7 @@
             <li>Review: {{this.reviewContent}}</li>
             <li>{{this.helpfulCount}} people rated this review Helpful</li>
         </ul>
+        </li>
         <li><br></li>
         {{/if}}
     {{/each}}

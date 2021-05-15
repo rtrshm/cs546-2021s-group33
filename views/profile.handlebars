@@ -18,20 +18,24 @@
     <li><p>Reviewed <a href="/games/game/{{this.gameId}}">{{this.gameTitle}}</a></p></li>
     {{#if this.spoiler}}
         <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
+        <li>
         <ul class="reviewPoints" hidden>
             <li>{{this.reviewTitle}}</li>
             <li>{{this.reviewContent}}</li>
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
-        </ul>  
+        </ul> 
+        </li> 
         <li><br></li>
     {{else}}
+        <li>
         <ul class="reviewPoints">
             <li>{{this.reviewTitle}}</li>
             <li>{{this.reviewContent}}</li>
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
         </ul> 
+        </li>
         <li><br></li>
     {{/if}}
     {{/each}}
