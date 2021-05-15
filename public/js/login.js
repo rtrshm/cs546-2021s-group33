@@ -6,6 +6,7 @@ let err = document.getElementById('error');
 let login = document.getElementById('login');
 myForm.addEventListener('submit', (event) => {
     event.preventDefault();
+    err.innerHTML = "";
     let password = myPass.value;
     let username = myUser.value;
     if (!username || typeof(username) !== "string" || username.trim().length == 0) {

@@ -11,6 +11,7 @@ let err = document.getElementById('error');
 
 myForm.addEventListener('submit', (event) => {
     event.preventDefault();
+    err.innerHTML = "";
     let title = myTitle.value;
     let img = myImg.value;
     let genres = myGenres.value;

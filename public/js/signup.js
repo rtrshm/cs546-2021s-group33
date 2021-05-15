@@ -17,6 +17,7 @@ function ValidateEmail(email)
 
 myForm.addEventListener('submit', (event) => {
     event.preventDefault();
+    err.innerHTML = "";
     let password = myPass.value;
     let username = myUser.value;
     let email = myEmail.value;
