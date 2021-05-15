@@ -16,22 +16,24 @@
 {{#if object.reviewsLeft.length}}
 <ul id="reviewList">
     {{#each object.reviewsLeft}}
-    <p>Reviewed <a href="/games/game/{{this.gameId}}">{{this.gameTitle}}</a></p>
+    <li><p>Reviewed <a href="/games/game/{{this.gameId}}">{{this.gameTitle}}</a></p></li>
     {{#if this.spoiler}}
-        <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
+        <li><button class="revealSpoiler">This review contains spoilers. Press to view.</button></li>
         <ul class="reviewPoints" hidden>
             <li>{{this.reviewTitle}}</li>
             <li>{{this.reviewContent}}</li>
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
-        </ul> <br>
+        </ul> 
+        <li><br></li>
     {{else}}
         <ul class="reviewPoints">
             <li>{{this.reviewTitle}}</li>
             <li>{{this.reviewContent}}</li>
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
-        </ul> <br>
+        </ul> 
+        <li><br></li>
     {{/if}}
     {{/each}}
 </ul>
