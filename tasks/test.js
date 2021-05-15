@@ -820,7 +820,7 @@ let main = async () => {
     } catch (e) {
         console.log(e);
     }
-
+    
     // Testing complete with some basic information seeded.
     console.log("Done seeding database");
     await db.serverConfig.close();

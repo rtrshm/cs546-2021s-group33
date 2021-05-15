@@ -148,7 +148,7 @@ let userMarkReviewHelpful = async (username, reviewId) => {
  * @returns boolean whether or not the review was removed
  */
 let userUnmarkReviewHelpful = async (username, reviewId) => {
-    errorz.stringChecker(userId, "userId");
+    errorz.stringChecker(username, "username");
 
     errorz.stringChecker(reviewId, "reviewId");
     errorz.idChecker(reviewId, "reviewId");
