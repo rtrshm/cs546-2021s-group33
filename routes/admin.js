@@ -74,6 +74,7 @@ router.post("/addgame", async (req, res) => {
                 return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
             }
             else {
+                genre = genre.trim();
                 try{
                     errorChecker.genreChecker(genre)
                 }catch(e){
@@ -97,6 +98,7 @@ router.post("/addgame", async (req, res) => {
             if(typeof(developer)!=="string" || developer.trim().length === 0) {
                 return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must contain non-empty comma seperated strings"});
             }
+            developer = developer.trim();
         }
     }
 
@@ -114,6 +116,7 @@ router.post("/addgame", async (req, res) => {
             if(typeof(publisher)!=="string" || publisher.trim().length === 0) {
                 return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must contain non-empty comma seperated strings"});
             }
+            publisher = publisher.trim();
         }
     }
 
@@ -142,6 +145,7 @@ router.post("/addgame", async (req, res) => {
                 return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
             }
             else {
+                platform = platform.trim();
                 try{
                     errorChecker.platformChecker(platform)
                 }catch(e){
@@ -164,6 +168,7 @@ router.post("/addgame", async (req, res) => {
             if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
                 return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must contain non-empty comma seperated strings"});
             }
+            purchaseLink = purchaseLink.trim();
             let url;
             try {
                 url = new URL(purchaseLink);
@@ -362,6 +367,7 @@ router.post("/modify/:id", async(req,res) => {
                     return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
                 }
                 else {
+                    genre = genre.trim();
                     try{
                         errorChecker.genreChecker(genre)
                     }catch(e){
@@ -393,6 +399,7 @@ router.post("/modify/:id", async(req,res) => {
                 if(typeof(developer)!=="string" || developer.trim().length === 0) {
                     return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: developers must contain non-empty comma seperated strings"});
                 }
+                developer = developer.trim();
             }
         }
         
@@ -418,6 +425,7 @@ router.post("/modify/:id", async(req,res) => {
                 if(typeof(publisher)!=="string" || publisher.trim().length === 0) {
                     return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: publishers must contain non-empty comma seperated strings"});
                 }
+                publisher = publisher.trim();
             }
         }
         
@@ -458,6 +466,7 @@ router.post("/modify/:id", async(req,res) => {
                     return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
                 }
                 else {
+                    platform = platform.trim();
                     try{
                         errorChecker.platformChecker(platform)
                     }catch(e){
@@ -488,6 +497,7 @@ router.post("/modify/:id", async(req,res) => {
                 if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
                     return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must contain non-empty comma seperated strings"});
                 }
+                purchaseLink = purchaseLink.trim();
                 let url;
                 try {
                     url = new URL(purchaseLink);

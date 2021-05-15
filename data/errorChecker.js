@@ -142,6 +142,7 @@ function idChecker(string)
 
 function genreChecker(string)
 {
+    string = string.trim();
     stringChecker(string, "string");
     let genres = ["action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
     "competitive", "multiplayer", "singleplayer", "romance", "roguelike", "dating sim", "survival", "sexual content", "anime",
@@ -154,6 +155,7 @@ function genreChecker(string)
 
 function platformChecker(string)
 {
+    string = string.trim();
     stringChecker(string, "string");
     let plat= ["pc", "playstation 3", "playstation 4", "playstation 5", "xbox 360", "xbox one", "nintendo switch", "ios", "android"];
 
@@ -164,6 +166,7 @@ function platformChecker(string)
 
 function ageRatingChecker(string)
 {
+    string = string.trim();
     stringChecker(string, "ageRating");
     let rating = ["e", "e10", "t", "m", "rp", "a"];
     if(!rating.includes(string.toLowerCase()))
@@ -181,7 +184,7 @@ function genreArrayChecker(array)
 
     for(let i = 0; i < array.length; i++)
     {
-        if(!genres.includes(array[i].toLowerCase()))
+        if(!genres.includes(array[i].toLowerCase().trim()))
         {
             throw "Error: Invalid Genre";
         }
@@ -193,7 +196,7 @@ function platformArrayChecker(array)
     let plat= ["pc", "playstation 3", "playstation 4", "playstation 5", "xbox 360", "xbox one", "nintendo switch", "ios", "android"]
     for(let i = 0; i < array.length; i++)
     {
-        if(!plat.includes(array[i].toLowerCase()))
+        if(!plat.includes(array[i].toLowerCase().trim()))
         {
             throw "Error: Invalid Platform";
         }
@@ -204,7 +207,7 @@ function ageRatingChecker2(string)
 {
     stringChecker(string, "ageRating");
     let rating = ["e", "e10", "t", "m", "rp", "a"];
-    if(!rating.includes(string.toLowerCase()))
+    if(!rating.includes(string.toLowerCase().trim()))
     {
         throw "Error: Invalid ageRating";
     }
