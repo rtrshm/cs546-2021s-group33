@@ -160,6 +160,11 @@ let getRecommendedGameByGame = async (id) => {
   console.log(gameList.length);
   if (gameList.length > 5) gameList = gameList.slice(0, 5);
 
+  let i = gameList.findIndex((elem) => {return elem.title === game.title});
+  if (i != -1) {
+    gameList.splice(i, 1);
+  }
+
   return gameList;
 };
 
