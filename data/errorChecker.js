@@ -140,7 +140,39 @@ function idChecker(string)
     }
 }
 
-function genreChecker(array)
+function genreChecker(string)
+{
+    stringChecker(string, "string");
+    let genres = ["action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
+    "competitive", "multiplayer", "singleplayer", "romance", "roguelike", "dating sim", "survival", "sexual content", "anime",
+    "horror", "building", "educational", "jrpg", "bullet hell", "card game", "agriculture", "indie", "aaa"];
+
+    if(!genres.includes(string.toLowerCase())){
+        throw string.toLowerCase();
+    }
+}
+
+function platformChecker(string)
+{
+    stringChecker(string, "string");
+    let plat= ["pc", "playstation 3", "playstation 4", "playstation 5", "xbox 360", "xbox one", "nintendo switch", "ios", "android"];
+
+    if(!plat.includes(string.toLowerCase())){
+        throw string.toLowerCase();
+    }
+}
+
+function ageRatingChecker(string)
+{
+    stringChecker(string, "ageRating");
+    let rating = ["e", "e10", "t", "m", "rp", "a"];
+    if(!rating.includes(string.toLowerCase()))
+    {
+        throw string.toLowerCase();
+    }
+}
+
+function genreArrayChecker(array)
 {
     checkErrorArray(array, "string");
     let genres = ["action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
@@ -155,7 +187,7 @@ function genreChecker(array)
         }
     }
 }
-function platformChecker(array)
+function platformArrayChecker(array)
 {
     checkErrorArray(array, "string");
     let plat= ["pc", "playstation 3", "playstation 4", "playstation 5", "xbox 360", "xbox one", "nintendo switch", "ios", "android"]
@@ -168,7 +200,7 @@ function platformChecker(array)
     }
 }
 
-function ageRatingChecker(string)
+function ageRatingChecker2(string)
 {
     stringChecker(string, "ageRating");
     let rating = ["e", "e10", "t", "m", "rp", "a"];
@@ -184,6 +216,12 @@ module.exports = {
     checkErrorArrayEmpty,
     existenceChecker,
     stringChecker,
+    genreChecker,
+    platformChecker,
+    ageRatingChecker,
+    ageRatingChecker2,
+    genreArrayChecker,
+    platformArrayChecker,
     ValidateEmail,
     isValidDate,
     ratingChecker,

@@ -1,4 +1,3 @@
-+console.log('oatmeal');
 ($ => {
     let followUser = document.getElementById('followUser');
     let hiddenName = document.getElementById('hiddenName');
@@ -17,7 +16,6 @@
         }
     });
     followUser.addEventListener('click', (event) => {
-        console.log('oatmeal1');
         event.preventDefault();
         if (followUser.innerHTML == "Unfollow") {
             var requestConfig = {
@@ -33,7 +31,6 @@
                 if (!responseMessage.bool) {
                     followUser.innerHTML="Unfollow";
                 }
-                console.log('oatmealfollow');
             });
         }
         else {
@@ -50,7 +47,6 @@
                 if (!responseMessage.bool) {
                     followUser.innerHTML="Follow";
                 }
-                console.log('oatmealunfollow');
             });
         }
     });
