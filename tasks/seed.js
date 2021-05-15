@@ -402,3 +402,5 @@ main().catch((error) => {
     return db.serverConfig.close();
   });
 });
+
+module.exports = main;
