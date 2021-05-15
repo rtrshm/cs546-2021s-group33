@@ -1,13 +1,30 @@
 <a href="/nav">Go back</a>
 <h1>Reviews from followed users:</h1>
 <ul>
+    <br>    
+    <li>Review by <a href="/profile/{{this.username}}">{{this.username}}</a>:</li>
     {{#each reviews}}
-        <br>
-        <li>Review by <a href="/profile/{{this.username}}">{{this.username}}</a>:</li>
-        <p>Title: {{this.reviewTitle}}</p>
-        <p>Rating: {{this.rating}}</p>
-        <p>Recommended: {{this.recommended}}</p>
-        <p>Review: {{this.reviewContent}}</p>
-        <p>{{this.helpfulCount}} people rated this review Helpful</p>
+        {{#if this.spoiler}}
+        <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
+        <ul class="reviewPoints" hidden>
+            <li>Title: {{this.reviewTitle}}</li>
+            <li>Rating: {{this.rating}}</li>
+            <li>Recommended: {{this.recommended}}</li>
+            <li>Review: {{this.reviewContent}}</li>
+            <li>{{this.helpfulCount}} people rated this review Helpful</li>
+        </ul>
+        {{else}}
+        <ul class="reviewPoints">
+            <li>Title: {{this.reviewTitle}}</li>
+            <li>Rating: {{this.rating}}</li>
+            <li>Recommended: {{this.recommended}}</li>
+            <li>Review: {{this.reviewContent}}</li>
+            <li>{{this.helpfulCount}} people rated this review Helpful</li>
+        </ul>
+        {{/if}}
     {{/each}}
 </ul>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+<script src="/public/js/spoilerButton.js"></script>
