@@ -232,7 +232,7 @@ let main = async () => {
     ["Dating Sim", "Romance", "Sexual Content", "Anime", "AAA", "Singleplayer"],
     ["NEKO WORKs"],
     ["Sekai Project, Inc."],
-    "E10",
+    "M",
     ["Nintendo Switch", "PC", "Playstation 4"],
     ["https://store.steampowered.com/app/1406990"]
   );
