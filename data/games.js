@@ -218,7 +218,7 @@ let updateGame = async (id, newData) => {
   );
 
   if (updatedInfo.modifiedCount === 0)
-    throw `Could not update game information.`;
+    throw `No data to change.`;
 
   return await readGame(id);
 };
