@@ -26,8 +26,16 @@ let createReview = async (
   errorz.stringChecker(username, "username");
 
   const didReview = await didUserReviewGame(username, gameId);
-  console.log(didReview);
-  if (didReview) throw `Error: User already reviewed this game.`;
+  if (didReview) {
+    const newData = {
+      spoiler: spoiler,
+      reviewTitle: reviewTitle,
+      reviewContent: reviewContent,
+      rating: rating,
+      recommended: recommended,
+    };
+    return await updateReview(didReview._id.toString(), username, newData);
+  }
 
   let parsedId = ObjectID(gameId);
   const user = await userUtil.findByUsername(username);
@@ -102,7 +110,7 @@ let didUserReviewGame = async (username, gameId) => {
   errorz.stringChecker(gameId, "gameId");
 
   const parsedId = ObjectID(gameId);
-  let check;
+  let check, review;
 
   const gameCollection = await games();
 
@@ -112,10 +120,11 @@ let didUserReviewGame = async (username, gameId) => {
   game.reviews.forEach((elem) => {
     if (elem.username === username) {
       check = true;
+      review = elem;
     }
   });
   if (check) {
-    return true;
+    return review;
   } else {
     return false;
   }
@@ -166,6 +175,8 @@ let updateReview = async (id, username, newData) => {
       review[elem] = newData[elem];
     }
   });
+
+  review["timestamp"] = Date.now();
 
   const updatedInfo = await gameCollection.updateOne(
     { "reviews._id": parsedId },
