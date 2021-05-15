@@ -20,7 +20,7 @@ let main = async () => {
 
   const gavin = await users.createUser(
     "user",
-    "gavin",
+    "adam",
     "$2a$16$ZLJbBLfBjgHk/Cst7F1ek.iM.8tL02YLq5Jqa5pbxHnseXRreQP9C",
     "gpan1@stevens.edu"
   );

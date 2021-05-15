@@ -1,6 +1,8 @@
-<a href="/games/allgames">Go back</a>
+<div class="screennotcenter">
+<!--<a href="/games/allgames">Go back</a> -->
+<button onclick="location.href='/games/allgames'" type="button">Go Back</button>
 <h1 id="gameTitle">{{object.title}}</h1>
-<img src="{{object.img}}" alt="{{object.title}} Cover Art" onerror="this.onerror=null;this.src='../../public/images/noimage.png';">
+<img src="{{object.img}}" alt="{{object.title}} Cover Art" onerror="this.onerror=null;this.src='../../public/images/noimage.png';" class="gameimage">
 <p>Date Released: {{object.dateReleased}}</p>
 <p>Genres: {{object.genres}}</p>
 <p>Developers: {{object.developers}}</p>
@@ -24,11 +26,11 @@
 <div id="addReviewWrapper">
 <button id="displayAddReview" type="button">Add a review</button>
 </div>
-<div id="review">
+<div id="review" class="container centered" >
     <form id="addReviewForm">
 
         <!-- Title of review -->
-        <label for="reviewTitle">Review title</label>
+        <label for="reviewTitle" >Review title</label>
         <input id="reviewTitle" type="text" name="reviewTitle"/>
         <br>
 
@@ -44,17 +46,17 @@
         <br>
 
         <!-- Recommendation -->
-        <input type="radio" id="recommend" name="recommended" value="yes" checked>
         <label for="recommend">Recommend</label>
-        <input type="radio" id="norecommend" name="recommended" value="no">
+        <input type="radio" id="recommend" name="recommended" value="yes" checked>
         <label for="norecommend">Do not recommend</label>
+        <input type="radio" id="norecommend" name="recommended" value="no">
         <br>
 
         <!-- Spoilers? -->
-        <input type="radio" id="spoiler" name="spoiler" value="yes">
         <label for="spoiler">My review contains spoilers</label>
-        <input type="radio" id="nospoiler" name="spoiler" value="no" checked>
+        <input type="radio" id="spoiler" name="spoiler" value="yes">
         <label for="nospoiler">My review does not contain spoilers</label>
+        <input type="radio" id="nospoiler" name="spoiler" value="no" checked>
         <br>
 
 
@@ -92,3 +94,5 @@
         crossorigin="anonymous"></script>
 <script src="/public/js/addReview.js"> </script>
 <script src="/public/js/spoilerButton.js"></script>
+
+</div>
