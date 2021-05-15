@@ -19,9 +19,10 @@
 {{/each}}
 <p>Favorite Games: {{object.favoriteGames}}</p>
 <p>Reviews:</p>
-{{#if object.reviewsLeft}}
+{{#if object.reviewsLeft.length}}
 <ul id="reviewList">
     {{#each object.reviewsLeft}}
+    <p>Reviewed <a href="/games/game/{{this.gameId}}">{{this.gameTitle}}</a></p>
     {{#if this.spoiler}}
         <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
         <ul class="reviewPoints" hidden>
@@ -44,4 +45,4 @@
 {{/if}}
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
-<script src="/public/js/addReview.js"> </script>
+<script src="/public/js/spoilerButton.js"> </script>

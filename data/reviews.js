@@ -35,6 +35,7 @@ let createReview = async (
 
   const newReview = {
     _id: ObjectID(),
+    gameId,
     spoiler: spoiler,
     reviewTitle: reviewTitle,
     reviewContent: reviewContent,
@@ -48,6 +49,8 @@ let createReview = async (
 
   const game = await gameCollection.findOne({ _id: parsedId });
   if (!game) throw `Error: Game does not exist.`;
+
+  newReview.gameTitle = game.title;
 
   const updatedInfo = await gameCollection.updateOne(
     { _id: game._id },
@@ -262,9 +265,8 @@ let getAllReviewsFromUser = async (username) => {
   let user = await userUtil.findByUsername(username);
   let reviews = user.reviewsLeft;
   let reviewz = [];
-  for (let i = 0; i < reviews.length; i++) {
+  for (let i = 0; i < reviews.length; i++) 
     reviewz.push(await readReview(reviews[i].toString()));
-  }
   return reviewz;
 };
 
