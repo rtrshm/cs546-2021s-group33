@@ -306,4 +306,24 @@ router.post("/unrateHelpful", async (req, res) => {
     }
 });
 
+router.post('/generateSuggestions', async (req, res) => {
+    let gameId; 
+    if (req.body) gameId = req.body.gameId;
+    let userId = req.session.user.id;
+    try{
+        errorChecker.stringChecker(gameId, "gameId");
+        errorChecker.idChecker(gameId);
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({message: 'invalid gameId'});
+        return;
+    }
+    if (await usersDatabase.hasRecommended(userId, gameId)) {
+        let suggestions = await gamesDatabase.generateSuggestions(gameId);
+        return res.json({suggestions});
+    } else {
+        return res.json({suggestions: []});
+    }
+})
+
 module.exports = router;
