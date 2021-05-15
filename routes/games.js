@@ -265,12 +265,10 @@ router.post('/quiz', async (req, res) => {
 
 router.post("/hasRatedHelpful", async (req, res) => {
     let {reviewId} = req.body;
-    console.log("hasRatedHelpful request body: " + JSON.stringify(req.body));
     let user = req.session.user.username;
     let hasRatedHelpful = false;
     try{
         hasRatedHelpful = await usersDatabase.hasRatedHelpful(user,reviewId);
-        console.log(`hasRatedHelpful result: ${hasRatedHelpful}`)
     } catch(e) {
         console.log(e);
         return res.json({bool:false});
@@ -310,6 +308,7 @@ router.post('/generateSuggestions', async (req, res) => {
     let gameId; 
     if (req.body) gameId = req.body.gameId;
     let username = req.session.user.username;
+
     try{
         errorChecker.stringChecker(gameId, "gameId");
         errorChecker.idChecker(gameId);
@@ -325,7 +324,7 @@ router.post('/generateSuggestions', async (req, res) => {
         user = await usersDatabase.findByUsername(username);
     } catch (e) {
         console.log(e);
-        return res.status(500).json({message: 'user was not found, this should not happen ever'});
+        return res.status(500).json({message: 'user was not found from session username, this should not happen ever'});
     }
     // if user has recommended the game, generate some extra suggestions
     if (await usersDatabase.hasRecommended(user._id.toString(), gameId)) {

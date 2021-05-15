@@ -153,7 +153,6 @@ let hasRatedHelpful = async (username, reviewId) => {
   try {
     user = await findByUsername(username);
     let reviewsHelpfulStr = user.reviewsMarkedHelpful.map((x) => x.toString());
-    console.log(`Looking for: ${reviewId} in ${reviewsHelpfulStr}`);
     for (let review of reviewsHelpfulStr) if (review == reviewId) return true;
     return false;
   } catch (e) {
