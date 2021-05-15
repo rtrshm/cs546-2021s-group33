@@ -102,3 +102,7 @@ a {
 p{
     word-wrap:break-word;
 }
+
+li{
+    word-wrap:break-word;
+}
