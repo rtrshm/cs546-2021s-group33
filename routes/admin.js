@@ -2,6 +2,7 @@ const express = require('express');
 const gameDatabase = require('../data/games')
 const router = express.Router();
 const errorChecker = require('../data/errorChecker')
+const xss = require("xss");
 
 router.get("/manage", async(req,res) => {
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
@@ -31,6 +32,15 @@ router.post("/addgame", async (req, res) => {
     let { 
         title, img, dateReleased, genres, developers, publishers, ageRating, platforms, purchaseLinks 
     } = req.body;
+    title = xss(title);
+    img = xss(img);
+    dateReleased = xss(dateReleased);
+    genres = xss(genres);
+    developers = xss(developers);
+    publishers = xss(publishers);
+    ageRating =xss(ageRating);
+    platforms = xss(platforms);
+    purchaseLinks = xss(purchaseLinks);
 
     let game;
 
@@ -69,7 +79,7 @@ router.post("/addgame", async (req, res) => {
         }
     
         for(let genre of genres) {
-            console.log('genre is ' + genre)
+            //console.log('genre is ' + genre)
             if(typeof(genre)!=="string" || genre.trim().length === 0) {
                 return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
             }
@@ -216,6 +226,8 @@ router.post("/remove", async(req,res) => {
     }
     else if (user.perms == "admin") {
         let {title} = req.body;
+        title=xss(title);
+
         let game;
         try{
             game = await gameDatabase.getGameByTitle(title);
@@ -256,6 +268,7 @@ router.post("/modify", async(req,res) => {
     }
     else if (user.perms == "admin") {
         let {title} = req.body;
+        title=xss(title);
         let game;
         try{
             game = await gameDatabase.getGameByTitle(title);
@@ -304,6 +317,15 @@ router.post("/modify/:id", async(req,res) => {
         let { 
             title, img, dateReleased, genres, developers, publishers, ageRating, platforms, purchaseLinks 
         } = req.body;
+        title = xss(title);
+        img = xss(img);
+        dateReleased = xss(dateReleased);
+        genres = xss(genres);
+        developers = xss(developers);
+        publishers = xss(publishers);
+        ageRating =xss(ageRating);
+        platforms = xss(platforms);
+        purchaseLinks = xss(purchaseLinks);
 
         if (!title) {
             title = oldgame.title;

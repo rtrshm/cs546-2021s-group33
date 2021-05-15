@@ -4,7 +4,7 @@ const errorChecker = require('../data/errorChecker');
 const usersDatabase = require('../data/users');
 const reviewsDatabase = require('../data/reviews');
 const gamesDatabase = require('../data/games');
-
+const xss = require("xss");
 
 router.get("/", async (req, res) => {
     currentUser = req.session.user;
@@ -52,7 +52,7 @@ router.get("/", async (req, res) => {
     }
     else {
         user.favoriteArr = [];
-        console.log('ran')
+        //console.log('ran')
         for (let id of user.favoriteGames){
             let game;
             try {
@@ -62,8 +62,8 @@ router.get("/", async (req, res) => {
                 console.log(e);
             }
             user.favoriteArr.push(game);
-            console.log(game);
-            console.log(`${game.title} pushed`)
+            //console.log(game);
+            //console.log(`${game.title} pushed`)
         }
         delete user.favoriteGames;
     }
@@ -133,7 +133,6 @@ router.get("/:id", async (req, res) => {
     }
     else {
         profile.favoriteArr = [];
-        console.log('ran')
         for (let id of user.favoriteGames){
             let game;
             try {
@@ -143,8 +142,8 @@ router.get("/:id", async (req, res) => {
                 console.log(e);
             }
             profile.favoriteArr.push(game);
-            console.log(game);
-            console.log(`${game.title} pushed`)
+            //console.log(game);
+            //console.log(`${game.title} pushed`)
         }
         delete profile.favoriteGames;
     }

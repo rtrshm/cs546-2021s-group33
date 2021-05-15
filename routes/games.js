@@ -8,6 +8,7 @@ let gamesDatabase = require('../data/games');
 let reviewsDatabase = require('../data/reviews');
 let usersDatabase = require('../data/users');
 const errorChecker = require('../data/errorChecker')
+const xss = require("xss");
 
 router.get('/allgames', async(req, res) => {
     let allgames;
@@ -101,6 +102,8 @@ router.get('/search', async(req, res) => {
 
 router.post('/exists', async(req, res) => {
     let {title} = req.body;
+    title=xss(title);
+
     if (!title || typeof(title)!='string' || title.trim().length == 0){
         return res.status(400).json({bool:false});
     }
@@ -117,6 +120,8 @@ router.post('/exists', async(req, res) => {
 
 router.post('/searchresults', async(req,res) => {
     let {title} = req.body;
+    title=xss(title);
+
     if (!title || typeof(title)!='string' || title.trim().length == 0){
         return res.status(404).render('searchError.handlebars', {title: "No game found"});
     }
@@ -191,7 +196,7 @@ router.get('/search/:id', async(req, res) => {
 });
 
 router.post('/addReview/:id', async (req, res) => {
-    let gameId = req.params.id;
+    let gameId = xss(req.params.id);
     if (!gameId)
         return res.status(404).json({message: "No id provided"});
     
@@ -265,6 +270,7 @@ router.post('/quiz', async (req, res) => {
 
 router.post("/hasRatedHelpful", async (req, res) => {
     let {reviewId} = req.body;
+    reviewId = xss(reviewId);
     let user = req.session.user.username;
     let hasRatedHelpful = false;
     try{
@@ -278,7 +284,7 @@ router.post("/hasRatedHelpful", async (req, res) => {
 
 router.post("/rateHelpful", async (req, res) => {
     let reviewId;
-    if (req.body) reviewId = req.body.reviewId;
+    if (req.body) reviewId = xss(req.body.reviewId);
     else res.status(400).json({message: 'Missing request body'});
     let username = req.session.user.username;
     try {
@@ -292,7 +298,7 @@ router.post("/rateHelpful", async (req, res) => {
 
 router.post("/unrateHelpful", async (req, res) => {
     let reviewId;
-    if (req.body) reviewId = req.body.reviewId;
+    if (req.body) reviewId = xss(req.body.reviewId);
     else res.status(400).json({message: 'Missing request body'});
     let username = req.session.user.username;
     try {
@@ -306,7 +312,7 @@ router.post("/unrateHelpful", async (req, res) => {
 
 router.post('/generateSuggestions', async (req, res) => {
     let gameId; 
-    if (req.body) gameId = req.body.gameId;
+    if (req.body) gameId = xss(req.body.gameId);
     let username = req.session.user.username;
 
     try{
@@ -336,28 +342,21 @@ router.post('/generateSuggestions', async (req, res) => {
 })
 
 +router.post("/hasFavorited", async (req, res) => {
-    console.log('oat');
     let {gameId} = req.body;
-    console.log('typeof game is ' + typeof(gameId));
+    gameId=xss(gameId);
     let user = req.session.user._id;
-    console.log('typeof user is ' + typeof(user));
     let favorited = false;
     try{
         favorited = await usersDatabase.hasFavorited(user,gameId);
     }catch(e) {
-        console.log(e);
-        console.log('errored outt');
         return res.json({bool:false});
     }
-    console.log('gameId is ' + gameId)
-    console.log('user is ' + user)
-    console.log(favorited);
     return res.json({bool:favorited});
 });
 
 router.post("/favorite", async (req, res) => {
-    console.log('oatmeal');
     let {gameId} = req.body;
+    gameId=xss(gameId);
     let user = req.session.user._id;
     let check;
     let bool = false;
@@ -375,6 +374,7 @@ router.post("/favorite", async (req, res) => {
 
 router.post("/unfavorite", async (req, res) => {
     let {gameId} = req.body;
+    gameId=xss(gameId);
     let user = req.session.user._id;
     console.log(gameId);
     let check;

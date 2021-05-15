@@ -4,6 +4,7 @@ const usersDatabase = require("../data/users")
 const bcrypt = require('bcrypt');
 const errorChecker = require('../data/errorChecker')
 const saltRounds = 16;
+const xss = require("xss");
 
 // const data = require("../data");
 // const mongoCollections = require('../config/mongoCollections');
@@ -19,7 +20,12 @@ const saltRounds = 16;
     });
 
     router.post('/signup', async (req,res) => {
-        const {email, username, password, confirmpassword} = req.body;
+        let {email, username, password, confirmpassword} = req.body;
+        email = xss(email);
+        username=xss(username);
+        password=xss(password);
+        confirmpassword=xss(confirmpassword);
+        
         if (!email || typeof(email) !== 'string' || email.trim().length == 0) {
             return res.status(400).render("signup.handlebars", {title: "Sign up failed", errormsg: "Error: Email not provided or is not a valid string."});
         }

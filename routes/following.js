@@ -2,6 +2,7 @@ const express = require('express');
 const reviewFun = require('../data/reviews');
 const userFun = require('../data/users');
 const router = express.Router();
+const xss = require("xss");
 
 router.get("/", async (req, res) => {
     user = req.session.user;
@@ -16,7 +17,11 @@ router.get("/", async (req, res) => {
 
 router.post("/isFollowing", async (req, res) => {
     let {followedUser} = req.body;
+    followedUser=xss(followedUser);
     let followerUser = req.session.user.username;
+    if (!followedUser || !followerUser){
+        return res.json({bool:false});
+    }
     let following = false;
     try{
         following = await userFun.isFollowing(followerUser,followedUser);
@@ -28,7 +33,11 @@ router.post("/isFollowing", async (req, res) => {
 
 router.post("/follow", async (req, res) => {
     let {followedUser} = req.body;
+    followedUser=xss(followedUser);
     let followerUser = req.session.user.username;
+    if (!followedUser || !followerUser){
+        return res.json({bool:false});
+    }
     let user;
     let bool = false;
     try{
@@ -45,7 +54,11 @@ router.post("/follow", async (req, res) => {
 
 router.post("/unfollow", async (req, res) => {
     let {followedUser} = req.body;
+    followedUser=xss(followedUser);
     let followerUser = req.session.user.username;
+    if (!followedUser || !followerUser){
+        return res.json({bool:false});
+    }
     let user;
     let bool = false;
     try{

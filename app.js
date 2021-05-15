@@ -7,6 +7,7 @@ const static = express.static(__dirname + '/public');
 const userDatabase = require('./data/users');
 // require('./tasks/seed');
 const bcrypt = require('bcrypt');
+const xss = require("xss");
 
 require("./tasks/seed");
 
@@ -52,11 +53,15 @@ app.get("/signup", async (req, res, next) => {
 
 app.post("/login", async (req, res) => {
     let { redirect } = req.body;
+    redirect=xss(redirect);
     return res.redirect(redirect);
 });
 
 app.post("/verifylogin", async (req, res) => {
     let { username, password} = req.body;
+    username=xss(username);
+    password=xss(password);
+
     if (!username || typeof(username) !== "string" || username.trim().length == 0) {
         return res.status(400).json({bool : false});
     }

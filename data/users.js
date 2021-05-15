@@ -341,8 +341,6 @@ let hasFavorited = async (userId, gameId) => {
   const userCollection = await users();
 
   const game = await gameCollection.findOne({ _id: parsedGameID });
-  console.log(parsedGameID);
-  console.log('typeof parsedGameId is ' + parsedGameID);
   if (!game) throw `Error: Game not found`;
 
   const user = await userCollection.findOne({ _id: parsedUserID });
