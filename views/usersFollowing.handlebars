@@ -2,8 +2,10 @@
 <h1>Reviews from followed users:</h1>
 <ul>
     <br>    
-    <li>Review by <a href="/profile/{{this.username}}">{{this.username}}</a>:</li>
     {{#each reviews}}
+    <li>Review of 
+        <a href="/games/game/{{this.gameId}}">{{this.gameTitle}}</a>
+        by  <a href="/profile/{{this.username}}">{{this.username}}</a>:</li>
         {{#if this.spoiler}}
         <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
         <ul class="reviewPoints" hidden>
