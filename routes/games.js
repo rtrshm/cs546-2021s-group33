@@ -272,7 +272,7 @@ router.post("/hasRatedHelpful", async (req, res) => {
     }catch(e) {
         return res.json({bool:false});
     }
-    return res.json({bool:following});
+    return res.json({bool:hasRatedHelpful});
 });
 
 module.exports = router;
