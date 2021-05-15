@@ -168,6 +168,8 @@ let updateReview = async (id, username, newData) => {
 
   const review = await readReview(id);
 
+  await gameUtil.removeReview(review.gameId, review.rating);
+
   if (username !== review.username) throw `Error: User cannot edit review.`;
 
   Object.keys(review).forEach((elem) => {
@@ -182,6 +184,8 @@ let updateReview = async (id, username, newData) => {
     { "reviews._id": parsedId },
     { $set: { "reviews.$": review } }
   );
+
+  await gameUtil.updateReviewStats(review.gameId, review.rating);
 
   if (updatedInfo.modifiedCount === 0)
     throw `Could not update review information.`;
