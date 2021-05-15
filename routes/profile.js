@@ -5,8 +5,13 @@ const usersDatabase = require('../data/users');
 const reviewsDatabase = require('../data/reviews');
 
 router.get("/", async (req, res) => {
-
-    user = req.session.user;
+    currentUser = req.session.user;
+    let user;
+    try {
+        user = await usersDatabase.findByUsername(currentUser.username);
+    } catch (e) {
+        return res.render('profileError.handlebars', { title: "error", errormsg: e });
+    }
 
     if (!user.perms || typeof (user.perms) != 'string' || user.perms.trim().length == 0) {
         user.perms = 'N/A';
@@ -43,6 +48,7 @@ router.get("/", async (req, res) => {
     if (!user.favoriteGames || !Array.isArray(user.favoriteGames) || user.favoriteGames.length === 0) {
         user.favoriteGames = "This user has no favorite games.";
     }
+    
     if (!user.reviewsLeft || !Array.isArray(user.reviewsLeft) || user.reviewsLeft.length === 0) {
         user.reviewsLeft = "This user has not left any reviews.";
     } else try {

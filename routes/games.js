@@ -335,4 +335,60 @@ router.post('/generateSuggestions', async (req, res) => {
     }
 })
 
++router.post("/hasFavorited", async (req, res) => {
+    console.log('oat');
+    let {gameId} = req.body;
+    console.log('typeof game is ' + typeof(gameId));
+    let user = req.session.user._id;
+    console.log('typeof user is ' + typeof(user));
+    let favorited = false;
+    try{
+        favorited = await usersDatabase.hasFavorited(user,gameId);
+    }catch(e) {
+        console.log(e);
+        console.log('errored outt');
+        return res.json({bool:false});
+    }
+    console.log('gameId is ' + gameId)
+    console.log('user is ' + user)
+    console.log(favorited);
+    return res.json({bool:favorited});
+});
+
+router.post("/favorite", async (req, res) => {
+    console.log('oatmeal');
+    let {gameId} = req.body;
+    let user = req.session.user._id;
+    let check;
+    let bool = false;
+    try{
+        check = await usersDatabase.favoriteGame(user,gameId);
+    }catch(e) {
+        console.log(e);
+        return res.json({bool:false});
+    }
+    if (user) {
+        bool = true;
+    }
+    return res.json({bool:bool});
+});
+
+router.post("/unfavorite", async (req, res) => {
+    let {gameId} = req.body;
+    let user = req.session.user._id;
+    console.log(gameId);
+    let check;
+    let bool = false;
+    try{
+        check = await usersDatabase.unfavoriteGame(user,gameId);
+    }catch(e) {
+        console.log(e);
+        return res.json({bool:false});
+    }
+    if (user) {
+        bool = true;
+    }
+    return res.json({bool:bool});
+});
+
 module.exports = router;
