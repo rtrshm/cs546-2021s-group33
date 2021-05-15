@@ -25,8 +25,17 @@ let createReview = async (
   errorz.ratingChecker(rating);
   errorz.stringChecker(username, "username");
 
-  if (await didUserReviewGame(username, gameId))
-    throw `Error: User already reviewed this game.`;
+  const didReview = await didUserReviewGame(username, gameId);
+  if (didReview) {
+    const newData = {
+      spoiler: spoiler,
+      reviewTitle: reviewTitle,
+      reviewContent: reviewContent,
+      rating: rating,
+      recommended: recommended,
+    };
+    return await updateReview(didReview._id.toString(), username, newData);
+  }
 
   let parsedId = ObjectID(gameId);
   const user = await userUtil.findByUsername(username);
@@ -101,6 +110,7 @@ let didUserReviewGame = async (username, gameId) => {
   errorz.stringChecker(gameId, "gameId");
 
   const parsedId = ObjectID(gameId);
+  let check, review;
 
   const gameCollection = await games();
 
@@ -109,12 +119,15 @@ let didUserReviewGame = async (username, gameId) => {
 
   game.reviews.forEach((elem) => {
     if (elem.username === username) {
-      console.log(elem.username);
-      console.log(username);
-      return true;
+      check = true;
+      review = elem;
     }
   });
-  return false;
+  if (check) {
+    return review;
+  } else {
+    return false;
+  }
 };
 
 let updateReview = async (id, username, newData) => {
@@ -162,6 +175,8 @@ let updateReview = async (id, username, newData) => {
       review[elem] = newData[elem];
     }
   });
+
+  review["timestamp"] = Date.now();
 
   const updatedInfo = await gameCollection.updateOne(
     { "reviews._id": parsedId },
@@ -265,7 +280,7 @@ let getAllReviewsFromUser = async (username) => {
   let user = await userUtil.findByUsername(username);
   let reviews = user.reviewsLeft;
   let reviewz = [];
-  for (let i = 0; i < reviews.length; i++) 
+  for (let i = 0; i < reviews.length; i++)
     reviewz.push(await readReview(reviews[i].toString()));
   return reviewz;
 };
