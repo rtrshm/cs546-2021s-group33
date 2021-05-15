@@ -325,7 +325,7 @@ let main = async () => {
     true,
     randomname.username
   );
-  await reviews.markHelpful(gavin.username, ff6review._id.toString() );
+  await reviews.markHelpful(gavin.username, ff6review._id.toString());
   await reviews.markHelpful(lempie.username, ff6review._id.toString());
   await users.favoriteGame(randomname._id.toString(), ff6._id.toString());
 

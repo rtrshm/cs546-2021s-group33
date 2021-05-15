@@ -1,6 +1,7 @@
 const { ObjectID } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
+const games = mongoCollections.games;
 const errorz = require("./errorChecker");
 //TODO: Handle errors in code.
 
@@ -109,18 +110,17 @@ let updateUser = async (id, newData) => {
   return await readUser(id);
 };
 
-
 // markHelpful IN /data/reviews.js
 // /**
 //  * Given username and reviewId string, adds reviewId
 //  * to user's reviewsMarkedHelpful field
-//  * @param {string} username 
-//  * @param {string} reviewId 
+//  * @param {string} username
+//  * @param {string} reviewId
 //  * @returns boolean whether or not review was added
 //  */
 // let userMarkReviewHelpful = async (username, reviewId) => {
 //     errorz.stringChecker(username, "username");
-    
+
 //     errorz.stringChecker(reviewId, "reviewId");
 //     errorz.idChecker(reviewId, "reviewId");
 
@@ -133,7 +133,7 @@ let updateUser = async (id, newData) => {
 //             {_id: user._id},
 //             {$addToSet: { reviewsMarkedHelpful: reviewId }}
 //         );
-//         if (updatedInfo.modifiedCount === 0) 
+//         if (updatedInfo.modifiedCount === 0)
 //             throw `Review was already present.`
 //     } catch (e) {
 //         console.log(e);
@@ -143,27 +143,24 @@ let updateUser = async (id, newData) => {
 //     return true;
 // }
 
-
-
 let hasRatedHelpful = async (username, reviewId) => {
-    errorz.stringChecker(username, "username");
-    
-    errorz.stringChecker(reviewId, "reviewId");
-    errorz.idChecker(reviewId, "reviewId");
+  errorz.stringChecker(username, "username");
 
-    let user;
-    try {
-        user = await findByUsername(username);
-        let reviewsHelpfulStr = user.reviewsMarkedHelpful.map(x => x.toString());
-        console.log(`Looking for: ${reviewId} in ${reviewsHelpfulStr}`);
-        for (let review of reviewsHelpfulStr)
-            if (review == reviewId) return true;
-        return false;
-    } catch (e) {
-        console.log(e);
-        return false;
-    }
-}
+  errorz.stringChecker(reviewId, "reviewId");
+  errorz.idChecker(reviewId, "reviewId");
+
+  let user;
+  try {
+    user = await findByUsername(username);
+    let reviewsHelpfulStr = user.reviewsMarkedHelpful.map((x) => x.toString());
+    console.log(`Looking for: ${reviewId} in ${reviewsHelpfulStr}`);
+    for (let review of reviewsHelpfulStr) if (review == reviewId) return true;
+    return false;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
 
 let followUser = async (followerId, followedId) => {
   errorz.stringChecker(followerId, "id");
@@ -332,6 +329,39 @@ let unfavoriteGame = async (userId, gameId) => {
   return await readUser(userId);
 };
 
+let hasRecommended = async (userId, gameId) => {
+  errorz.stringChecker(userId, "id");
+  errorz.idChecker(userId);
+  errorz.stringChecker(gameId, "id");
+  errorz.idChecker(gameId);
+
+  let check, review;
+
+  const parsedUserID = ObjectID(userId);
+  const parsedGameID = ObjectID(gameId);
+
+  const gameCollection = await games();
+  const userCollection = await users();
+
+  const game = await gameCollection.findOne({ _id: parsedGameID });
+  if (!game) throw `Error: Game not found`;
+
+  const user = await userCollection.findOne({ _id: parsedUserID });
+  if (!user) throw `Error: User not found`;
+
+  game.reviews.forEach((elem) => {
+    if (elem.username === user.username) {
+      check = true;
+      review = elem;
+    }
+  });
+  if (check) {
+    return review.recommended;
+  } else {
+    return false;
+  }
+};
+
 let updateUserReview = async (username, reviewId) => {
   errorz.stringChecker(username, "username");
   errorz.stringChecker(reviewId, "id");
@@ -393,6 +423,7 @@ module.exports = {
   getListFollowing,
   favoriteGame,
   unfavoriteGame,
+  hasRecommended,
   updateUserReview,
   removeReview,
   removeUser,
