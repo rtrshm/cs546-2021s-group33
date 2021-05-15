@@ -31,7 +31,7 @@ app.use(async (req, res, next) => {
     //console.log(req.originalUrl);
     if (req.originalUrl != '/' && req.originalUrl != '/login' && req.originalUrl != '/signup' && req.originalUrl != '/verifylogin' && !req.session.user) {
         //console.log(req.originalUrl);
-        return res.render("login.handlebars", {title: "Error", errormsg: "Error: Not logged in", redirect: req.originalUrl});
+        return res.status(401).render("login.handlebars", {title: "Error", errormsg: "Error: Not logged in", redirect: req.originalUrl});
     }
     next();
 });
@@ -58,21 +58,21 @@ app.post("/login", async (req, res) => {
 app.post("/verifylogin", async (req, res) => {
     let { username, password} = req.body;
     if (!username || typeof(username) !== "string" || username.trim().length == 0) {
-        return res.json({bool : false});
+        return res.status(400).json({bool : false});
     }
     if (!password || typeof(password) !== "string" || password.trim().length == 0) {
-        return res.json({bool : false});
+        return res.status(400).json({bool : false});
     }
     username = username.toLowerCase();
     let user;
     try {
         user = await userDatabase.findByUsername(username);
     } catch(e){
-        return res.json({bool : false});
+        return res.status(500).json({bool : false});
     }
 
     if (!user.password){
-        return res.json({bool : false});
+        return res.status(500).json({bool : false});
     }
 
     if (bcrypt.compareSync(password,user.password)) {
@@ -80,7 +80,7 @@ app.post("/verifylogin", async (req, res) => {
         return res.json({bool : true});
     }
     else {
-        return res.json({bool : false});
+        return res.status(400).json({bool : false});
     }
 });
 

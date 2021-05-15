@@ -328,6 +328,32 @@ let unfavoriteGame = async (userId, gameId) => {
   return await readUser(userId);
 };
 
+let hasFavorited = async (userId, gameId) => {
+  errorz.stringChecker(userId, "id");
+  errorz.idChecker(userId);
+  errorz.stringChecker(gameId, "id");
+  errorz.idChecker(gameId);
+
+  const parsedUserID = ObjectID(userId);
+  const parsedGameID = ObjectID(gameId);
+
+  const gameCollection = await games();
+  const userCollection = await users();
+
+  const game = await gameCollection.findOne({ _id: parsedGameID });
+  console.log(parsedGameID);
+  console.log('typeof parsedGameId is ' + parsedGameID);
+  if (!game) throw `Error: Game not found`;
+
+  const user = await userCollection.findOne({ _id: parsedUserID });
+  if (!user) throw `Error: User not found`;
+
+  for (let gameIdString of user.favoriteGames.map((x) => x.toString())) {
+    if (parsedGameID.toString() == gameIdString) return true;
+  }
+  return false;
+};
+
 let hasRecommended = async (userId, gameId) => {
   errorz.stringChecker(userId, "id");
   errorz.idChecker(userId);
@@ -426,4 +452,5 @@ module.exports = {
   updateUserReview,
   removeReview,
   removeUser,
+  hasFavorited
 };

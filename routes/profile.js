@@ -5,8 +5,13 @@ const usersDatabase = require('../data/users');
 const reviewsDatabase = require('../data/reviews');
 
 router.get("/", async (req, res) => {
-
-    user = req.session.user;
+    currentUser = req.session.user;
+    let user;
+    try {
+        user = await usersDatabase.findByUsername(currentUser.username);
+    } catch (e) {
+        return res.render('profileError.handlebars', { title: "error", errormsg: e });
+    }
 
     if (!user.perms || typeof (user.perms) != 'string' || user.perms.trim().length == 0) {
         user.perms = 'N/A';
@@ -33,7 +38,7 @@ router.get("/", async (req, res) => {
     try {
         user.usersFollowing = await usersDatabase.getListFollowing(user.username);
     } catch (e) {
-        return res.render('profileError.handlebars', { title: "error", errormsg: e });
+        return res.status(500).render('profileError.handlebars', { title: "error", errormsg: e });
     }
     let usersFollowing = false;
     if (!user.usersFollowing || !Array.isArray(user.usersFollowing) || user.usersFollowing.length === 0) {
@@ -43,6 +48,7 @@ router.get("/", async (req, res) => {
     if (!user.favoriteGames || !Array.isArray(user.favoriteGames) || user.favoriteGames.length === 0) {
         user.favoriteGames = "This user has no favorite games.";
     }
+    
     if (!user.reviewsLeft || !Array.isArray(user.reviewsLeft) || user.reviewsLeft.length === 0) {
         user.reviewsLeft = "This user has not left any reviews.";
     } else try {
@@ -64,7 +70,7 @@ router.get("/:id", async (req, res) => {
     try {
         user = await usersDatabase.findByUsername(req.params.id);
     } catch (e) {
-        return res.render('profileError.handlebars', { title: "error", errormsg: e });
+        return res.status(500).render('profileError.handlebars', { title: "error", errormsg: e });
     }
     let profile = user;
     if (!user.perms || typeof (user.perms) != 'string' || user.perms.trim().length == 0) {
@@ -96,7 +102,7 @@ router.get("/:id", async (req, res) => {
     try {
         profile.usersFollowing = await usersDatabase.getListFollowing(user.username);
     } catch (e) {
-        return res.render('profileError.handlebars', { title: "error", errormsg: e });
+        return res.status(500).render('profileError.handlebars', { title: "error", errormsg: e });
     }
     let userFollowing = false;
     if (!profile.usersFollowing || !Array.isArray(profile.usersFollowing) || profile.usersFollowing.length === 0) {
