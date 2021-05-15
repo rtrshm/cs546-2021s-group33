@@ -131,6 +131,27 @@ let followUser = async (followerId, followedId) => {
   return await readUser(followerId);
 };
 
+let followUserByName = async (followerName, followedName) => {
+  errorz.stringChecker(followerName, "follower");
+  errorz.stringChecker(followedName, "followed");
+  let follower, followed;
+  try {
+    follower = await findByUsername(followerName);
+    followed = await findByUsername(followedName);
+  }catch(e) {
+    throw "User not found.";
+  }
+  const userCollection = await users();
+  const updatedInfo = await userCollection.updateOne(
+    { _id: follower._id },
+    { $addToSet: { usersFollowing: followed._id } }
+  );
+  if (updatedInfo.modifiedCount === 0)
+    throw `Could not update user information.`;
+
+  return await readUser(follower._id.toString());
+};
+
 let unfollowUser = async (followerId, followedId) => {
   errorz.stringChecker(followerId, "id");
   errorz.idChecker(followerId);
@@ -150,6 +171,27 @@ let unfollowUser = async (followerId, followedId) => {
   if (updatedInfo.modifiedCount === 0)
     throw `Could not update user information.`;
   return await readUser(followerId);
+};
+
+let unfollowUserByName = async (followerName, followedName) => {
+  errorz.stringChecker(followerName, "follower");
+  errorz.stringChecker(followedName, "followed");
+  let follower, followed;
+  try {
+    follower = await findByUsername(followerName);
+    followed = await findByUsername(followedName);
+  }catch(e) {
+    throw "User not found.";
+  }
+  const userCollection = await users();
+  const updatedInfo = await userCollection.updateOne(
+    { _id: follower._id },
+    { $pull: { usersFollowing: followed._id } }
+  );
+  if (updatedInfo.modifiedCount === 0)
+    throw `Could not update user information.`;
+
+  return await readUser(follower._id.toString());
 };
 
 let isFollowing = async (followerUser, followedUser) => {
@@ -267,6 +309,8 @@ module.exports = {
   followUser,
   unfollowUser,
   isFollowing,
+  followUserByName,
+  unfollowUserByName,
   getListFollowing,
   favoriteGame,
   updateUserReview,

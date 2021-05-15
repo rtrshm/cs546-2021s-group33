@@ -1,16 +1,8 @@
-{{!-- users
-“_id”: ObjectID(60690731a54720327839a830),
-“perms”: “user”,
-“username”: “JohnDoe”,
-“dateJoined”:”4/1/2021”,
-“hashPassword”: “$2a$08$XdvNkfdNIL8F8xsuIUeSbNOFgK0M0iV5HOskfVn7.PWncShU.O”,
-“usersFollowing”: [“mapple”, “lempie”, “randomname”],
-“email”:”JDoe@gmail.com”,
-“favoriteGames” : [ObjectId(6069054da54720327839a82e), ObjectId(6069056ca54720327839a82f)],
-“reviewsLeft”: [ObjectID(60690a32a54720327839a835), ObjectId(606908bfa54720327839a834)] --}}
 <a href="/nav">Go back</a>
 <h1>Profile</h1>
+<button id="followUser" type="button">Follow this user</button><br>
 <p>Permission group: {{object.perms}} </p>
+<p hidden id="hiddenName">{{object.username}}</p>
 <p>Username: {{object.username}}</p>
 <p>Date joined: {{object.dateJoined}}</p>
 <p>Users following:{{#if hasUsersFollowing}} None{{/if}}</p>
@@ -46,3 +38,4 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
 <script src="/public/js/spoilerButton.js"> </script>
+<script src="/public/js/follow.js"></script>

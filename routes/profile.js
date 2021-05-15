@@ -56,6 +56,9 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
+    if (req.params.id === req.session.user.username) {
+        return res.redirect('/profile');
+    }
     currentUser = req.session.user;
     let user;
     try {
