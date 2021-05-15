@@ -109,50 +109,65 @@ let updateUser = async (id, newData) => {
   return await readUser(id);
 };
 
-let userMarkReviewHelpful = async (userId, reviewId) => {
-    errorz.stringChecker(userId, "userId");
-    errorz.idChecker(userId, "userId");
+/**
+ * Given username and reviewId string, adds reviewId
+ * to user's reviewsMarkedHelpful field
+ * @param {string} username 
+ * @param {string} reviewId 
+ * @returns boolean whether or not review was added
+ */
+let userMarkReviewHelpful = async (username, reviewId) => {
+    errorz.stringChecker(username, "username");
+    
     errorz.stringChecker(reviewId, "reviewId");
     errorz.idChecker(reviewId, "reviewId");
 
-    const parsedUserId = ObjectID(userId);
+    const userCollection = await users();
+
+    const user = await findByUsername(username);
 
     try {
-        const updatedInfo = await UserCollection.updateOne(
-            {_id: parsedUserId},
+        const updatedInfo = await userCollection.updateOne(
+            {_id: user._id},
             {$addToSet: { reviewsMarkedHelpful: reviewId }}
         );
         if (updatedInfo.modifiedCount === 0) 
             throw `Review was already present.`
     } catch (e) {
         console.log(e);
-        throw `Ran into error while trying to add review marked helpful.`
+        return false;
     }
 
-    return await readUser(userId);
+    return true;
 }
 
-let userUnmarkReviewHelpful = async (userId, reviewId) => {
+/**
+ * Given username and a reviewId, attempts to remove
+ * @param {string} username 
+ * @param {string} reviewId 
+ * @returns boolean whether or not the review was removed
+ */
+let userUnmarkReviewHelpful = async (username, reviewId) => {
     errorz.stringChecker(userId, "userId");
-    errorz.idChecker(userId, "userId");
+
     errorz.stringChecker(reviewId, "reviewId");
     errorz.idChecker(reviewId, "reviewId");
 
-    const parsedUserId = ObjectID(userId);
-
+    const userCollection = await users();
+    const user = await findByUsername(username);
+    
     try {
-        const updatedInfo = await UserCollection.updateOne(
-            {_id: parsedUserId},
+        const updatedInfo = await userCollection.updateOne(
+            {_id: user._id},
             {$pull: { reviewsMarkedHelpful: reviewId }}
         );
         if (updatedInfo.modifiedCount === 0) 
-            throw `Review was already present.`
+            throw `Review was not present.`
+        return true;
     } catch (e) {
         console.log(e);
-        throw `Ran into error while trying to add review marked helpful.`
+        return false;
     }
-
-    return await readUser(userId);
 }
 
 let hasRatedHelpful = async (username, reviewId) => {

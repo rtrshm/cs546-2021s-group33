@@ -275,4 +275,34 @@ router.post("/hasRatedHelpful", async (req, res) => {
     return res.json({bool:hasRatedHelpful});
 });
 
+router.post("/rateHelpful", async (req, res) => {
+    let reviewId;
+    if (req.body) reviewId = req.body.reviewId;
+    else res.status(400).json({message: 'Missing request body'});
+    
+    let username = req.session.user.username;
+    try {
+        let success  = await usersDatabase.userMarkReviewHelpful(username, reviewId);
+        res.json({bool:success});
+    } catch (e) {
+        console.log(e);
+        res.json({bool:false});
+    }
+});
+
+router.post("/unrateHelpful", async (req, res) => {
+    let reviewId;
+    if (req.body) reviewId = req.body.reviewId;
+    else res.status(400).json({message: 'Missing request body'});
+    
+    let username = req.session.user.username;
+    try {
+        let success  = await usersDatabase.userUnmarkReviewHelpful(username, reviewId);
+        res.json({bool:success});
+    } catch (e) {
+        console.log(e);
+        res.json({bool:false});
+    }
+});
+
 module.exports = router;
