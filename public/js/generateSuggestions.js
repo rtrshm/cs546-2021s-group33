@@ -7,7 +7,7 @@
     };
 
     $.ajax(requestConfig).then( response => {
-        if (response.suggestions) 
+        if (response.suggestions.length) 
             generateSuggestions(response.suggestions)
     })
 
