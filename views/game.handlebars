@@ -74,6 +74,7 @@
     <li>By <a href="/profile/{{this.username}}">{{this.username}}</a> <br>
     {{#if this.spoiler}}
         <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
+        <br>
         <ul class="reviewPoints" hidden>
             <li>{{this.reviewTitle}}</li>
             <li>{{this.reviewContent}}</li>
@@ -96,10 +97,13 @@
     {{/each}}
 </ul>
 
+<ul id="gameSuggestions" hidden>
+</ul>
+
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
 <script src="/public/js/ratehelpful.js"></script>
 <script src="/public/js/addReview.js"> </script>
 <script src="/public/js/spoilerButton.js"></script>
-
+<script src="/public/js/generateSuggestions.js"></script>
 </div>

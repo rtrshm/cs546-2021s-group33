@@ -2,6 +2,6 @@
     // attach handler to spoiler buttons
     $(".revealSpoiler").click(function() {
         $(this).hide();
-        $(this).siblings(".reviewPoints").show()
+        $(this).next().next().show();
     });
 })(window.jQuery);

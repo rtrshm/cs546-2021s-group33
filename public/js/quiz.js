@@ -59,7 +59,6 @@
             ['Publishers', game.publishers],
             ['Average Rating', game.averageRating],
             ['Platforms', game.platforms],
-            ['Reviews', game.reviews],
             ['Purchase links', game.purchaseLinks]]) {
                 if (field[1]) {
                     attrList.append($(`<dt>${field[0]}</dt>`));
@@ -87,7 +86,9 @@
     quizForm.submit(event => {
         event.preventDefault();
         quizResult.hide();
-        let genres = $.map($('input[type="radio"]:checked'), elem => $(elem).val())
+        let genres = $.map($('input[type="radio"]:checked'), elem => {
+            if ($(elem).val()) return $(elem).val()
+        })
         let platforms = $.map($("input[name='platform']:checked"), elem => $(elem).val());
         let data = {genres, platforms};
 

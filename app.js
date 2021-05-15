@@ -5,9 +5,9 @@ const configRoutes = require('./routes')
 const exphbs = require('express-handlebars');
 const static = express.static(__dirname + '/public');
 const userDatabase = require('./data/users');
-const gameDatabase = require('./data/games');
-const errorChecker = require('./data/errorChecker')
 const bcrypt = require('bcrypt');
+
+require("./tasks/seed");
 
 app.use('/public', static);
 app.use(express.json());
@@ -95,5 +95,3 @@ app.listen(3000, () => {
     console.log("We've now got a server!");
     console.log('Your routes will be running on http://localhost:3000');
   });
-
-
