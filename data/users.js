@@ -109,66 +109,41 @@ let updateUser = async (id, newData) => {
   return await readUser(id);
 };
 
-/**
- * Given username and reviewId string, adds reviewId
- * to user's reviewsMarkedHelpful field
- * @param {string} username 
- * @param {string} reviewId 
- * @returns boolean whether or not review was added
- */
-let userMarkReviewHelpful = async (username, reviewId) => {
-    errorz.stringChecker(username, "username");
+
+// markHelpful IN /data/reviews.js
+// /**
+//  * Given username and reviewId string, adds reviewId
+//  * to user's reviewsMarkedHelpful field
+//  * @param {string} username 
+//  * @param {string} reviewId 
+//  * @returns boolean whether or not review was added
+//  */
+// let userMarkReviewHelpful = async (username, reviewId) => {
+//     errorz.stringChecker(username, "username");
     
-    errorz.stringChecker(reviewId, "reviewId");
-    errorz.idChecker(reviewId, "reviewId");
+//     errorz.stringChecker(reviewId, "reviewId");
+//     errorz.idChecker(reviewId, "reviewId");
 
-    const userCollection = await users();
+//     const userCollection = await users();
 
-    const user = await findByUsername(username);
+//     const user = await findByUsername(username);
 
-    try {
-        const updatedInfo = await userCollection.updateOne(
-            {_id: user._id},
-            {$addToSet: { reviewsMarkedHelpful: reviewId }}
-        );
-        if (updatedInfo.modifiedCount === 0) 
-            throw `Review was already present.`
-    } catch (e) {
-        console.log(e);
-        return false;
-    }
+//     try {
+//         const updatedInfo = await userCollection.updateOne(
+//             {_id: user._id},
+//             {$addToSet: { reviewsMarkedHelpful: reviewId }}
+//         );
+//         if (updatedInfo.modifiedCount === 0) 
+//             throw `Review was already present.`
+//     } catch (e) {
+//         console.log(e);
+//         return false;
+//     }
 
-    return true;
-}
+//     return true;
+// }
 
-/**
- * Given username and a reviewId, attempts to remove
- * @param {string} username 
- * @param {string} reviewId 
- * @returns boolean whether or not the review was removed
- */
-let userUnmarkReviewHelpful = async (username, reviewId) => {
-    errorz.stringChecker(username, "username");
 
-    errorz.stringChecker(reviewId, "reviewId");
-    errorz.idChecker(reviewId, "reviewId");
-
-    const userCollection = await users();
-    const user = await findByUsername(username);
-    
-    try {
-        const updatedInfo = await userCollection.updateOne(
-            {_id: user._id},
-            {$pull: { reviewsMarkedHelpful: reviewId }}
-        );
-        if (updatedInfo.modifiedCount === 0) 
-            throw `Review was not present.`
-        return true;
-    } catch (e) {
-        console.log(e);
-        return false;
-    }
-}
 
 let hasRatedHelpful = async (username, reviewId) => {
     errorz.stringChecker(username, "username");
@@ -179,8 +154,11 @@ let hasRatedHelpful = async (username, reviewId) => {
     let user;
     try {
         user = await findByUsername(username);
-        if (reviewId in user.reviewsMarkedHelpful)
-            return true;
+        let reviewsHelpfulStr = user.reviewsMarkedHelpful.map(x => x.toString());
+        console.log(`Looking for: ${reviewId} in ${reviewsHelpfulStr}`);
+        for (let review of reviewsHelpfulStr)
+            if (review == reviewId) return true;
+        return false;
     } catch (e) {
         console.log(e);
         return false;
@@ -409,8 +387,6 @@ module.exports = {
   followUser,
   unfollowUser,
   isFollowing,
-  userMarkReviewHelpful,
-  userUnmarkReviewHelpful,
   hasRatedHelpful,
   followUserByName,
   unfollowUserByName,

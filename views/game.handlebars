@@ -79,7 +79,8 @@
             <li>{{this.reviewContent}}</li>
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
-            <button id="rateHelpful">Rate this review helpful (not yet implemented)</button>
+            <li>{{this.helpfulCount}} users found this review helpful</li>
+            <button id="rateHelpful">Rate this review helpful</button>
         </ul> <br>
     {{else}}
         <ul class="reviewPoints">
@@ -87,7 +88,8 @@
             <li>{{this.reviewContent}}</li>
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
-            <button id="rateHelpful">Rate this review helpful (not yet implemented)</button>
+            <li>{{this.helpfulCount}} users found this review helpful</li>
+            <button id="rateHelpful">Rate this review helpful</button>
         </ul> <br>
     </li>
     {{/if}}
@@ -96,6 +98,7 @@
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
+<script src="/public/js/ratehelpful.js"></script>
 <script src="/public/js/addReview.js"> </script>
 <script src="/public/js/spoilerButton.js"></script>
 

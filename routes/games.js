@@ -265,11 +265,14 @@ router.post('/quiz', async (req, res) => {
 
 router.post("/hasRatedHelpful", async (req, res) => {
     let {reviewId} = req.body;
+    console.log("hasRatedHelpful request body: " + JSON.stringify(req.body));
     let user = req.session.user.username;
     let hasRatedHelpful = false;
     try{
-        hasRatedHelpful = await userDatabase.hasRatedHelpful(user,reviewId);
-    }catch(e) {
+        hasRatedHelpful = await usersDatabase.hasRatedHelpful(user,reviewId);
+        console.log(`hasRatedHelpful result: ${hasRatedHelpful}`)
+    } catch(e) {
+        console.log(e);
         return res.json({bool:false});
     }
     return res.json({bool:hasRatedHelpful});
@@ -279,10 +282,9 @@ router.post("/rateHelpful", async (req, res) => {
     let reviewId;
     if (req.body) reviewId = req.body.reviewId;
     else res.status(400).json({message: 'Missing request body'});
-    
     let username = req.session.user.username;
     try {
-        let success  = await usersDatabase.userMarkReviewHelpful(username, reviewId);
+        let success  = await reviewsDatabase.markHelpful(username, reviewId);
         res.json({bool:success});
     } catch (e) {
         console.log(e);
@@ -294,10 +296,9 @@ router.post("/unrateHelpful", async (req, res) => {
     let reviewId;
     if (req.body) reviewId = req.body.reviewId;
     else res.status(400).json({message: 'Missing request body'});
-    
     let username = req.session.user.username;
     try {
-        let success  = await usersDatabase.userUnmarkReviewHelpful(username, reviewId);
+        let success  = await reviewsDatabase.unmarkHelpful(username, reviewId);
         res.json({bool:success});
     } catch (e) {
         console.log(e);

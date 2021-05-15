@@ -193,9 +193,15 @@ let updateReview = async (id, username, newData) => {
   return await readReview(id);
 };
 
-let markHelpful = async (id, username) => {
+let markHelpful = async (username, id) => {
   errorz.stringChecker(id, "id");
-  errorz.idChecker(id);
+  
+  try {
+    errorz.idChecker(id);
+  } catch (e) {
+    console.log(id);
+  }
+
   errorz.stringChecker(username, "username");
   const parsedId = ObjectID(id);
 
@@ -206,18 +212,57 @@ let markHelpful = async (id, username) => {
     { username: username },
     { $addToSet: { reviewsMarkedHelpful: parsedId } }
   );
-  if (updatedUser.modifiedCount === 0)
-    throw `Could not update review information.`;
+  // review was already marked helpful
+  if (updatedUser.modifiedCount === 0) {
+    return false;
+  }
 
   const updatedInfo = await gameCollection.updateOne(
     { "reviews._id": parsedId },
     { $inc: { "reviews.$.helpfulCount": 1 } }
   );
-  if (updatedInfo.modifiedCount === 0)
-    throw `Could not update review information.`;
+  if (updatedInfo.modifiedCount === 0) {
+    return false;
+  }
 
-  return await readReview(id);
+  return true;
 };
+
+/**
+ * Given username and a reviewId, attempts to remove helpful rating
+ * @param {string} username 
+ * @param {string} reviewId 
+ * @returns updated review
+ */
+ let unmarkHelpful = async (username, id) => {
+    errorz.stringChecker(id, "id");
+  try {
+    errorz.idChecker(id);
+  } catch (e) {
+    console.log(id);
+  }
+    errorz.stringChecker(username, "username");
+    const parsedId = ObjectID(id);
+  
+    const gameCollection = await games();
+    const userCollection = await users();
+  
+    const updatedUser = await userCollection.updateOne(
+      { username: username },
+      { $pull: { reviewsMarkedHelpful: parsedId } }
+    );
+    if (updatedUser.modifiedCount === 0)
+        return false;
+  
+    const updatedInfo = await gameCollection.updateOne(
+      { "reviews._id": parsedId },
+      { $inc: { "reviews.$.helpfulCount": -1 } }
+    );
+    if (updatedInfo.modifiedCount === 0) 
+      return false;
+  
+    return true;
+}
 
 let removeReview = async (id) => {
   errorz.stringChecker(id, "id");
@@ -295,6 +340,7 @@ module.exports = {
   readReview,
   updateReview,
   markHelpful,
+  unmarkHelpful,
   removeReview,
   getRecentReviews,
   getAllReviewIdsFromUser,

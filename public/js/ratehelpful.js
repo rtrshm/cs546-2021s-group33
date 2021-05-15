@@ -3,11 +3,8 @@
     let hiddenId = document.getElementById('hiddenId');
     var requestConfig = {
         method: 'POST',
-        url: '/games/rateHelpful/',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            reviewId:hiddenId.innerHTML
-        })
+        url: '/games/hasRatedHelpful',
+        data: { reviewId:hiddenId.innerHTML }
     };
     $.ajax(requestConfig).then(function(responseMessage) {
         rateHelpful.innerHTML = "Unmark review as helpful";
@@ -20,11 +17,8 @@
         if (rateHelpful.innerHTML == "Unmark review as helpful") {
             var requestConfig = {
                 method: 'POST',
-                url: '/games/unrateHelpful/',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    reviewId:hiddenId.innerHTML
-                })
+                url: '/games/unrateHelpful',
+                data: { reviewId:hiddenId.innerHTML }
             };
             $.ajax(requestConfig).then(function(responseMessage) {
                 rateHelpful.innerHTML = "Mark review as helpful";
@@ -36,11 +30,8 @@
         else {
             var requestConfig = {
                 method: 'POST',
-                url: '/games/rateHelpful/',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    reviewId:hiddenId.innerHTML
-                })
+                url: '/games/rateHelpful',
+                data: {reviewId:hiddenId.innerHTML}
             };
             $.ajax(requestConfig).then(function(responseMessage) {
                 rateHelpful.innerHTML = "Unmark review as helpful";

@@ -79,7 +79,7 @@ let main = async () => {
     randomname.username
   );
 
-  await reviews.markHelpful(dsrreview._id.toString(), "lempie");
+  await reviews.markHelpful("lempie", dsrreview._id.toString());
   await users.favoriteGame(randomname._id.toString(), dsr._id.toString());
 
   const csgo = await games.createGame(
@@ -103,7 +103,7 @@ let main = async () => {
     true,
     lempie.username
   );
-  await reviews.markHelpful(csgoreview._id.toString(), dylan.username);
+  await reviews.markHelpful(dylan.username, csgoreview._id.toString());
   await users.favoriteGame(dylan._id.toString(), csgo._id.toString());
 
   const pyre = await games.createGame(
@@ -132,7 +132,7 @@ let main = async () => {
     true,
     randomname.username
   );
-  await reviews.markHelpful(pyrereview._id.toString(), dylan.username);
+  await reviews.markHelpful(dylan.username, pyrereview._id.toString());
   await users.favoriteGame(randomname._id.toString(), pyre._id.toString());
 
   const brawlhalla = await games.createGame(
@@ -162,8 +162,8 @@ let main = async () => {
     lempie.username
   );
   await reviews.markHelpful(
-    brawlhallareview._id.toString(),
-    randomname.username
+    randomname.username,
+    brawlhallareview._id.toString()
   );
   await users.favoriteGame(dylan._id.toString(), brawlhalla._id.toString());
 
@@ -188,8 +188,8 @@ let main = async () => {
     true,
     dylan.username
   );
-  await reviews.markHelpful(mk8review._id.toString(), randomname.username);
-  await reviews.markHelpful(mk8review._id.toString(), lempie.username);
+  await reviews.markHelpful(randomname.username, mk8review._id.toString());
+  await reviews.markHelpful(lempie.username, mk8review._id.toString());
   await users.favoriteGame(randomname._id.toString(), mk8._id.toString());
   await users.favoriteGame(dylan._id.toString(), mk8._id.toString());
 
@@ -221,8 +221,8 @@ let main = async () => {
     true,
     randomname.username
   );
-  await reviews.markHelpful(stsreview._id.toString(), dylan.username);
-  await reviews.markHelpful(stsreview._id.toString(), lempie.username);
+  await reviews.markHelpful(dylan.username, stsreview._id.toString());
+  await reviews.markHelpful(lempie.username, stsreview._id.toString());
   await users.favoriteGame(randomname._id.toString(), sts._id.toString());
 
   const nkp = await games.createGame(
@@ -269,9 +269,9 @@ let main = async () => {
     true,
     randomname.username
   );
-  await reviews.markHelpful(subreview._id.toString(), lempie.username);
-  await reviews.markHelpful(subreview._id.toString(), dylan.username);
-  await reviews.markHelpful(subreview._id.toString(), gavin.username);
+  await reviews.markHelpful(lempie.username, subreview._id.toString());
+  await reviews.markHelpful(dylan.username, subreview._id.toString());
+  await reviews.markHelpful(gavin.username, subreview._id.toString());
   await users.favoriteGame(randomname._id.toString(), sub._id.toString());
   await users.favoriteGame(gavin._id.toString(), sub._id.toString());
 
@@ -296,8 +296,8 @@ let main = async () => {
     true,
     gavin.username
   );
-  await reviews.markHelpful(rksreview._id.toString(), randomname.username);
-  await reviews.markHelpful(rksreview._id.toString(), dylan.username);
+  await reviews.markHelpful(randomname.username, rksreview._id.toString());
+  await reviews.markHelpful(dylan.username, rksreview._id.toString());
   await users.favoriteGame(randomname._id.toString(), rks._id.toString());
   await users.favoriteGame(gavin._id.toString(), rks._id.toString());
 
@@ -325,8 +325,8 @@ let main = async () => {
     true,
     randomname.username
   );
-  await reviews.markHelpful(ff6review._id.toString(), gavin.username);
-  await reviews.markHelpful(ff6review._id.toString(), lempie.username);
+  await reviews.markHelpful(gavin.username, ff6review._id.toString() );
+  await reviews.markHelpful(lempie.username, ff6review._id.toString());
   await users.favoriteGame(randomname._id.toString(), ff6._id.toString());
 
   const touhou = await games.createGame(
@@ -350,8 +350,8 @@ let main = async () => {
     true,
     dylan.username
   );
-  await reviews.markHelpful(touhoureview._id.toString(), randomname.username);
-  await reviews.markHelpful(touhoureview._id.toString(), lempie.username);
+  await reviews.markHelpful(randomname.username, touhoureview._id.toString());
+  await reviews.markHelpful(lempie.username, touhoureview._id.toString());
   await users.favoriteGame(dylan._id.toString(), touhou._id.toString());
 
   const fs19 = await games.createGame(
@@ -384,8 +384,8 @@ let main = async () => {
     false,
     lempie.username
   );
-  await reviews.markHelpful(fs19review._id.toString(), gavin.username);
-  await reviews.markHelpful(fs19review2._id.toString(), randomname.username);
+  await reviews.markHelpful(gavin.username, fs19review._id.toString());
+  await reviews.markHelpful(randomname.username, fs19review2._id.toString());
   await users.favoriteGame(dylan._id.toString(), fs19._id.toString());
 
   await users.followUser(lempie._id.toString(), randomname._id.toString());
