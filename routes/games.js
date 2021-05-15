@@ -313,13 +313,17 @@ router.post('/generateSuggestions', async (req, res) => {
     try{
         errorChecker.stringChecker(gameId, "gameId");
         errorChecker.idChecker(gameId);
+        errorChecker.stringChecker(userId, "userId");
+        errorChecker.idChecker(userId);
     } catch (e) {
         console.log(e);
         res.status(400).json({message: 'invalid gameId'});
         return;
     }
+
+    // if user has recommended the game, generate some extra suggestions
     if (await usersDatabase.hasRecommended(userId, gameId)) {
-        let suggestions = await gamesDatabase.generateSuggestions(gameId);
+        let suggestions = await gamesDatabase.getRecommendedGameByGame(gameId);
         return res.json({suggestions});
     } else {
         return res.json({suggestions: []});
