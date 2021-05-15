@@ -21,7 +21,7 @@ let createGame = async (
   errorz.stringChecker(title, "title");
   errorz.stringChecker(img, "img");
   errorz.isValidDate(dateReleased);
-  errorz.genre(genres);
+  errorz.genreChecker(genres);
   errorz.checkErrorArrayEmpty(developers, "string");
   errorz.checkErrorArrayEmpty(publishers, "string");
   errorz.ageRatingChecker(ageRating);
@@ -120,18 +120,23 @@ let getGamesByParameters = async (params) => {
   errorz.genreChecker(params.genres);
   errorz.platformChecker(params.platforms);
   const gameCollection = await games();
-  
+
   // ensure that at least one genre and platform is satisfied
   const gameList = await gameCollection
-    .find( {$and: 
-        [{ genres: {$in: params.genres}}, 
-         {platforms: {$in: params.platforms}}]},
-        { title: 1, genres: 1, averageRating: 1 })
+    .find(
+      {
+        $and: [
+          { genres: { $in: params.genres } },
+          { platforms: { $in: params.platforms } },
+        ],
+      },
+      { title: 1, genres: 1, averageRating: 1 }
+    )
     .sort({ averageRating: 1 })
     .toArray();
 
   // consider sorting by number of categories satisfied in later updates
-  
+
   if (gameList === null) throw `No games with given parameters found.`;
 
   return gameList;
@@ -147,7 +152,10 @@ let getRecommendedGameByGame = async (id) => {
   const game = await gameCollection.findOne({ _id: parsedId });
   if (game === null) throw `Game not found.`;
 
-  let gameList = await getGamesByParams({genres: game.genres, platforms: game.platforms});
+  let gameList = await getGamesByParams({
+    genres: game.genres,
+    platforms: game.platforms,
+  });
 
   return gameList[0];
 };
@@ -181,24 +189,21 @@ let updateGame = async (id, newData) => {
     } else if (x[i] === "purchaseLinks") {
       errorz.checkErrorArrayEmpty(newData.purchaseLinks, "string");
     } else if (x[i] === "sameName") {
-      ;
-    }else {
+    } else {
       throw "Error: " + x[i] + " Key not valid";
     }
   }
   console.log(newData.sameName);
-  if (!newData.sameName){
+  if (!newData.sameName) {
     let taken;
-    try{
+    try {
       taken = await titleTaken(newData.title);
-    }
-    catch (e){
+    } catch (e) {
       throw e;
     }
     if (taken) throw `Error: Title ${newData.title} already taken`;
   }
   delete newData.sameName;
-
 
   let parsedId = ObjectID(id);
 
