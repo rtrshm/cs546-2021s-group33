@@ -1,14 +1,18 @@
-<main>
+<button onclick="location.href='/admin/manage'" type="button">Go Back</button>
+<main class="screen">
     <header>
     <h1>Welcome, Admin. Modify a game from the database:</h1>
 	</header>
     <form action = "/admin/modify" name='search' method ="post" id="game-search">
         <label for="title">Game title:</label>
+        <br>
         <input type="text" name="title" id="title">
+        <br>
+        <br>
         <button type="submit">Enter</button>
     </form>
     <p class='error' id='error'>{{errormsg}}</p>
-    <a href="/admin/manage">Go back</a>
+    <!--<a href="/admin/manage">Go back</a> -->
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
     crossorigin="anonymous"></script>
     <script src="/public/js/search.js"></script>

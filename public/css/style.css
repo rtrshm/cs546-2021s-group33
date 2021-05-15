@@ -8,7 +8,7 @@
 }
 
 .nonrequired {
-    color: blue;
+    color: #7979ff;
 }
 
 body{
@@ -99,10 +99,10 @@ a {
     width: 50%;
 }
 
-.textlength{
-    display: inline;
+p{
+    word-wrap:break-word;
 }
 
-p{
+li{
     word-wrap:break-word;
 }

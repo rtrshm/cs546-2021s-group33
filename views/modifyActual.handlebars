@@ -1,5 +1,6 @@
-<main>
-    <a href="/admin/modify">Go back</a>
+<button onclick="location.href='/admin/manage'" type="button">Go Back</button>
+<main class="screennotcenter">
+    <!--<a href="/admin/modify">Go back</a>-->
     <h1>Modifying {{object.title}}:</h1>
     <h2>Old fields:</h2>
     <p>Title: {{object.title}}</p> 
@@ -21,7 +22,7 @@
 
     <h2>New fields:</h2>
     <h3>Only fill in fields you wish to modify. Blank fields will be ignored.</h3>
-    <form action = "/admin/modify/{{object.title}}" name="modify" method ="post" id="modifygame-form">
+    <form action = "/admin/modify/{{object.title}}" name="modify" method ="post" id="modifygame-form" class="container centered">
         <label for="title">Game Title:</label>
         <input type="text" name="title" id="title"><br>
         <label for="image">Image link:</label>

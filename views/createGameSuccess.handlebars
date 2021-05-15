@@ -1,6 +1,13 @@
-<main>
+<main class="screen">
         <p>Game {{game.title}} succesfully created!</p>
-        <a href="/games/game/{{game._id}}">Click here to view the newly added game</a><br>
+        <!--<a href="/games/game/{{game._id}}">Click here to view the newly added game</a><br>
         <a href="/admin/addgame">Click here to add another game</a><br>
-        <a href="/nav">Click here to go to the main site</a>
+        <a href="/nav">Click here to go to the main site</a> -->
+        <button onclick="location.href='/games/game/{{game._id}}'" type="button">Click here to view the newly added game</button>
+        <br>
+        <br>
+        <button onclick="location.href='/admin/addgame'" type="button">Click here to add another game</button>
+        <br>
+        <br>
+        <button onclick="location.href='/nav'" type="button">Click here to go to the main site</button>
 </main>
