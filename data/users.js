@@ -155,6 +155,23 @@ let userUnmarkReviewHelpful = async (userId, reviewId) => {
     return await readUser(userId);
 }
 
+let hasRatedHelpful = async (username, reviewId) => {
+    errorz.stringChecker(username, "username");
+    
+    errorz.stringChecker(reviewId, "reviewId");
+    errorz.idChecker(reviewId, "reviewId");
+
+    let user;
+    try {
+        user = await findByUsername(username);
+        if (reviewId in user.reviewsMarkedHelpful)
+            return true;
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
 let followUser = async (followerId, followedId) => {
   errorz.stringChecker(followerId, "id");
   errorz.idChecker(followerId);
@@ -378,6 +395,8 @@ module.exports = {
   unfollowUser,
   isFollowing,
   userMarkReviewHelpful,
+  userUnmarkReviewHelpful,
+  hasRatedHelpful,
   followUserByName,
   unfollowUserByName,
   getListFollowing,
