@@ -262,6 +262,16 @@ router.post('/quiz', async (req, res) => {
     }
 });
 
-
+router.post("/hasRatedHelpful", async (req, res) => {
+    let {reviewId} = req.body;
+    let user = req.session.user.username;
+    let hasRatedHelpful = false;
+    try{
+        hasRatedHelpful = await reviewFun.hasRatedHelpful(user,reviewId);
+    }catch(e) {
+        return res.json({bool:false});
+    }
+    return res.json({bool:following});
+});
 
 module.exports = router;
