@@ -1,4 +1,6 @@
-<a href="/nav">Go back</a>
+<!-- <a href="/nav">Go back</a> -->
+<button onclick="location.href='/nav'" type="button">Go Back</button>
+<div class="screennotcenter">
 <h1>Reviews from followed users:</h1>
 <ul>
     <br>    
@@ -8,6 +10,7 @@
         by  <a href="/profile/{{this.username}}">{{this.username}}</a>:</li>
         {{#if this.spoiler}}
         <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
+        <br>
         <ul class="reviewPoints" hidden>
             <li>Title: {{this.reviewTitle}}</li>
             <li>Rating: {{this.rating}}</li>
@@ -15,6 +18,7 @@
             <li>Review: {{this.reviewContent}}</li>
             <li>{{this.helpfulCount}} people rated this review Helpful</li>
         </ul>
+        <br>
         {{else}}
         <ul class="reviewPoints">
             <li>Title: {{this.reviewTitle}}</li>
@@ -23,6 +27,7 @@
             <li>Review: {{this.reviewContent}}</li>
             <li>{{this.helpfulCount}} people rated this review Helpful</li>
         </ul>
+        <br>
         {{/if}}
     {{/each}}
 </ul>
@@ -30,3 +35,4 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
 <script src="/public/js/spoilerButton.js"></script>
+</div>

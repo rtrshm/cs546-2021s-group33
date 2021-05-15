@@ -1,11 +1,15 @@
-<main>
-    <a href="/nav">Go back</a>
+<button onclick="location.href='/nav'" type="button">Go Back</button>
+<main class="screen">
+    <!--<a href="/nav">Go back</a> -->
     <header>
     <h1>Search for game</h1>
 	</header>
-        <form action = "/games/searchresults" name = 'search' method ="post" id="game-search">
-            <label for="game">Game title:</label>
+        <form action = "/games/searchresults" name = 'search' method ="post" id="game-search" class="container">
+            <label for="title">Game title:</label>
+            <br>
             <input type="text" name="title" id="title">
+            <br>
+            <br>
             <button type="submit">Enter</button>
         </form>
         <p class='error' id='error'>{{errormsg}}</p>

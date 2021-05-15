@@ -98,3 +98,11 @@ a {
     margin-right: auto;
     width: 50%;
 }
+
+.textlength{
+    display: inline;
+}
+
+p{
+    word-wrap:break-word;
+}

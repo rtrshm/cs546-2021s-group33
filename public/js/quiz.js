@@ -45,7 +45,7 @@
     let renderGame = game => {
         let gameDiv = $('<div id="primaryResult"></div>');
 
-        gameDiv.append($(`<img alt="No image found" src=${game.img}>`));
+        gameDiv.append($(`<img alt="No image found" src=${game.img} class="gameimage">`));
         
         let attrList = $('<dl></dl>');
 
@@ -57,7 +57,7 @@
             ['Genres', game.genres],
             ['Developers', game.developers],
             ['Publishers', game.publishers],
-            ['Rating', game.averageRating],
+            ['Average Rating', game.averageRating],
             ['Platforms', game.platforms],
             ['Purchase links', game.puchaseLinks]]) {
                 if (field[1]) {
