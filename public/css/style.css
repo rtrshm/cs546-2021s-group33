@@ -1,12 +1,89 @@
 .error {
-    color: red;
+    color: #ff3c3c;
     font-weight: 500;
 }
 
 .required {
-    color: red;
+    color: #ff3c3c;
 }
 
 .nonrequired {
     color: blue;
+}
+
+body{
+    background-color: #0e2433;
+}
+
+.screen{
+    color: #ffff00;
+    margin: auto;
+    width: 50%;
+    border: 5px double #45b6fe;
+    padding: 10px;
+    text-align: center;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.centerimage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /*Centers Logo on the login screen*/
+  }
+  button {
+    border: none;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+button {
+    color: black;
+    border: 3px solid #45b6fe;
+    background-image: -webkit-linear-gradient(
+      30deg,
+      #45b6fe 50%,
+      transparent 50%
+    );
+    background-image: linear-gradient(30deg, #45b6fe 50%, transparent 50%);
+    background-size: 800px;
+    background-repeat: no-repeat;
+    background-position: 0%;
+    -webkit-transition: background 300ms ease-in-out;
+    transition: background 300ms ease-in-out;
+    
+}
+button:hover {
+    background-position: 100%;
+    color: black;
+}
+
+.container {
+    width: 200px;
+    clear: both;
+    margin: auto;
+    line-height: 1.8;
+  }
+  
+.container input {
+    width: 100%;
+    clear: both;
+    line-height: 1.8;
+  }
+
+.screennotcenter{
+    color: #ffff00;
+    margin: auto;
+    width: 50%;
+    border: 5px double #45b6fe;
+    padding: 10px;
+    font-family: "Lucida Console", "Courier New", monospace;
+}
+.centered{
+    text-align: center;
 }

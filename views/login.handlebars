@@ -1,18 +1,23 @@
-<main>
+<main class="screen">
     <header>
     <h1>GAMESEEKR</h1>
 	</header>
         <form action = "/login" method ="post" name="login" id="login-form">
             <label for="username">Username:</label>
             <input type="text" name="username" id="username">
+            <br>
             <label for="password">Password:</label>
             <input type="password" name="password" id="password">
+            <br>
             <button type="submit">Enter</button>
             <input type="hidden" name="redirect" id="redirect" value="{{redirect}}" />
         </form>
         <p class='loggingIn' id='login'hidden>Logging In...</p>
         <p class='error' id='error'>{{errormsg}}</p>
-        <a href="/signup">Sign up</a>
+        <!--<a href="/signup">Sign up</a> -->
+        <img src="../public/images/logo.png" alt="GAMESEEKR logo" class="centerimage">
+        <br>
+        <button onclick="location.href='/signup'" type="button">Sign up</button>
         <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
         <script src="/public/js/login.js"></script>

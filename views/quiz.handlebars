@@ -1,5 +1,6 @@
-<main>
-    <a href="/nav">Go back</a>
+<main class="screennotcenter">
+    <!-- <a href="/nav">Go back</a> -->
+    <button onclick="location.href='/nav'" type="button">Go Back</button>
     <h1>Seek a game!</h1>
     <form id="quizForm" method="post">
         <!-- some placeholder questions for now, will expand by a lot
@@ -24,9 +25,9 @@
             <input type="radio" id="fighting" name="genre2" value="Fighting">
             <label for="fighting">Go to the gym</label><br>
             <input type="radio" id="sport" name="genre2" value="Sport">
-            <label for="strategy">Watch the game</label><br>
+            <label for="sport">Watch the game</label><br>
             <input type="radio" id="shooter" name="genre2" value="Shooter">
-            <label for="strategy">Work</label><br>    
+            <label for="shooter">Work</label><br>    
         </div>
 
         <div class="question">
@@ -110,10 +111,10 @@
 
          <div class="question">
             <p>Are you sad and lonely?</p>
-            <input type="radio" id="dating sim" name="genre8" value="Dating Sim">
-            <label for="dating sim">Yes</label><br>
-            <input type="radio" id="" name="genre8" value="">
-            <label for="">No</label><br>
+            <input type="radio" id="datingsim" name="genre8" value="Dating Sim">
+            <label for="datingsim">Yes</label><br>
+            <input id= "no" type="radio" name="genre8" value="">
+            <label for="no">No</label><br>
         </div>
 
         <div class="question">
@@ -122,23 +123,23 @@
             <label for="survival">Yes! I love camping!</label><br>
             <input type="radio" id="agriculture" name="genre9" value="Agriculture">
             <label for="agriculture">Yes! I love working in my garden!</label><br>
-            <input type="radio" id="" name="genre9" value="">
-            <label for="">I don't know what grass looks like</label><br>
+            <input id= "noo" type="radio" name="genre9" value="">
+            <label for="noo">I don't know what grass looks like</label><br>
         </div>
           <div class="question">
             <p>What are you looking for in a game?</p>
-            <input type="radio" id="sexual content" name="genre10" value="Sexual Content">
-            <label for="sexual content">Big Badonkers</label><br>
-            <input type="radio" id="bullet hell" name="genre10" value="Bullet Hell">
-            <label for="bullet hell">Putting my mechanics to the test</label><br>
+            <input type="radio" id="sexualcontent" name="genre10" value="Sexual Content">
+            <label for="sexualcontent">Big Badonkers</label><br>
+            <input type="radio" id="bullethell" name="genre10" value="Bullet Hell">
+            <label for="bullethell">Putting my mechanics to the test</label><br>
             <input type="radio" id="jrpg" name="genre10" value="JRPG">
             <label for="jrpg">Min/Maxing literally everything</label><br>
             <input type="radio" id="building" name="genre10" value="Building">
             <label for="building">Creativity</label><br>
-            <input type="radio" id="card game" name="genre10" value="Card Game">
-            <label for="card game">Sending Someone to the Shadow Realm</label><br>
+            <input type="radio" id="cardgame" name="genre10" value="Card Game">
+            <label for="cardgame">Sending Someone to the Shadow Realm</label><br>
         </div>
-
+        <br>
         <input type="submit">
 
     </form>

@@ -25,7 +25,7 @@
     let listResults = results => {
         if (results.length == 0) {
             quizResult.append($('<p>No matches were found!' + 
-                'This might be Artur\'s fault!</p>'));
+                ' This might be Artur\'s fault!</p>'));
         } else 
             quizResult.append(renderGame(results[0]));
 
