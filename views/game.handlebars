@@ -74,16 +74,16 @@
     <li><p hidden class='hiddenId'>{{this._id}}</p></li>
     <li>By <a href="/profile/{{this.username}}">{{this.username}}</a> <br>
     {{#if this.spoiler}}
-        <button class="revealSpoiler">This review contains spoilers. Press to view.</button>
-        <br>
-        <ul class="reviewPoints" hidden>
+        <li><button class="revealSpoiler">This review contains spoilers. Press to view.</button></li>
+        <li><ul class="reviewPoints" hidden>
             <li>{{this.reviewTitle}}</li>
             <li>{{this.reviewContent}}</li>
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
             <li>{{this.helpfulCount}} users found this review helpful</li>
             <li><button class="rateHelpful">Rate this review helpful</button></li>
-        </ul> <br>
+        </ul></li> 
+        <li><br></li>
     {{else}}
         <ul class="reviewPoints">
             <li>{{this.reviewTitle}}</li>
