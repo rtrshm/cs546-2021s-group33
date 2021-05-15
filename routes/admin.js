@@ -5,10 +5,10 @@ const errorChecker = require('../data/errorChecker')
 
 router.get("/manage", async(req,res) => {
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+        return res.status(401).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
     }
     if (user.perms === "user") {
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+        return res.status(403).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
     }
     else if (user.perms == "admin") {
         return res.render("manage.handlebars", {title: "Manage games"});
@@ -17,10 +17,10 @@ router.get("/manage", async(req,res) => {
 router.get("/addgame", async(req,res) => {
     user = req.session.user;
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+        return res.status(401).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
     }
     if (user.perms === "user") {
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+        return res.status(403).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
     }
     else if (user.perms == "admin") {
         return res.render("admin.handlebars", {title: "Admin"});
@@ -35,7 +35,7 @@ router.post("/addgame", async (req, res) => {
     let game;
 
     if (!title || typeof(title) !== "string" || title.trim().length == 0) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: Cannot create game without a valid title"});
+        return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: Cannot create game without a valid title"});
     }
     if (!img || typeof(img) !== "string" || img.trim().length == 0) {
         img = "../public/images/noimage.png";
@@ -59,26 +59,26 @@ router.post("/addgame", async (req, res) => {
     }
 
     if (!genres || typeof(genres)!=='string' || genres.trim().length == 0) {
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres cannot be empty"});
+        return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres cannot be empty"});
     }
     else {
         genres = genres.split(',');
 
         if (!genres || !Array.isArray(genres)) {
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres split failed"});
+            return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres split failed"});
         }
     
         for(let genre of genres) {
             console.log('genre is ' + genre)
             if(typeof(genre)!=="string" || genre.trim().length === 0) {
-                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
+                return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
             }
             else {
                 genre = genre.trim();
                 try{
                     errorChecker.genreChecker(genre)
                 }catch(e){
-                    return res.render("createGameError.handlebars", {title:"Error", errormsg:`invalid genre ${e}`});
+                    return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:`invalid genre ${e}`});
                 }
             }
         }
@@ -91,12 +91,12 @@ router.post("/addgame", async (req, res) => {
     else {
         developers = developers.split(',');
         if (!developers || !Array.isArray(developers)) {
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers split failed"});
+            return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers split failed"});
         }
     
         for(let developer of developers) {
             if(typeof(developer)!=="string" || developer.trim().length === 0) {
-                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must contain non-empty comma seperated strings"});
+                return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must contain non-empty comma seperated strings"});
             }
             developer = developer.trim();
         }
@@ -109,12 +109,12 @@ router.post("/addgame", async (req, res) => {
     else {
         publishers = publishers.split(',');
         if (!publishers || !Array.isArray(publishers)) {
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers split failed"});
+            return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers split failed"});
         }
     
         for(let publisher of publishers) {
             if(typeof(publisher)!=="string" || publisher.trim().length === 0) {
-                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must contain non-empty comma seperated strings"});
+                return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must contain non-empty comma seperated strings"});
             }
             publisher = publisher.trim();
         }
@@ -127,7 +127,7 @@ router.post("/addgame", async (req, res) => {
         try{
             errorChecker.ageRatingChecker(ageRating)
         }catch(e){
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:`invalid age rating ${e}`});
+            return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:`invalid age rating ${e}`});
         }
     }
 
@@ -137,19 +137,19 @@ router.post("/addgame", async (req, res) => {
     }else {
         platforms = platforms.split(',');
         if (!platforms || !Array.isArray(platforms)) {
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms split failed"});
+            return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms split failed"});
         }
     
         for(let platform of platforms) {
             if(typeof(platform)!=="string" || platform.trim().length === 0) {
-                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
+                return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
             }
             else {
                 platform = platform.trim();
                 try{
                     errorChecker.platformChecker(platform)
                 }catch(e){
-                    return res.render("createGameError.handlebars", {title:"Error", errormsg:`invalid platform ${e}`});
+                    return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:`invalid platform ${e}`});
                 }
             }
         }
@@ -161,12 +161,12 @@ router.post("/addgame", async (req, res) => {
     else{
         purchaseLinks = purchaseLinks.split(',');
         if (!purchaseLinks || !Array.isArray(purchaseLinks)) {
-            return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks split failed"});
+            return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks split failed"});
         }
     
         for(let purchaseLink of purchaseLinks) {
             if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
-                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must contain non-empty comma seperated strings"});
+                return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must contain non-empty comma seperated strings"});
             }
             purchaseLink = purchaseLink.trim();
             let url;
@@ -174,10 +174,10 @@ router.post("/addgame", async (req, res) => {
                 url = new URL(purchaseLink);
             }
             catch (e){
-                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
+                return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
             }
             if (url.protocol !== "http:" && url.protocol !== "https:"){
-                return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
+                return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
             }
         }
     }
@@ -186,8 +186,8 @@ router.post("/addgame", async (req, res) => {
         game = await gameDatabase.createGame(title, img, dateReleased, genres, developers,
             publishers, ageRating, platforms, purchaseLinks); 
     }catch(e) {
-        console.log('heree')
-        return res.render("createGameError.handlebars", {title:"Error", errormsg:e});
+        // console.log('heree')
+        return res.status(500).render("createGameError.handlebars", {title:"Error", errormsg:e});
     }
 
     res.render("createGameSuccess.handlebars", {title:"Success", game:game});
@@ -196,10 +196,10 @@ router.post("/addgame", async (req, res) => {
 router.get("/remove", async(req,res) => {
     user = req.session.user;
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+        return res.status(401).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
     }
     if (user.perms === "user") {
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+        return res.status(403).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
     }
     else if (user.perms == "admin") {
         return res.render("removeGame.handlebars", {title: "Remove game"});
@@ -209,10 +209,10 @@ router.get("/remove", async(req,res) => {
 router.post("/remove", async(req,res) => {
     user = req.session.user;
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to remove a game."});
+        return res.status(401).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to remove a game."});
     }
     if (user.perms === "user") {
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to remove a game."});
+        return res.status(403).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to remove a game."});
     }
     else if (user.perms == "admin") {
         let {title} = req.body;
@@ -220,14 +220,14 @@ router.post("/remove", async(req,res) => {
         try{
             game = await gameDatabase.getGameByTitle(title);
         }catch(e) {
-            return res.render("removeError.handlebars", {title: "Error", errormsg: e});
+            return res.status(500).render("removeError.handlebars", {title: "Error", errormsg: e});
         }
         let gametitle = game.title;
         let removegame;
         try{
             removegame = await gameDatabase.removeGame(game._id.toString());
         }catch(e) {
-            return res.render("removeError.handlebars", {title: "Error", errormsg: e});
+            return res.status(500).render("removeError.handlebars", {title: "Error", errormsg: e});
         }
         return res.render("removeSuccess.handlebars", {title: "Game removed", gametitle: gametitle});
     }
@@ -236,10 +236,10 @@ router.post("/remove", async(req,res) => {
 router.get("/modify", async(req,res) => {
     user = req.session.user;
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+        return res.status(401).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
     }
     if (user.perms === "user") {
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
+        return res.status(403).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to view this page."});
     }
     else if (user.perms == "admin") {
         return res.render("modifyGame.handlebars", {title: "Modify game"});
@@ -249,10 +249,10 @@ router.get("/modify", async(req,res) => {
 router.post("/modify", async(req,res) => {
     user = req.session.user;
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
+        return res.status(401).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
     }
     if (user.perms === "user") {
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
+        return res.status(403).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
     }
     else if (user.perms == "admin") {
         let {title} = req.body;
@@ -260,7 +260,7 @@ router.post("/modify", async(req,res) => {
         try{
             game = await gameDatabase.getGameByTitle(title);
         }catch(e) {
-            return res.render("modifyGameError.handlebars", {title: "Error", errormsg: e});
+            return res.status(500).render("modifyGameError.handlebars", {title: "Error", errormsg: e});
         }
         return res.redirect("/admin/modify/" + game.title);
     }
@@ -269,17 +269,17 @@ router.post("/modify", async(req,res) => {
 router.get("/modify/:id", async(req,res) => {
     user = req.session.user;
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
+        return res.status(401).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
     }
     if (user.perms === "user") {
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
+        return res.status(403).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
     }
     else if (user.perms == "admin") {
         let game;
         try{
             game = await gameDatabase.getGameByTitle(req.params.id);
         }catch(e) {
-            return res.render("modifyGameError.handlebars", {title: "Error", errormsg: e});
+            return res.status(500).render("modifyGameError.handlebars", {title: "Error", errormsg: e});
         }
         return res.render("modifyActual.handlebars", {title: "Modify game", object: game});
     }
@@ -288,10 +288,10 @@ router.get("/modify/:id", async(req,res) => {
 router.post("/modify/:id", async(req,res) => {
     user = req.session.user;
     if (!user.perms || typeof(user.perms) !== 'string' || user.perms.trim().length == 0){
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
+        return res.status(401).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
     }
     if (user.perms === "user") {
-        return res.render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
+        return res.status(403).render("permissionError.handlebars", {title: "Permission denied", errormsg: "You do not have permission to modify a game."});
     }
     else if (user.perms == "admin") {
         let oldgame;
@@ -299,7 +299,7 @@ router.post("/modify/:id", async(req,res) => {
         try{
             oldgame = await gameDatabase.getGameByTitle(req.params.id);
         }catch(e) {
-            return res.render("modifyGameError.handlebars", {title: "Error", errormsg: e});
+            return res.status(500).render("modifyGameError.handlebars", {title: "Error", errormsg: e});
         }
         let { 
             title, img, dateReleased, genres, developers, publishers, ageRating, platforms, purchaseLinks 
@@ -310,7 +310,7 @@ router.post("/modify/:id", async(req,res) => {
             sameName = true;
         }
         else if (typeof(title) !== "string" || title.trim().length == 0) {
-            return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid title"});
+            return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid title"});
         }
         else {
             if (title == oldgame.title){
@@ -353,25 +353,25 @@ router.post("/modify/:id", async(req,res) => {
             }
         }
         else if (typeof(genres)!=='string' || genres.trim().length == 0) {
-            return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid genres"});
+            return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid genres"});
         }
         else {
             genres = genres.split(',');
     
             if (!genres || !Array.isArray(genres)) {
-                return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: genres split failed"});
+                return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: genres split failed"});
             }
         
             for(let genre of genres) {
                 if(typeof(genre)!=="string" || genre.trim().length === 0) {
-                    return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
+                    return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
                 }
                 else {
                     genre = genre.trim();
                     try{
                         errorChecker.genreChecker(genre)
                     }catch(e){
-                        return res.render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid genre ${e}`});
+                        return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid genre ${e}`});
                     }
                 }
             }
@@ -387,17 +387,17 @@ router.post("/modify/:id", async(req,res) => {
         }
     
         else if (typeof(developers)!=='string' || developers.trim().length == 0) {
-            return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid developers"});
+            return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid developers"});
         }
         else {
             developers = developers.split(',');
             if (!developers || !Array.isArray(developers)) {
-                return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: developers split failed"});
+                return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: developers split failed"});
             }
         
             for(let developer of developers) {
                 if(typeof(developer)!=="string" || developer.trim().length === 0) {
-                    return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: developers must contain non-empty comma seperated strings"});
+                    return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: developers must contain non-empty comma seperated strings"});
                 }
                 developer = developer.trim();
             }
@@ -413,17 +413,17 @@ router.post("/modify/:id", async(req,res) => {
         }
         else if (typeof(publishers)!=='string' || publishers.trim().length == 0) {
          //   return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must be a list of non-empty strings seperated by commas"});
-            return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid publishers"});
+            return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid publishers"});
         }
         else {
             publishers = publishers.split(',');
             if (!publishers || !Array.isArray(publishers)) {
-                return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: publishers split failed"});
+                return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: publishers split failed"});
             }
         
             for(let publisher of publishers) {
                 if(typeof(publisher)!=="string" || publisher.trim().length === 0) {
-                    return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: publishers must contain non-empty comma seperated strings"});
+                    return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: publishers must contain non-empty comma seperated strings"});
                 }
                 publisher = publisher.trim();
             }
@@ -433,13 +433,13 @@ router.post("/modify/:id", async(req,res) => {
             ageRating = oldgame.ageRating;
         }
         else if (typeof(ageRating) !== "string") {
-            return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid age rating"});
+            return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid age rating"});
         }
         else {
             try{
                 errorChecker.ageRatingChecker(ageRating)
             }catch(e){
-                return res.render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid age rating ${e}`});
+                return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid age rating ${e}`});
             }
         }
 
@@ -454,23 +454,23 @@ router.post("/modify/:id", async(req,res) => {
     
         else if (typeof(platforms)!=='string' || platforms.trim().length == 0) {
             //return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms must be a list of non-empty strings seperated by commas"});
-            return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid platforms"});
+            return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid platforms"});
         }else {
             platforms = platforms.split(',');
             if (!platforms || !Array.isArray(platforms)) {
-                return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: platforms split failed"});
+                return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: platforms split failed"});
             }
         
             for(let platform of platforms) {
                 if(typeof(platform)!=="string" || platform.trim().length === 0) {
-                    return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
+                    return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
                 }
                 else {
                     platform = platform.trim();
                     try{
                         errorChecker.platformChecker(platform)
                     }catch(e){
-                        return res.render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid platform ${e}`});
+                        return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid platform ${e}`});
                     }
                 }
             }
@@ -485,17 +485,17 @@ router.post("/modify/:id", async(req,res) => {
             }
         }
         else if (typeof(purchaseLinks)!=='string' || purchaseLinks.trim().length == 0) {
-            return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid purchase links"});
+            return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Invalid purchase links"});
         }
         else{
             purchaseLinks = purchaseLinks.split(',');
             if (!purchaseLinks || !Array.isArray(purchaseLinks)) {
-                return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks split failed"});
+                return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks split failed"});
             }
         
             for(let purchaseLink of purchaseLinks) {
                 if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
-                    return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must contain non-empty comma seperated strings"});
+                    return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must contain non-empty comma seperated strings"});
                 }
                 purchaseLink = purchaseLink.trim();
                 let url;
@@ -503,10 +503,10 @@ router.post("/modify/:id", async(req,res) => {
                     url = new URL(purchaseLink);
                 }
                 catch (e){
-                    return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
+                    return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
                 }
                 if (url.protocol !== "http:" && url.protocol !== "https:"){
-                    return res.render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
+                    return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
                 }
             }
         }
@@ -515,7 +515,7 @@ router.post("/modify/:id", async(req,res) => {
             let myobj = {title: title, img: img, dateReleased: dateReleased, genres: genres, developers: developers, publishers: publishers, ageRating: ageRating, platforms: platforms, purchaseLinks: purchaseLinks, sameName};
             newgame = await gameDatabase.updateGame(oldgame._id.toString(), myobj); 
         }catch(e) {
-            return res.render("modifyGameError.handlebars", {title:"Error", errormsg:e});
+            return res.status(500).render("modifyGameError.handlebars", {title:"Error", errormsg:e});
         }
         return res.render("modifyGameSuccess.handlebars", {title: "Game modified", game: newgame});
     }
