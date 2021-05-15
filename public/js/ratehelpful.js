@@ -1,6 +1,6 @@
 ($ => {
-    let rateHelpful = document.getElementById('rateHelpful');
-    let hiddenId = document.getElementById('hiddenId');
+    let rateHelpful = document.getElementsByClassName('rateHelpful')[0];
+    let hiddenId = document.getElementsByClassName('hiddenId')[0];
     var requestConfig = {
         method: 'POST',
         url: '/games/hasRatedHelpful',

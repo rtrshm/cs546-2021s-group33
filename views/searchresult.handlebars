@@ -12,6 +12,7 @@
 <p>Age rating: {{object.ageRating}}</p>
 <p>Platforms: {{object.platforms}}</p>
 {{#if object.purchaseLinks}}
+<button id="addFavorite" type="button">Add to favorites</button>
 <p>Purchase links:</p>
 <ul>
     {{#each object.purchaseLinks}}
@@ -83,4 +84,5 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
 <script src="/public/js/addReview.js"> </script>
+<script src="/public/js/favorite.js"></script>
 </div>
