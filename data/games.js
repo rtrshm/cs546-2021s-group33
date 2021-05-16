@@ -1,6 +1,7 @@
 const { ObjectID } = require("mongodb");
 const mongoCollections = require("../config/mongoCollections");
 const games = mongoCollections.games;
+const users = mongoCollections.users;
 const errorz = require("./errorChecker");
 
 //TODO: Handle errors in code.
@@ -295,6 +296,14 @@ let removeGame = async (id) => {
   let parsedId = ObjectID(id);
 
   const gameCollection = await games();
+  const userCollection = await users();
+
+  const game = await gameCollection.findOne({_id: parsedId});
+  game.reviews.forEach(async (elem) => {
+    await userCollection.updateOne(
+      { username: elem.username }, 
+      { $pull: { reviewsLeft: elem._id } });
+  });
   const deletionInfo = await gameCollection.deleteOne({ _id: parsedId });
   if (deletionInfo.deletedCount === 0) throw `Could not delete game.`;
 
