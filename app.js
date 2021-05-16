@@ -63,21 +63,21 @@ app.post("/verifylogin", async (req, res) => {
     password=xss(password);
 
     if (!username || typeof(username) !== "string" || username.trim().length == 0) {
-        return res.status(400).json({bool : false});
+        return res.json({bool : false});
     }
     if (!password || typeof(password) !== "string" || password.trim().length == 0) {
-        return res.status(400).json({bool : false});
+        return res.json({bool : false});
     }
     username = username.toLowerCase();
     let user;
     try {
         user = await userDatabase.findByUsername(username);
     } catch(e){
-        return res.status(500).json({bool : false});
+        return res.json({bool : false});
     }
 
     if (!user.password){
-        return res.status(500).json({bool : false});
+        return res.json({bool : false});
     }
 
     if (bcrypt.compareSync(password,user.password)) {
@@ -85,7 +85,7 @@ app.post("/verifylogin", async (req, res) => {
         return res.json({bool : true});
     }
     else {
-        return res.status(400).json({bool : false});
+        return res.json({bool : false});
     }
 });
 
