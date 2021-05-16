@@ -9,7 +9,7 @@
             url: '/games/hasRatedHelpful',
             data: { reviewId }
         };
-        var button = $(this)
+        var button = $(this);
         $.ajax(requestConfig).then(function(responseMessage) {
             console.log(responseMessage);
             button.text("Unmark review as helpful");
