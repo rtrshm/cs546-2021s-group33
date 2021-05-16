@@ -1,5 +1,5 @@
 let myTitle = document.getElementById('title');
-let myImg = document.getElementById('image');
+let myImg = document.getElementById('img');
 let myGenres = document.getElementById('genres');
 let myDevel = document.getElementById('developers');
 let myPubli = document.getElementById('publishers');
