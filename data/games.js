@@ -201,13 +201,15 @@ let updateGame = async (id, newData) => {
     }
   }
   if (!newData.sameName) {
-    let taken;
-    try {
-      taken = await titleTaken(newData.title);
-    } catch (e) {
-      throw e;
+    if (newData.title) {
+      let taken;
+      try {
+        taken = await titleTaken(newData.title);
+      } catch (e) {
+        throw e;
+      }
+      if (taken) throw `Error: Title ${newData.title} already taken`;
     }
-    if (taken) throw `Error: Title ${newData.title} already taken`;
   }
   delete newData.sameName;
 
