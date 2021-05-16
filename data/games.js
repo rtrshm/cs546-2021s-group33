@@ -299,6 +299,9 @@ let removeGame = async (id) => {
   const userCollection = await users();
 
   const game = await gameCollection.findOne({_id: parsedId});
+
+  await userCollection.updateMany({}, { $pull: { favoriteGames: parsedId } });
+
   game.reviews.forEach(async (elem) => {
     await userCollection.updateOne(
       { username: elem.username }, 
