@@ -67,22 +67,43 @@
     </form>
 </div>
 
+<p>Number of reviews: {{object.numberOfReviews}}</p>
 <p>Game reviews:</p>
 <ul id="reviewList">
     {{#each object.reviews}}
     <li>By <a href="/profile/{{this.username}}">{{this.username}}</a> <br>
+    {{#if this.spoiler}}
+        <li><button class="revealSpoiler">This review contains spoilers. Press to view.</button></li>
+        <li><ul class="reviewPoints" hidden>
+            <li>{{this.reviewTitle}}</li>
+            <li>{{this.reviewContent}}</li>
+            <li>Rating: {{this.rating}}</li>
+            <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
+            <li>{{this.helpfulCount}} users found this review helpful</li>
+            <li><button class="rateHelpful">Rate this review helpful</button></li>
+            <li><p hidden class='hiddenId'>{{this._id}}</p></li>
+        </ul></li> 
+        <li><br></li>
+    {{else}}
         <ul class="reviewPoints">
             <li>{{this.reviewTitle}}</li>
             <li>{{this.reviewContent}}</li>
             <li>Rating: {{this.rating}}</li>
             <li>Recommended: {{#if this.recommended}} Yes {{else}} No {{/if}}</li>
+            <li>{{this.helpfulCount}} users found this review helpful</li>
+            <li><button class="rateHelpful">Rate this review helpful</button></li>
+            <li><p hidden class='hiddenId'>{{this._id}}</p></li>
         </ul> <br>
     </li>
+    {{/if}}
     {{/each}}
 </ul>
+
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
         crossorigin="anonymous"></script>
 <script src="/public/js/addReview.js"> </script>
 <script src="/public/js/favorite.js"></script>
+<script src="/public/js/spoilerButton.js"></script>
+<script src="/public/js/ratehelpful.js"></script>
 </div>
