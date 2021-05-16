@@ -78,20 +78,22 @@ router.post("/addgame", async (req, res) => {
             return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres split failed"});
         }
     
-        for(let genre of genres) {
-            //console.log('genre is ' + genre)
-            if(typeof(genre)!=="string" || genre.trim().length === 0) {
+        for(let genre in genres) {
+            //console.log('genres[genre] is ' + genres[genre])
+            if(typeof(genres[genre])!=="string" || genres[genre].trim().length === 0) {
                 return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
             }
             else {
-                genre = genre.trim();
+                genres[genre] = genres[genre].trim().toLowerCase();
                 try{
-                    errorChecker.genreChecker(genre)
+                    errorChecker.genreChecker(genres[genre])
                 }catch(e){
                     return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:`invalid genre ${e}`});
                 }
             }
         }
+        genres = [...new Set(genres)];
+
     }
 
     if (!developers || typeof(developers)!=='string' || developers.trim().length == 0) {
@@ -104,16 +106,18 @@ router.post("/addgame", async (req, res) => {
             return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers split failed"});
         }
     
-        for(let developer of developers) {
-            if(typeof(developer)!=="string" || developer.trim().length === 0) {
+        for(let developer in developers) {
+            if(typeof(developers[developer])!=="string" || developers[developer].trim().length === 0) {
                 return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: developers must contain non-empty comma seperated strings"});
             }
-            developer = developer.trim();
+            developers[developer] = developers[developer].trim();
         }
+        developers = [...new Set(developers)];
+
     }
 
     if (!publishers || typeof(publishers)!=='string' || publishers.trim().length == 0) {
-     //   return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must be a list of non-empty strings seperated by commas"});
+     //   return res.render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must be a list in non-empty strings seperated by commas"});
         publishers = [];
     }
     else {
@@ -122,12 +126,14 @@ router.post("/addgame", async (req, res) => {
             return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers split failed"});
         }
     
-        for(let publisher of publishers) {
-            if(typeof(publisher)!=="string" || publisher.trim().length === 0) {
+        for(let publisher in publishers) {
+            if(typeof(publishers[publisher])!=="string" || publishers[publisher].trim().length === 0) {
                 return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: publishers must contain non-empty comma seperated strings"});
             }
-            publisher = publisher.trim();
+            publishers[publisher] = publishers[publisher].trim();
         }
+        publishers = [...new Set(publishers)];
+
     }
 
     if (!ageRating || typeof(ageRating) !== "string") {
@@ -150,19 +156,21 @@ router.post("/addgame", async (req, res) => {
             return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: platforms split failed"});
         }
     
-        for(let platform of platforms) {
-            if(typeof(platform)!=="string" || platform.trim().length === 0) {
+        for(let platform in platforms) {
+            if(typeof(platforms[platform])!=="string" || platforms[platform].trim().length === 0) {
                 return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
             }
             else {
-                platform = platform.trim();
+                platforms[platform] = platforms[platform].trim().toLowerCase();
                 try{
-                    errorChecker.platformChecker(platform)
+                    errorChecker.platformChecker(platforms[platform])
                 }catch(e){
                     return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:`invalid platform ${e}`});
                 }
             }
         }
+        platforms = [...new Set(platforms)];
+
     }
 
     if (!purchaseLinks || typeof(purchaseLinks)!=='string' || purchaseLinks.trim().length == 0) {
@@ -174,14 +182,14 @@ router.post("/addgame", async (req, res) => {
             return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks split failed"});
         }
     
-        for(let purchaseLink of purchaseLinks) {
-            if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
+        for(let purchaseLink in purchaseLinks) {
+            if(typeof(purchaseLinks[purchaseLink])!=="string" || purchaseLinks[purchaseLink].trim().length === 0) {
                 return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must contain non-empty comma seperated strings"});
             }
-            purchaseLink = purchaseLink.trim();
+            purchaseLinks[purchaseLink] = purchaseLinks[purchaseLink].trim();
             let url;
             try {
-                url = new URL(purchaseLink);
+                url = new URL(purchaseLinks[purchaseLink]);
             }
             catch (e){
                 return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
@@ -190,6 +198,8 @@ router.post("/addgame", async (req, res) => {
                 return res.status(400).render("createGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
             }
         }
+        purchaseLinks = [...new Set(purchaseLinks)];
+
     }
 
     try {
@@ -384,19 +394,20 @@ router.post("/modify/:id", async(req,res) => {
                 return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: genres split failed"});
             }
         
-            for(let genre of genres) {
-                if(typeof(genre)!=="string" || genre.trim().length === 0) {
+            for(let genre in genres) {
+                if(typeof(genres[genre])!=="string" || genres[genre].trim().length === 0) {
                     return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: genres must contain non-empty comma seperated strings"});
                 }
                 else {
-                    genre = genre.trim();
+                    genres[genre] = genres[genre].trim().toLowerCase();
                     try{
-                        errorChecker.genreChecker(genre)
+                        errorChecker.genreChecker(genres[genre])
                     }catch(e){
-                        return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid genre ${e}`});
+                        return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid genres[genre] ${e}`});
                     }
                 }
             }
+            genres = [...new Set(genres)];
         }
 
         if (!developers) {
@@ -417,12 +428,14 @@ router.post("/modify/:id", async(req,res) => {
                 return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: developers split failed"});
             }
         
-            for(let developer of developers) {
-                if(typeof(developer)!=="string" || developer.trim().length === 0) {
+            for(let developer in developers) {
+                if(typeof(developers[developer])!=="string" || developers[developer].trim().length === 0) {
                     return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: developers must contain non-empty comma seperated strings"});
                 }
-                developer = developer.trim();
+                developers[developer] = developers[developer].trim();
             }
+            developers = [...new Set(developers)];
+
         }
         
         if (!publishers) {
@@ -443,12 +456,14 @@ router.post("/modify/:id", async(req,res) => {
                 return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: publishers split failed"});
             }
         
-            for(let publisher of publishers) {
-                if(typeof(publisher)!=="string" || publisher.trim().length === 0) {
+            for(let publisher in publishers) {
+                if(typeof(publishers[publisher])!=="string" || publishers[publisher].trim().length === 0) {
                     return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: publishers must contain non-empty comma seperated strings"});
                 }
-                publisher = publisher.trim();
+                publishers[publisher] = publishers[publisher].trim();
             }
+            publishers = [...new Set(publishers)];
+
         }
         
         if (!ageRating) {
@@ -483,19 +498,21 @@ router.post("/modify/:id", async(req,res) => {
                 return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: platforms split failed"});
             }
         
-            for(let platform of platforms) {
-                if(typeof(platform)!=="string" || platform.trim().length === 0) {
-                    return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Platforms mustcontain non-empty comma seperated strings"});
+            for(let platform in platforms) {
+                if(typeof(platforms[platform])!=="string" || platforms[platform].trim().length === 0) {
+                    return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: Platforms must contain non-empty comma seperated strings"});
                 }
                 else {
-                    platform = platform.trim();
+                    platforms[platform] = platforms[platform].trim().toLowerCase();
                     try{
-                        errorChecker.platformChecker(platform)
+                        errorChecker.platformChecker(platforms[platform])
                     }catch(e){
                         return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:`invalid platform ${e}`});
                     }
                 }
             }
+            platforms = [...new Set(platforms)];
+
         }
         
         if (!purchaseLinks) {
@@ -515,14 +532,14 @@ router.post("/modify/:id", async(req,res) => {
                 return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks split failed"});
             }
         
-            for(let purchaseLink of purchaseLinks) {
-                if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
+            for(let purchaseLink in purchaseLinks) {
+                if(typeof(purchaseLinks[purchaseLink])!=="string" || purchaseLinks[purchaseLink].trim().length === 0) {
                     return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks must contain non-empty comma seperated strings"});
                 }
-                purchaseLink = purchaseLink.trim();
+                purchaseLinks[purchaseLink] = purchaseLinks[purchaseLink].trim();
                 let url;
                 try {
-                    url = new URL(purchaseLink);
+                    url = new URL(purchaseLinks[purchaseLink]);
                 }
                 catch (e){
                     return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
@@ -531,6 +548,8 @@ router.post("/modify/:id", async(req,res) => {
                     return res.status(400).render("modifyGameError.handlebars", {title:"Error", errormsg:"Error: purchaseLinks contains invalid url"});
                 }
             }
+            purchaseLinks = [...new Set(purchaseLinks)];
+
         }
     
         try {

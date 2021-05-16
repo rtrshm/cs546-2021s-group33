@@ -85,16 +85,16 @@ myForm.addEventListener('submit', (event) => {
             return;
         }
     
-        for(let genre of genres) {
-            if(typeof(genre)!=="string" || genre.trim().length === 0) {
+        for(let genre in genres) {
+            if(typeof(genres[genre])!=="string" || genres[genre].trim().length === 0) {
                 err.innerHTML = "Error: genres must contain non-empty comma seperated strings";
                 myGenres.focus();
                 return;
             }
             else {
-                genre = genre.trim();
+                genres[genre] = genres[genre].trim().toLowerCase();
                 try{
-                    genreChecker(genre);
+                    genreChecker(genres[genre]);
                  }catch(e){
                     err.innerHTML = `invalid genre ${e}, genres can be "action", "shooter", "rpg", "sport", "adventure", "fighting", "racing", "strategy", "casual", "difficult", 
                     "competitive", "multiplayer", "singleplayer", "romance", "roguelike", "dating sim", "survival", "sexual content", "anime",
@@ -104,6 +104,8 @@ myForm.addEventListener('submit', (event) => {
                  }
             }
         }
+        genres = [...new Set(genres)];
+
     }
 
     if (!developers || typeof(developers)!=='string' || developers.trim().length == 0) {
@@ -117,14 +119,16 @@ myForm.addEventListener('submit', (event) => {
             return;
         }
     
-        for(let developer of developers) {
-            if(typeof(developer)!=="string" || developer.trim().length === 0) {
+        for(let developer in developers) {
+            if(typeof(developers[developer])!=="string" || developers[developer].trim().length === 0) {
                 err.innerHTML = "Error: developers must contain non-empty comma seperated strings";
                 myDevel.focus();
                 return;
             }
-            developer = developer.trim();
+            developers[developer] = developers[developer].trim();
         }
+        developers = [...new Set(developers)];
+
     }
 
     if (!publishers || typeof(publishers)!=='string' || publishers.trim().length == 0) {
@@ -138,14 +142,16 @@ myForm.addEventListener('submit', (event) => {
             return;
         }
     
-        for(let publisher of publishers) {
-            if(typeof(publisher)!=="string" || publisher.trim().length === 0) {
+        for(let publisher in publishers) {
+            if(typeof(publishers[publisher])!=="string" || publishers[publisher].trim().length === 0) {
                 err.innerHTML = "Error: publishers must contain non-empty comma seperated strings";
                 myPubli.focus();
                 return;
             }
-            publisher = publisher.trim();
+            publishers[publisher] = publishers[publisher].trim();
         }
+        publishers = [...new Set(publishers)];
+
     }
 
     if (!ageRating || typeof(ageRating) !== "string") {
@@ -172,23 +178,25 @@ myForm.addEventListener('submit', (event) => {
             return;
         }
     
-        for(let platform of platforms) {
-            if(typeof(platform)!=="string" || platform.trim().length === 0) {
+        for(let platform in platforms) {
+            if(typeof(platforms[platform])!=="string" || platforms[platform].trim().length === 0) {
                 err.innerHTML = "Error: platforms must contain non-empty comma seperated strings";
                 myPlat.focus();
                 return;
             }
             else {
-                platform = platform.trim();
+                platforms[platform] = platforms[platform].trim().toLowerCase();
                 try{
-                    platformChecker(platform);
+                    platformChecker(platforms[platform]);
                  }catch(e){
-                    err.innerHTML = `invalid platform ${e}, platforms can be "pc", "playstation 3", "playstation 4", "playstation 5", "xbox 360", "xbox one", "nintendo switch", "ios", "android"`;
+                    err.innerHTML = `invalid platforms ${e}, platforms can be "pc", "playstation 3", "playstation 4", "playstation 5", "xbox 360", "xbox one", "nintendo switch", "ios", "android"`;
                     myPlat.focus();
                     return;
                  }
             }
         }
+        platforms = [...new Set(platforms)];
+
     }
 
     if (!purchaseLinks || typeof(purchaseLinks)!=='string' || purchaseLinks.trim().length == 0) {
@@ -201,17 +209,18 @@ myForm.addEventListener('submit', (event) => {
             myPurch.focus();
             return;
         }
+        purchaseLinks = [...new Set(purchaseLinks)];
     
-        for(let purchaseLink of purchaseLinks) {
-            if(typeof(purchaseLink)!=="string" || purchaseLink.trim().length === 0) {
+        for(let purchaseLink in purchaseLinks) {
+            if(typeof(purchaseLinks[purchaseLink])!=="string" || purchaseLinks[purchaseLink].trim().length === 0) {
                 err.innerHTML = "Error: purchaseLinks must contain non-empty comma seperated strings";
                 myPurch.focus();
                 break;
             }
-            purchaseLink = purchaseLink.trim();
+            purchaseLinks[purchaseLink] = purchaseLinks[purchaseLink].trim();
             let url;
             try {
-                url = new URL(purchaseLink);
+                url = new URL(purchaseLinks[purchaseLink]);
             }
             catch (e){
                 err.innerHTML = "Error: purchaseLinks contains invalid URL";
@@ -224,6 +233,8 @@ myForm.addEventListener('submit', (event) => {
                 return;
             }
         }
+        purchaseLinks = [...new Set(purchaseLinks)];
+
     }
     
     if (!title || typeof(title) !== "string" || title.trim().length == 0) {
