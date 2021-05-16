@@ -12,16 +12,18 @@ How to Run:
 Accounts
 
 Admin: 
+    
     username: lempie 
     password: pokemon
-
+    
 Users: 
-    username: randomname 
-    password: abc123!
 
     username: gavin
     password: abc123!
-
+    
+    username: randomname 
+    password: abc123!
+    
     username: dulan
     password: dulan
 
