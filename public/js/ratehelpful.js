@@ -1,29 +1,38 @@
 ($ => {
-    let rateHelpful = document.getElementsByClassName('rateHelpful')[0];
-    let hiddenId = document.getElementsByClassName('hiddenId')[0];
-    var requestConfig = {
-        method: 'POST',
-        url: '/games/hasRatedHelpful',
-        data: { reviewId:hiddenId.innerHTML }
-    };
-    $.ajax(requestConfig).then(function(responseMessage) {
-        rateHelpful.innerHTML = "Unmark review as helpful";
-        if (!responseMessage.bool) {
-            rateHelpful.innerHTML="Mark review as helpful";
-        }
-    });
-    rateHelpful.addEventListener('click', (event) => {
+
+    $('.rateHelpful').each(function() {
+        // get hidden id from next <li> entry
+        var reviewId = $(this).parent().next().children().text();
+        console.log(reviewId);
+        var requestConfig = {
+            method: 'POST',
+            url: '/games/hasRatedHelpful',
+            data: { reviewId }
+        };
+        var button = $(this);
+        $.ajax(requestConfig).then(function(responseMessage) {
+            console.log(responseMessage);
+            button.text("Unmark review as helpful");
+            if (!responseMessage.bool) {
+                button.text("Mark review as helpful");
+            }
+        });
+    })
+
+    $('.rateHelpful').click(function(event) {
         event.preventDefault();
-        if (rateHelpful.innerHTML == "Unmark review as helpful") {
+        var reviewId = $(this).parent().next().children().text(),
+            button = $(this)
+        if (button.text() == "Unmark review as helpful") {
             var requestConfig = {
                 method: 'POST',
                 url: '/games/unrateHelpful',
-                data: { reviewId:hiddenId.innerHTML }
+                data: { reviewId }
             };
             $.ajax(requestConfig).then(function(responseMessage) {
-                rateHelpful.innerHTML = "Mark review as helpful";
+                button.text("Mark review as helpful");
                 if (!responseMessage.bool) {
-                    rateHelpful.innerHTML="Unmark review as helpful";
+                    button.text("Unmark review as helpful");
                 }
             });
         }
@@ -31,14 +40,13 @@
             var requestConfig = {
                 method: 'POST',
                 url: '/games/rateHelpful',
-                data: {reviewId:hiddenId.innerHTML}
+                data: {reviewId}
             };
             $.ajax(requestConfig).then(function(responseMessage) {
-                rateHelpful.innerHTML = "Unmark review as helpful";
-                if (!responseMessage.bool) {
-                    rateHelpful.innerHTML="Mark review as helpful";
-                }
+                button.text("Unmark review as helpful");
+                if (!responseMessage.bool) 
+                    button.text("Mark review as helpful");
             });
         }
-    });
-    })(window.jQuery);
+    })
+})(window.jQuery);

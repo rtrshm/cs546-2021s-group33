@@ -399,9 +399,13 @@ let main = async () => {
   // await db.serverConfig.close();
 };
 
-main().catch((error) => {
-  console.error(error);
-  return dbConnection().then((db) => {
-    return db.serverConfig.close();
+let closeConnection = () => {
+    return dbConnection().then(db => 
+        db.serverConfig.close());
+}
+
+main().then(() => closeConnection())
+  .catch((error) => {
+    console.error(error);
+    return closeConnection();
   });
-});

@@ -162,7 +162,6 @@ let getRecommendedGameByGame = async (id) => {
     gameList.splice(i, 1);
   }
   
-  console.log(gameList.length);
   if (gameList.length > 5) gameList = gameList.slice(0, 5);
 
   return gameList;
@@ -201,7 +200,6 @@ let updateGame = async (id, newData) => {
       throw "Error: " + x[i] + " Key not valid";
     }
   }
-  console.log(newData.sameName);
   if (!newData.sameName) {
     let taken;
     try {

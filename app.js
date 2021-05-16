@@ -9,7 +9,7 @@ const userDatabase = require('./data/users');
 const bcrypt = require('bcrypt');
 const xss = require("xss");
 
-require("./tasks/seed");
+// require("./tasks/seed");
 
 app.use('/public', static);
 app.use(express.json());

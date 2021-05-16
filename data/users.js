@@ -156,7 +156,6 @@ let hasRatedHelpful = async (username, reviewId) => {
     for (let review of reviewsHelpfulStr) if (review == reviewId) return true;
     return false;
   } catch (e) {
-    console.log(e);
     return false;
   }
 };

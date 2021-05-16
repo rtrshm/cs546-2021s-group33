@@ -337,7 +337,7 @@ router.post('/generateSuggestions', async (req, res) => {
         let suggestions = await gamesDatabase.getRecommendedGameByGame(gameId);
         return res.json({suggestions});
     } else {
-        return res.status(500).json({suggestions: []});
+        return res.json({suggestions: []});
     }
 })
 

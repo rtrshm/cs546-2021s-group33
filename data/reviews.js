@@ -195,12 +195,7 @@ let updateReview = async (id, username, newData) => {
 
 let markHelpful = async (username, id) => {
   errorz.stringChecker(id, "id");
-  
-  try {
-    errorz.idChecker(id);
-  } catch (e) {
-    console.log(id);
-  }
+  errorz.idChecker(id);
 
   errorz.stringChecker(username, "username");
   const parsedId = ObjectID(id);
@@ -236,11 +231,7 @@ let markHelpful = async (username, id) => {
  */
  let unmarkHelpful = async (username, id) => {
     errorz.stringChecker(id, "id");
-  try {
     errorz.idChecker(id);
-  } catch (e) {
-    console.log(id);
-  }
     errorz.stringChecker(username, "username");
     const parsedId = ObjectID(id);
   
