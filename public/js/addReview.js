@@ -42,6 +42,11 @@
 
         let rating = reviewRating.val();
         reviewObj.rating = rating;
+        if (!rating) {
+            reviewErrorText.append($('<p>Please give the game a rating!</p>'));
+            reviewErrorText.show();
+            return;
+        }
 
         reviewObj.reviewContent = reviewTextContent;
 
